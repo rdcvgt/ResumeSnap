@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PersonalDetails from "../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../components/forms/ProfessionalSummary";
+import London from "../../components/template/London";
 
 // import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
@@ -29,7 +30,7 @@ const ResumeDataArea = styled.div`
 `;
 
 const ResumeData = styled.div`
-	max-width: 40%;
+	max-width: 45%;
 	height: 100%;
 	padding: 20px;
 `;
@@ -47,22 +48,46 @@ const ResumePreviewArea = styled.div`
 	position: fixed;
 	top: 0px;
 	right: 0px;
-	width: 60%;
+	width: 55%;
 	height: 100%;
 	background-color: rgb(101, 110, 131);
+	/* padding: 80px 70px 80px 70px; */
+`;
+
+const ResumePreview = styled.div`
+	/* width: 50vw;
+	height: calc((297 / 210) * 50vw);
+	max-height: 85vh;
+	max-width: calc((210 / 297) * 85vh);
+	background-color: #fff;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 10px; */
+	/* overflow: hidden; */
 `;
 
 export default function EditPage() {
+	const [inputData, setInputData] = useState({});
+	const handleInputData = (blockInput) => {
+		setInputData(blockInput);
+	};
+
 	return (
 		<Root>
 			<ResumeDataArea>
 				<ResumeData>
 					<ResumeTitle>我的第一份履歷</ResumeTitle>
-					<PersonalDetails />
-					<ProfessionalSummary />
+					<PersonalDetails handleInputData={handleInputData} />
+					<ProfessionalSummary handleInputData={handleInputData} />
 				</ResumeData>
 			</ResumeDataArea>
-			<ResumePreviewArea>hemll</ResumePreviewArea>
+			<ResumePreviewArea>
+				<ResumePreview>
+					<London inputData={inputData} />
+				</ResumePreview>
+			</ResumePreviewArea>
 		</Root>
 	);
 }

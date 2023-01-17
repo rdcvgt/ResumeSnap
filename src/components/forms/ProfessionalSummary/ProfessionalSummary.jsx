@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import InputEditor from "../utils/Editor";
+import PropTypes from "prop-types";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -22,21 +24,16 @@ const BlockDescription = styled.div`
 
 const LongInputBox = styled.div``;
 
-const InputEditorBox = styled.div``;
+ProfessionalSummary.propTypes = {
+	handleInputData: PropTypes.func,
+};
 
-const LongInput = styled.textarea`
-	${(props) => props.theme.font.content};
-	border: 0;
-	width: 100%;
-	height: 200px;
-	outline: none;
-	border-radius: 5px;
-	background-color: ${(props) => props.theme.color.indigo[10]};
-	padding: 20px;
-	resize: none;
-`;
+export default function ProfessionalSummary({ handleInputData }) {
+	const handleEditorInput = (inputHtml) => {
+		let data = { professionalSummary: inputHtml };
+		handleInputData(data);
+	};
 
-export default function ProfessionalSummary() {
 	return (
 		<BlockContainer>
 			<BlockTitle>個人簡介</BlockTitle>
@@ -46,8 +43,7 @@ export default function ProfessionalSummary() {
 				最重要的是記得提及你的亮眼成就與專業技能！
 			</BlockDescription>
 			<LongInputBox>
-				<InputEditorBox></InputEditorBox>
-				<LongInput></LongInput>
+				<InputEditor handleEditorInput={handleEditorInput} />
 			</LongInputBox>
 		</BlockContainer>
 	);

@@ -150,7 +150,7 @@ export const theme = {
 			height: 50px;
 			outline: none;
 			border-radius: 5px;
-			background-color: ${(props) => props.theme.color.indigo[10]};
+			background-color: ${(props) => props.theme.color.neutral[10]};
 			padding: 10px;
 		`,
 	},
