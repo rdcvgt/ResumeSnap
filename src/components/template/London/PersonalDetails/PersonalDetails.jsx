@@ -9,6 +9,7 @@ const ResumeContainer = styled.div`
 
 const TopBlock = styled.div`
 	margin-bottom: 15px;
+	width: 100%;
 `;
 
 const Block = styled.div`
@@ -24,11 +25,11 @@ const TitleBlock = styled.div`
 	align-items: center;
 	padding-bottom: 10px;
 	font-weight: 700;
+	font-size: 16px;
 `;
 
 const Name = styled.div`
 	text-align: center;
-	font-size: 16px;
 `;
 
 const Position = styled.div`

@@ -36,13 +36,12 @@ export default function ProfessionalSummary({ inputData }) {
 	let htmlText = inputData;
 	let newHtmlText;
 	if (htmlText) {
-		newHtmlText = htmlText
-			.replace(/(<p>)/g, `<p style="margin: 0">`)
-			.replace(/(<ul>)/g, `<ul style="margin: 0">`)
-			.replace(/(<ol>)/g, `<ol style="margin: 0">`)
-			.replace(/(<a href)/g, `<a style="color: #000000" href`);
+		newHtmlText = htmlText.replace(
+			/(<a href)/g,
+			`<a style="color: #000000" href`
+		);
 	}
-	const noContent = "<p style={{margin: 0}}><br></p>";
+	const noContent = "<p><br></p>";
 	const space = "\u00A0";
 
 	return (

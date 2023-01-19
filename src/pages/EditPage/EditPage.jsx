@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PersonalDetails from "../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../components/forms/ProfessionalSummary";
@@ -55,7 +55,7 @@ const ResumePreviewArea = styled.div`
 `;
 
 const ResumePreview = styled.div`
-	/* width: 50vw;
+	width: 50vw;
 	height: calc((297 / 210) * 50vw);
 	max-height: 85vh;
 	max-width: calc((210 / 297) * 85vh);
@@ -64,8 +64,8 @@ const ResumePreview = styled.div`
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	border-radius: 10px; */
-	/* overflow: hidden; */
+	border-radius: 10px;
+	overflow: hidden;
 `;
 
 export default function EditPage() {

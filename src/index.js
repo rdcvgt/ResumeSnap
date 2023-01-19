@@ -14,6 +14,7 @@ root.render(
 			<link
 				href="https://fonts.googleapis.com/earlyaccess/notosanstc.css"
 				rel="stylesheet"
+				crossOrigin="anonymous"
 			/>
 		</Helmet>
 		<GlobalStyle />
