@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import TitleBlock from "../utils/TitleBlock";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -8,11 +9,6 @@ const BlockContainer = styled.div`
 	margin: 50px auto;
 `;
 
-const BlockTitle = styled.div`
-	margin-bottom: 20px;
-	${(props) => props.theme.font.blockTitle};
-	color: ${(props) => props.theme.color.neutral[90]};
-`;
 const BlockRow = styled.div`
 	display: flex;
 	justify-content: center;
@@ -62,6 +58,7 @@ PersonalDetails.propTypes = {
 
 export default function PersonalDetails({ handleInputData }) {
 	const [personalDetails, setPersonalDetails] = useState({
+		blockTitle: null,
 		position: null,
 		firstName: null,
 		lastName: null,
@@ -76,6 +73,7 @@ export default function PersonalDetails({ handleInputData }) {
 	});
 	const [isClick, setIsClick] = useState(false);
 	const [timer, setTimer] = useState(null);
+	const [blockTitle, setBlockTitle] = useState("個人資訊");
 	const [position, setPosition] = useState("行銷專員");
 	const [lastName, setLastName] = useState("彭");
 	const [firstName, setFirstName] = useState("勝緯");
@@ -89,6 +87,11 @@ export default function PersonalDetails({ handleInputData }) {
 	const [postalCode, setPostalCode] = useState("231");
 	const [drivingLicense, setDrivingLicense] = useState("機車、汽車");
 	const [nationality, setNationality] = useState("臺灣");
+
+	//表格項目有變動 state，則呼叫 updateInputData
+	useEffect(() => {
+		updateInputData("blockTitle", blockTitle);
+	}, [blockTitle]);
 
 	useEffect(() => {
 		updateInputData("position", position);
@@ -134,9 +137,11 @@ export default function PersonalDetails({ handleInputData }) {
 		updateInputData("nationality", nationality);
 	}, [nationality]);
 
+	//若使用者閒置輸入超過 1 秒，則 setPersonalDetails
 	const updateInputData = (inputName, state) => {
 		clearTimeout(timer);
 		const newTimer = setTimeout(() => {
+			//保留先前已儲存的其他 state 資料，只改變有變動的項目
 			setPersonalDetails((preData) => ({
 				...preData,
 				[inputName]: state,
@@ -152,7 +157,7 @@ export default function PersonalDetails({ handleInputData }) {
 
 	return (
 		<BlockContainer>
-			<BlockTitle>個人資料</BlockTitle>
+			<TitleBlock title={{ blockTitle, setBlockTitle }} />
 			<BlockRow>
 				<LeftCol>
 					<InputTitle>求職職位</InputTitle>

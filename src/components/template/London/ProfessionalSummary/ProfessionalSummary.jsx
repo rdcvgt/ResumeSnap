@@ -29,11 +29,14 @@ const Content = styled.div`
 `;
 
 ProfessionalSummary.propTypes = {
-	inputData: PropTypes.string,
+	inputData: PropTypes.object,
 };
 
 export default function ProfessionalSummary({ inputData }) {
-	let htmlText = inputData;
+	if (!inputData) return;
+	let blockTitle = inputData.blockTitle;
+	let htmlText = inputData.inputHtml;
+
 	let newHtmlText;
 	if (htmlText) {
 		newHtmlText = htmlText.replace(
@@ -48,7 +51,7 @@ export default function ProfessionalSummary({ inputData }) {
 		<ResumeContainer>
 			{htmlText && htmlText !== noContent && (
 				<Block>
-					<Title style={{ margin: 0 }}>個人簡介</Title>
+					<Title style={{ margin: 0 }}>{blockTitle}</Title>
 					<Content
 						dangerouslySetInnerHTML={{
 							__html: newHtmlText,

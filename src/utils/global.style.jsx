@@ -152,6 +152,7 @@ export const theme = {
 			border-radius: 5px;
 			background-color: ${(props) => props.theme.color.neutral[10]};
 			padding: 10px;
+			caret-color: ${(props) => props.theme.color.blue[50]};
 		`,
 	},
 };

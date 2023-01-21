@@ -42,6 +42,7 @@ export default function London({ inputData }) {
 	const [personalDetails, setPersonalDetails] = useState(null);
 	const [professionalSummary, setProfessionalSummary] = useState(null);
 
+	//判斷 inputData 中的 block
 	if (
 		inputData.personalDetails &&
 		personalDetails !== inputData.personalDetails
@@ -58,27 +59,26 @@ export default function London({ inputData }) {
 
 	const componentRef = useRef();
 
-	//用於 html2canvas
-	const [imgUrl, setImgUrl] = useState("");
+	//初始化或當 block 內容改變時，呼叫 handlePreviewChange;
+	useEffect(() => {
+		if (personalDetails === null || professionalSummary === null) {
+			return;
+		}
+		handlePreviewChange();
+	}, [personalDetails, professionalSummary]);
 
-	// png
-	const handleButtonClick = () => {
+	useEffect(() => {
+		handlePreviewChange();
+	}, []);
+
+	//將履歷內容轉換成 png 檔並儲存到 state
+	const [imgUrl, setImgUrl] = useState("");
+	const handlePreviewChange = () => {
 		html2canvas(componentRef.current).then((canvas) => {
 			let imgUrl = canvas.toDataURL();
 			setImgUrl(imgUrl);
 		});
 	};
-
-	useEffect(() => {
-		if (personalDetails === null || professionalSummary === null) {
-			return;
-		}
-		handleButtonClick();
-	}, [personalDetails, professionalSummary]);
-
-	useEffect(() => {
-		handleButtonClick();
-	}, []);
 
 	return (
 		<>
