@@ -57,235 +57,137 @@ PersonalDetails.propTypes = {
 };
 
 export default function PersonalDetails({ handleInputData }) {
-	const [personalDetails, setPersonalDetails] = useState({
-		blockTitle: null,
-		position: null,
-		firstName: null,
-		lastName: null,
-		email: null,
-		phone: null,
-		country: null,
-		city: null,
-		address: null,
-		postalCode: null,
-		drivingLicense: null,
-		nationality: null,
-	});
 	const [isClick, setIsClick] = useState(false);
 	const [timer, setTimer] = useState(null);
 	const [blockTitle, setBlockTitle] = useState("個人資訊");
-	const [position, setPosition] = useState("行銷專員");
-	const [lastName, setLastName] = useState("彭");
-	const [firstName, setFirstName] = useState("勝緯");
-	const [email, setEmail] = useState("weilllyox1020@gmail.com");
-	const [phone, setPhone] = useState("0975191406");
-	const [country, setCountry] = useState("臺灣");
-	const [city, setCity] = useState("臺北");
-	const [address, setAddress] = useState(
-		"新北市新店區中正路 307 巷 26 號 4 樓"
-	);
-	const [postalCode, setPostalCode] = useState("231");
-	const [drivingLicense, setDrivingLicense] = useState("機車、汽車");
-	const [nationality, setNationality] = useState("臺灣");
 
-	//表格項目有變動 state，則呼叫 updateInputData
-	useEffect(() => {
-		updateInputData("blockTitle", blockTitle);
-	}, [blockTitle]);
+	const [formData, setFormData] = useState({});
 
-	useEffect(() => {
-		updateInputData("position", position);
-	}, [position]);
-
-	useEffect(() => {
-		updateInputData("lastName", lastName);
-	}, [lastName]);
-
-	useEffect(() => {
-		updateInputData("firstName", firstName);
-	}, [firstName]);
-
-	useEffect(() => {
-		updateInputData("email", email);
-	}, [email]);
-
-	useEffect(() => {
-		updateInputData("phone", phone);
-	}, [phone]);
-
-	useEffect(() => {
-		updateInputData("country", country);
-	}, [country]);
-
-	useEffect(() => {
-		updateInputData("city", city);
-	}, [city]);
-
-	useEffect(() => {
-		updateInputData("address", address);
-	}, [address]);
-
-	useEffect(() => {
-		updateInputData("postalCode", postalCode);
-	}, [postalCode]);
-
-	useEffect(() => {
-		updateInputData("drivingLicense", drivingLicense);
-	}, [drivingLicense]);
-
-	useEffect(() => {
-		updateInputData("nationality", nationality);
-	}, [nationality]);
-
-	//若使用者閒置輸入超過 1 秒，則 setPersonalDetails
-	const updateInputData = (inputName, state) => {
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
 		clearTimeout(timer);
 		const newTimer = setTimeout(() => {
-			//保留先前已儲存的其他 state 資料，只改變有變動的項目
-			setPersonalDetails((preData) => ({
-				...preData,
-				[inputName]: state,
-			}));
+			setFormData({ ...formData, [name]: value });
 		}, 1000);
 		setTimer(newTimer);
 	};
 
 	useEffect(() => {
-		let data = { personalDetails };
+		let data = { personalDetails: { formData, blockTitle } };
 		handleInputData(data);
-	}, [personalDetails]);
+	}, [formData, blockTitle]);
 
 	return (
 		<BlockContainer>
 			<TitleBlock title={{ blockTitle, setBlockTitle }} />
-			<BlockRow>
-				<LeftCol>
-					<InputTitle>求職職位</InputTitle>
-					<ShortInput
-						type="text"
-						name="position"
-						value={position}
-						onChange={(e) => {
-							setPosition(e.target.value);
-						}}></ShortInput>
-				</LeftCol>
-				<RightCol>
-					<InputTitle>照片</InputTitle>
-					<ShortInput type="text"></ShortInput>
-				</RightCol>
-			</BlockRow>
-			<BlockRow>
-				<LeftCol>
-					<InputTitle>姓氏</InputTitle>
-					<ShortInput
-						type="text"
-						name="lastName"
-						value={lastName}
-						onChange={(e) => {
-							setLastName(e.target.value);
-						}}></ShortInput>
-				</LeftCol>
-				<RightCol>
-					<InputTitle>名字</InputTitle>
-					<ShortInput
-						type="text"
-						name="firstName"
-						value={firstName}
-						onChange={(e) => {
-							setFirstName(e.target.value);
-						}}></ShortInput>
-				</RightCol>
-			</BlockRow>
-			<BlockRow>
-				<LeftCol>
-					<InputTitle>電子郵件</InputTitle>
-					<ShortInput
-						type="text"
-						name="email"
-						value={email}
-						onChange={(e) => {
-							setEmail(e.target.value);
-						}}></ShortInput>
-				</LeftCol>
-				<RightCol>
-					<InputTitle>手機號碼</InputTitle>
-					<ShortInput
-						type="text"
-						name="phone"
-						value={phone}
-						onChange={(e) => {
-							setPhone(e.target.value);
-						}}></ShortInput>
-				</RightCol>
-			</BlockRow>
-			<MoreInput isClick={isClick}>
+			<form>
 				<BlockRow>
 					<LeftCol>
-						<InputTitle>居住國家</InputTitle>
+						<InputTitle>求職職位</InputTitle>
 						<ShortInput
 							type="text"
-							name="country"
-							value={country}
-							onChange={(e) => {
-								setCountry(e.target.value);
-							}}></ShortInput>
+							name="position"
+							// value={position}
+							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
-						<InputTitle>現居城市</InputTitle>
-						<ShortInput
-							type="text"
-							name="city"
-							value={city}
-							onChange={(e) => {
-								setCity(e.target.value);
-							}}></ShortInput>
+						<InputTitle>照片</InputTitle>
+						<ShortInput type="text"></ShortInput>
 					</RightCol>
 				</BlockRow>
 				<BlockRow>
 					<LeftCol>
-						<InputTitle>通訊地址</InputTitle>
+						<InputTitle>姓氏</InputTitle>
 						<ShortInput
 							type="text"
-							name="address"
-							value={address}
-							onChange={(e) => {
-								setAddress(e.target.value);
-							}}></ShortInput>
+							name="lastName"
+							// value={lastName}
+							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
-						<InputTitle>郵遞區號</InputTitle>
+						<InputTitle>名字</InputTitle>
 						<ShortInput
 							type="text"
-							name="postalCode"
-							value={postalCode}
-							onChange={(e) => {
-								setPostalCode(e.target.value);
-							}}></ShortInput>
+							name="firstName"
+							// value={firstName}
+							onChange={handleInputChange}></ShortInput>
 					</RightCol>
 				</BlockRow>
 				<BlockRow>
 					<LeftCol>
-						<InputTitle>駕駛執照</InputTitle>
+						<InputTitle>電子郵件</InputTitle>
 						<ShortInput
 							type="text"
-							name="drivingLicense"
-							value={drivingLicense}
-							onChange={(e) => {
-								setDrivingLicense(e.target.value);
-							}}></ShortInput>
+							name="email"
+							// value={email}
+							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
-						<InputTitle>國籍</InputTitle>
+						<InputTitle>手機號碼</InputTitle>
 						<ShortInput
 							type="text"
-							name="nationality"
-							value={nationality}
-							onChange={(e) => {
-								setNationality(e.target.value);
-							}}></ShortInput>
+							name="phone"
+							// value={phone}
+							onChange={handleInputChange}></ShortInput>
 					</RightCol>
 				</BlockRow>
-			</MoreInput>
+				<MoreInput isClick={isClick}>
+					<BlockRow>
+						<LeftCol>
+							<InputTitle>居住國家</InputTitle>
+							<ShortInput
+								type="text"
+								name="country"
+								// value={country}
+								onChange={handleInputChange}></ShortInput>
+						</LeftCol>
+						<RightCol>
+							<InputTitle>現居城市</InputTitle>
+							<ShortInput
+								type="text"
+								name="city"
+								// value={city}
+								onChange={handleInputChange}></ShortInput>
+						</RightCol>
+					</BlockRow>
+					<BlockRow>
+						<LeftCol>
+							<InputTitle>通訊地址</InputTitle>
+							<ShortInput
+								type="text"
+								name="address"
+								// value={address}
+								onChange={handleInputChange}></ShortInput>
+						</LeftCol>
+						<RightCol>
+							<InputTitle>郵遞區號</InputTitle>
+							<ShortInput
+								type="text"
+								name="postalCode"
+								// value={postalCode}
+								onChange={handleInputChange}></ShortInput>
+						</RightCol>
+					</BlockRow>
+					<BlockRow>
+						<LeftCol>
+							<InputTitle>駕駛執照</InputTitle>
+							<ShortInput
+								type="text"
+								name="drivingLicense"
+								// value={drivingLicense}
+								onChange={handleInputChange}></ShortInput>
+						</LeftCol>
+						<RightCol>
+							<InputTitle>國籍</InputTitle>
+							<ShortInput
+								type="text"
+								name="nationality"
+								// value={nationality}
+								onChange={handleInputChange}></ShortInput>
+						</RightCol>
+					</BlockRow>
+				</MoreInput>
+			</form>
 			<AdditionalButton
 				onClick={() => {
 					setIsClick(!isClick);

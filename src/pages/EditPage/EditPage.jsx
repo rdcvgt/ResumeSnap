@@ -109,7 +109,6 @@ export default function EditPage() {
 
 	const handleInputData = (blockInput) => {
 		setInputData(blockInput);
-		console.log(inputData);
 	};
 
 	return (

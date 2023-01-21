@@ -77,17 +77,17 @@ PersonalDetails.propTypes = {
 };
 
 export default function PersonalDetails({ inputData }) {
-	let address = inputData?.address;
-	let city = inputData?.city;
-	let country = inputData?.country;
-	let drivingLicense = inputData?.drivingLicense;
-	let email = inputData?.email;
-	let firstName = inputData?.firstName;
-	let lastName = inputData?.lastName;
-	let nationality = inputData?.nationality;
-	let phone = inputData?.phone;
-	let position = inputData?.position;
-	let postalCode = inputData?.postalCode;
+	let address = inputData?.formData?.address;
+	let city = inputData?.formData?.city;
+	let country = inputData?.formData?.country;
+	let drivingLicense = inputData?.formData?.drivingLicense;
+	let email = inputData?.formData?.email;
+	let firstName = inputData?.formData?.firstName;
+	let lastName = inputData?.formData?.lastName;
+	let nationality = inputData?.formData?.nationality;
+	let phone = inputData?.formData?.phone;
+	let position = inputData?.formData?.position;
+	let postalCode = inputData?.formData?.postalCode;
 	const space = "\u00A0";
 
 	return (
