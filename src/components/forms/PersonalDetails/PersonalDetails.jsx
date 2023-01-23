@@ -87,7 +87,6 @@ export default function PersonalDetails({ handleInputData }) {
 						<ShortInput
 							type="text"
 							name="position"
-							// value={position}
 							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
@@ -101,7 +100,6 @@ export default function PersonalDetails({ handleInputData }) {
 						<ShortInput
 							type="text"
 							name="lastName"
-							// value={lastName}
 							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
@@ -109,7 +107,6 @@ export default function PersonalDetails({ handleInputData }) {
 						<ShortInput
 							type="text"
 							name="firstName"
-							// value={firstName}
 							onChange={handleInputChange}></ShortInput>
 					</RightCol>
 				</BlockRow>
@@ -119,7 +116,6 @@ export default function PersonalDetails({ handleInputData }) {
 						<ShortInput
 							type="text"
 							name="email"
-							// value={email}
 							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
@@ -127,7 +123,6 @@ export default function PersonalDetails({ handleInputData }) {
 						<ShortInput
 							type="text"
 							name="phone"
-							// value={phone}
 							onChange={handleInputChange}></ShortInput>
 					</RightCol>
 				</BlockRow>
@@ -138,7 +133,6 @@ export default function PersonalDetails({ handleInputData }) {
 							<ShortInput
 								type="text"
 								name="country"
-								// value={country}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
@@ -146,7 +140,6 @@ export default function PersonalDetails({ handleInputData }) {
 							<ShortInput
 								type="text"
 								name="city"
-								// value={city}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>
@@ -156,7 +149,6 @@ export default function PersonalDetails({ handleInputData }) {
 							<ShortInput
 								type="text"
 								name="address"
-								// value={address}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
@@ -164,7 +156,6 @@ export default function PersonalDetails({ handleInputData }) {
 							<ShortInput
 								type="text"
 								name="postalCode"
-								// value={postalCode}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>
@@ -174,7 +165,6 @@ export default function PersonalDetails({ handleInputData }) {
 							<ShortInput
 								type="text"
 								name="drivingLicense"
-								// value={drivingLicense}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
@@ -182,7 +172,6 @@ export default function PersonalDetails({ handleInputData }) {
 							<ShortInput
 								type="text"
 								name="nationality"
-								// value={nationality}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>

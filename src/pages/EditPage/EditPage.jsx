@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PersonalDetails from "../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../components/forms/ProfessionalSummary";
+import Education from "../../components/forms/Education";
 import London from "../../components/template/London";
 
 // import PropTypes from "prop-types";
@@ -130,6 +131,7 @@ export default function EditPage() {
 
 					<PersonalDetails handleInputData={handleInputData} />
 					<ProfessionalSummary handleInputData={handleInputData} />
+					<Education handleInputData={handleInputData} />
 				</ResumeData>
 			</ResumeDataArea>
 			<ResumePreviewArea>

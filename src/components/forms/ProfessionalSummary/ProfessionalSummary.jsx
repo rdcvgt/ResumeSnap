@@ -10,12 +10,6 @@ const BlockContainer = styled.div`
 	margin: 50px auto;
 `;
 
-const BlockTitle = styled.div`
-	margin-bottom: 20px;
-	${(props) => props.theme.font.blockTitle};
-	color: ${(props) => props.theme.color.neutral[90]};
-`;
-
 const BlockDescription = styled.div`
 	${(props) => props.theme.input.title};
 	line-height: 1.5em;
@@ -30,18 +24,23 @@ ProfessionalSummary.propTypes = {
 };
 
 export default function ProfessionalSummary({ handleInputData }) {
-	const [timer, setTimer] = useState(null);
 	const [professionalSummary, setProfessionalSummary] = useState({
 		blockTitle: null,
 		inputHtml: null,
 	});
 	const [blockTitle, setBlockTitle] = useState("個人簡介");
+	const [timer, setTimer] = useState(null);
 	const [inputHtml, setInputHtml] = useState(null);
 
 	//從子組件取得 inputHtml，並儲存 state
 	const handleEditorInput = (inputHtml) => {
 		setInputHtml(inputHtml);
 	};
+
+	//當inputHtml 變動時呼叫 updateInputData
+	useEffect(() => {
+		updateInputData("inputHtml", inputHtml);
+	}, [inputHtml]);
 
 	//若使用者閒置輸入超過 1 秒，則 setProfessionalSummary
 	const updateInputData = (inputName, state) => {
@@ -60,10 +59,6 @@ export default function ProfessionalSummary({ handleInputData }) {
 	useEffect(() => {
 		updateInputData("blockTitle", blockTitle);
 	}, [blockTitle]);
-
-	useEffect(() => {
-		updateInputData("inputHtml", inputHtml);
-	}, [inputHtml]);
 
 	//當 professionalSummary 變動時，呼叫父層組件函式 handleInputData
 	useEffect(() => {

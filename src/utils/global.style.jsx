@@ -119,13 +119,13 @@ export const theme = {
 			font-size: 20px;
 			font-weight: 500;
 		`,
-		blockTitle: css`
-			font-size: 16px;
-			font-weight: 700;
-		`,
 		content: css`
 			font-size: 14px;
 			font-weight: 400;
+		`,
+		blockTitle: css`
+			font-size: 16px;
+			font-weight: 700;
 		`,
 		info: css`
 			font-size: 12px;
@@ -134,6 +134,10 @@ export const theme = {
 		infoBold: css`
 			font-size: 12px;
 			font-weight: 600;
+		`,
+		itemBold: css`
+			font-size: 14px;
+			font-weight: 700;
 		`,
 	},
 
