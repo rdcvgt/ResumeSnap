@@ -8,7 +8,7 @@ const Block = styled.div`
 	height: auto;
 `;
 
-const ResumeTitle = styled.input`
+const BlockTitle = styled.input`
 	min-width: 5em;
 	width: 5em;
 	max-width: 80%;
@@ -22,14 +22,52 @@ const ResumeTitle = styled.input`
 	caret-color: ${(props) => props.theme.color.blue[50]};
 `;
 
-const ResumeTitleIcon = styled.img`
+const DragBlock = styled.div`
+	height: 20px;
+	width: 30px;
+	position: absolute;
+	left: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 0;
+	transition: filter 0.3s, opacity 0.3s;
+
+	&:hover {
+		filter: brightness(1);
+		opacity: 1;
+		transition: filter 0.3s, opacity 0.3s;
+	}
+
+	${(props) =>
+		props.isHover &&
+		`
+		filter: brightness(1.4);
+		opacity: 1;
+		transition: filter 0.3s, opacity 0.3s;
+		`}
+`;
+
+const DragIcon = styled.img`
+	height: 100%;
+`;
+
+const EditIcon = styled.img`
 	max-height: 15px;
 	opacity: 0;
-	transition: opacity 0.3s;
+	transition: opacity 0.3s, filter 0.3s;
 	cursor: pointer;
 	&:hover {
-		opacity: 1;
+		filter: brightness(1);
+		transition: filter 0.3s;
 	}
+	${(props) =>
+		props.isHover &&
+		`
+		opacity: 1;
+		filter: brightness(1.4);
+		transition: opacity 0.3s, filter 0.3s;
+		`}
 `;
 
 TitleBlock.propTypes = {
@@ -38,29 +76,40 @@ TitleBlock.propTypes = {
 
 function TitleBlock({ title }) {
 	const { blockTitle, setBlockTitle } = title;
+	const [isHover, setIsHover] = useState(false);
 
-	const resumeTitleRef = useRef(null);
+	const blockTitleRef = useRef(null);
 
-	const handleResumeTitleChange = (e) => {
+	const handleBlockTitleChange = (e) => {
 		setBlockTitle(e.target.value);
 	};
 
 	const handleResumeTitleIconClick = () => {
-		resumeTitleRef.current.select();
+		blockTitleRef.current.select();
 	};
 
 	return (
 		<>
-			<Block>
-				<ResumeTitle
+			<Block
+				onMouseEnter={() => {
+					setIsHover(true);
+				}}
+				onMouseLeave={() => {
+					setIsHover(false);
+				}}>
+				<DragBlock isHover={isHover}>
+					<DragIcon src="/images/icon/drag.png" />
+				</DragBlock>
+				<BlockTitle
 					type="text"
 					value={blockTitle}
-					onChange={handleResumeTitleChange}
-					ref={resumeTitleRef}
+					onChange={handleBlockTitleChange}
+					ref={blockTitleRef}
 				/>
-				<ResumeTitleIcon
+				<EditIcon
 					src="/images/icon/edit.png"
 					onClick={handleResumeTitleIconClick}
+					isHover={isHover}
 				/>
 			</Block>
 		</>

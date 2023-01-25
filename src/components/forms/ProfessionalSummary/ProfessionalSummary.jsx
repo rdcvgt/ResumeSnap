@@ -51,7 +51,7 @@ export default function ProfessionalSummary({ handleInputData }) {
 				...preData,
 				[inputName]: state,
 			}));
-		}, 1000);
+		}, 300);
 		setTimer(newTimer);
 	};
 

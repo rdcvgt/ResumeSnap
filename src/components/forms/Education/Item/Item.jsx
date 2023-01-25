@@ -8,6 +8,7 @@ const Root = styled.div`
 	border: 1px solid ${(props) => props.theme.color.neutral[10]};
 	position: relative;
 	margin-bottom: 15px;
+	background-color: #fff;
 `;
 
 const DragBlock = styled.div`
@@ -18,7 +19,6 @@ const DragBlock = styled.div`
 	left: -30px;
 	display: flex;
 	align-items: center;
-	cursor: pointer;
 	opacity: 0;
 	transition: filter 0.3s, opacity 0.3s;
 
@@ -163,6 +163,7 @@ const MoreInput = styled.div`
 	max-height: 0;
 	opacity: 0;
 	transition: max-height 0.8s, opacity 0.8s;
+	cursor: default;
 	${(props) =>
 		props.isClick &&
 		`
@@ -174,12 +175,14 @@ Item.propTypes = {
 	itemId: PropTypes.string,
 	handleItemDataUpdate: PropTypes.func,
 	handleItemDelete: PropTypes.func,
+	dragHandleProps: PropTypes.object,
 };
 
 export default function Item({
 	itemId,
 	handleItemDataUpdate,
 	handleItemDelete,
+	dragHandleProps,
 }) {
 	const [isClick, setIsClick] = useState(true);
 	const [isHover, setIsHover] = useState(false);
@@ -199,8 +202,12 @@ export default function Item({
 		clearTimeout(timer);
 		const newTimer = setTimeout(() => {
 			setItemData({ ...itemData, [name]: newValue });
-		}, 1000);
+		}, 300);
 		setTimer(newTimer);
+	};
+
+	const handleEditorInput = (inputHtml) => {
+		setItemData({ ...itemData, description: inputHtml });
 	};
 
 	useEffect(() => {
@@ -209,7 +216,7 @@ export default function Item({
 
 	return (
 		<Root>
-			<DragBlock isHover={isHover}>
+			<DragBlock isHover={isHover} {...dragHandleProps}>
 				<DragIcon src="/images/icon/drag.png" />
 			</DragBlock>
 			<DeleteBlock isHover={isHover} onClick={handleDeleteIconClick}>
@@ -288,9 +295,7 @@ export default function Item({
 					</BlockRow>
 					<MoreInput isClick={isClick}></MoreInput>
 					<LongInputBox>
-						<InputEditor
-						// handleEditorInput={handleEditorInput}
-						/>
+						<InputEditor handleEditorInput={handleEditorInput} />
 					</LongInputBox>
 				</form>
 			</MoreInput>

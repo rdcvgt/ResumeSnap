@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import TitleBlock from "../utils/TitleBlock";
 import Item from "./Item";
 import uuid from "react-uuid";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -70,8 +71,21 @@ export default function PersonalDetails({ handleInputData }) {
 		setFormData([...formData, { id: itemId, content: {} }]);
 	};
 
+	//dnd後，進行 state 管理
+	const handleOnDragEnd = (result) => {
+		//如果拖曳至預設範圍外則 return
+		if (!result.destination) return;
+		//取出目前 formData 陣列 (item 順序)
+		const items = Array.from(formData);
+		//使用 splice(deletedIndex, deleteCount) 取出從陣列移除的元素
+		const [reorderItem] = items.splice(result.source.index, 1);
+		//使用 splice(deletedIndex, deleteCount, newElement) 取出從陣列插入元素
+		items.splice(result.destination.index, 0, reorderItem);
+		setFormData(items);
+	};
+
 	useEffect(() => {
-		let data = { personalDetails: { formData, blockTitle } };
+		let data = { education: { formData, blockTitle } };
 		handleInputData(data);
 	}, [formData, blockTitle]);
 
@@ -81,16 +95,44 @@ export default function PersonalDetails({ handleInputData }) {
 			<BlockDescription>
 				盡可能的展現你豐富且多樣的學習歷程，無論是專業知識或專案研究，都能讓找尋工作更佳順利！
 			</BlockDescription>
-			<MainBlock>
-				{formData.map((item) => (
-					<Item
-						key={item.id}
-						itemId={item.id}
-						handleItemDataUpdate={handleItemDataUpdate}
-						handleItemDelete={handleItemDelete}
-					/>
-				))}
-			</MainBlock>
+			<DragDropContext onDragEnd={handleOnDragEnd}>
+				<Droppable droppableId="educationItems">
+					{(provided) => (
+						<div
+							ref={provided.innerRef}
+							{...provided.droppableProps}>
+							<MainBlock>
+								{formData.map((item, index) => (
+									<Draggable
+										key={item.id}
+										draggableId={item.id}
+										index={index}>
+										{(provided) => (
+											<div
+												ref={provided.innerRef}
+												{...provided.draggableProps}>
+												<Item
+													itemId={item.id}
+													handleItemDataUpdate={
+														handleItemDataUpdate
+													}
+													handleItemDelete={
+														handleItemDelete
+													}
+													dragHandleProps={{
+														...provided.dragHandleProps,
+													}}
+												/>
+											</div>
+										)}
+									</Draggable>
+								))}
+							</MainBlock>
+							{provided.placeholder}
+						</div>
+					)}
+				</Droppable>
+			</DragDropContext>
 			<AddItemButton onClick={handleAddItemButtonClick}>
 				<AddItemIcon src="/images/icon/plus_blue.png" />
 				<AddItemText>新增學歷</AddItemText>

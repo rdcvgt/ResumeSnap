@@ -68,7 +68,7 @@ export default function PersonalDetails({ handleInputData }) {
 		clearTimeout(timer);
 		const newTimer = setTimeout(() => {
 			setFormData({ ...formData, [name]: value });
-		}, 1000);
+		}, 300);
 		setTimer(newTimer);
 	};
 

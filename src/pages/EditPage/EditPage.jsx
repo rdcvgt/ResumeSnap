@@ -31,7 +31,7 @@ const ResumeDataArea = styled.div`
 `;
 
 const ResumeData = styled.div`
-	max-width: 45%;
+	max-width: 50%;
 	height: 100%;
 	padding: 20px;
 `;
@@ -75,7 +75,7 @@ const ResumePreviewArea = styled.div`
 	position: fixed;
 	top: 0px;
 	right: 0px;
-	width: 55%;
+	width: 50%;
 	height: 100%;
 	background-color: rgb(101, 110, 131);
 	/* padding: 80px 70px 80px 70px; */
@@ -136,7 +136,10 @@ export default function EditPage() {
 			</ResumeDataArea>
 			<ResumePreviewArea>
 				<ResumePreview>
-					<London inputData={inputData} />
+					<London
+						inputData={inputData}
+						test={console.log(inputData)}
+					/>
 				</ResumePreview>
 			</ResumePreviewArea>
 		</Root>

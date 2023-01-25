@@ -11,6 +11,7 @@ const EditorBlock = styled.div`
 	padding-top: 5px;
 	border-radius: 5px;
 	background-color: ${(props) => props.theme.color.neutral[10]};
+	cursor: text;
 `;
 
 InputEditor.propTypes = {
