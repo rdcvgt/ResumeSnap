@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import TitleBlock from "../utils/TitleBlock";
 import Item from "./Item";
+import uuid from "react-uuid";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -17,12 +18,7 @@ const BlockDescription = styled.div`
 	margin: 0 0 20px 0;
 `;
 
-const MainBlock = styled.div`
-	border-radius: 5px;
-	border: 1px solid ${(props) => props.theme.color.neutral[20]};
-	position: relative;
-	margin-bottom: 10px;
-`;
+const MainBlock = styled.div``;
 
 const AddItemButton = styled.div`
 	height: 40px;
@@ -56,11 +52,22 @@ PersonalDetails.propTypes = {
 
 export default function PersonalDetails({ handleInputData }) {
 	const [blockTitle, setBlockTitle] = useState("學歷");
-	const [formData, setFormData] = useState("");
+	const [formData, setFormData] = useState([]);
 
-	const handleItemData = (itemData) => {
-		setFormData([...formData, itemData]);
-		console.log(formData);
+	const handleItemDataUpdate = (item) => {
+		let newFormData = [...formData];
+		const index = newFormData.findIndex((i) => i.id === item.id);
+		newFormData[index] = { ...newFormData[index], content: item.content };
+		setFormData(newFormData);
+	};
+
+	const handleItemDelete = (itemId) => {
+		setFormData(formData.filter((item) => item.id !== itemId));
+	};
+
+	const handleAddItemButtonClick = () => {
+		const itemId = uuid();
+		setFormData([...formData, { id: itemId, content: {} }]);
 	};
 
 	useEffect(() => {
@@ -75,9 +82,16 @@ export default function PersonalDetails({ handleInputData }) {
 				盡可能的展現你豐富且多樣的學習歷程，無論是專業知識或專案研究，都能讓找尋工作更佳順利！
 			</BlockDescription>
 			<MainBlock>
-				<Item handleItemData={handleItemData} />
+				{formData.map((item) => (
+					<Item
+						key={item.id}
+						itemId={item.id}
+						handleItemDataUpdate={handleItemDataUpdate}
+						handleItemDelete={handleItemDelete}
+					/>
+				))}
 			</MainBlock>
-			<AddItemButton>
+			<AddItemButton onClick={handleAddItemButtonClick}>
 				<AddItemIcon src="/images/icon/plus_blue.png" />
 				<AddItemText>新增學歷</AddItemText>
 			</AddItemButton>

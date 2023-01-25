@@ -3,17 +3,105 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import InputEditor from "../../utils/Editor";
 
+const Root = styled.div`
+	border-radius: 5px;
+	border: 1px solid ${(props) => props.theme.color.neutral[10]};
+	position: relative;
+	margin-bottom: 15px;
+`;
+
+const DragBlock = styled.div`
+	height: 20px;
+	width: 30px;
+	position: absolute;
+	top: 23px;
+	left: -30px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	opacity: 0;
+	transition: filter 0.3s, opacity 0.3s;
+
+	${(props) =>
+		props.isHover &&
+		`
+		filter: brightness(1.4);
+		opacity: 1;
+		transition: filter 0.3s, opacity 0.3s;
+		`}
+
+	&:hover {
+		filter: brightness(1);
+		opacity: 1;
+		transition: filter 0.3s, opacity 0.3s;
+	}
+`;
+
+const DragIcon = styled.img`
+	height: 100%;
+`;
+
+const DeleteBlock = styled.div`
+	height: 20px;
+	width: 30px;
+	position: absolute;
+	top: 23px;
+	right: -30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	opacity: 0;
+	transition: filter 0.3s, opacity 0.3s;
+
+	${(props) =>
+		props.isHover &&
+		`
+		filter: brightness(1.4);
+		opacity: 1;
+		transition: filter 0.3s, opacity 0.3s;
+		`}
+
+	&:hover {
+		filter: brightness(1);
+		opacity: 1;
+		transition: filter 0.3s, opacity 0.3s;
+	}
+`;
+
+const DeleteIcon = styled.img`
+	height: 100%;
+`;
+
 const ItemDescription = styled.div`
 	width: 100%;
+	height: 65px;
 	cursor: pointer;
 	padding: 20px;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
 `;
 
 const ItemInfo = styled.div`
+	width: 90%;
+`;
+
+const ItemTitle = styled.div`
 	${(props) => props.theme.font.itemBold};
 	width: 100%;
 	margin-bottom: 5px;
 	color: ${(props) => props.theme.color.neutral[90]};
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	transition: color 0.3s;
+
+	${(props) =>
+		props.isHover &&
+		`
+		color: #1a91f0;
+		`}
 `;
 
 const ItemDuration = styled.div`
@@ -25,7 +113,7 @@ const ItemDuration = styled.div`
 const ItemArrowIcon = styled.img`
 	width: 15px;
 	position: absolute;
-	top: 30px;
+	top: 25px;
 	right: 20px;
 `;
 
@@ -83,13 +171,24 @@ const MoreInput = styled.div`
 `;
 
 Item.propTypes = {
-	handleItemData: PropTypes.func,
+	itemId: PropTypes.string,
+	handleItemDataUpdate: PropTypes.func,
+	handleItemDelete: PropTypes.func,
 };
 
-export default function Item({ handleItemData }) {
-	const [isClick, setIsClick] = useState(false);
+export default function Item({
+	itemId,
+	handleItemDataUpdate,
+	handleItemDelete,
+}) {
+	const [isClick, setIsClick] = useState(true);
+	const [isHover, setIsHover] = useState(false);
 	const [timer, setTimer] = useState(null);
 	const [itemData, setItemData] = useState({});
+
+	const handleDeleteIconClick = () => {
+		handleItemDelete(itemId);
+	};
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -105,26 +204,40 @@ export default function Item({ handleItemData }) {
 	};
 
 	useEffect(() => {
-		handleItemData(itemData);
+		handleItemDataUpdate({ id: itemId, content: itemData });
 	}, [itemData]);
 
 	return (
-		<>
+		<Root>
+			<DragBlock isHover={isHover}>
+				<DragIcon src="/images/icon/drag.png" />
+			</DragBlock>
+			<DeleteBlock isHover={isHover} onClick={handleDeleteIconClick}>
+				<DeleteIcon src="/images/icon/delete.png" />
+			</DeleteBlock>
 			<ItemDescription
 				onClick={() => {
 					setIsClick(!isClick);
+				}}
+				onMouseEnter={() => {
+					setIsHover(true);
+				}}
+				onMouseLeave={() => {
+					setIsHover(false);
 				}}>
 				<ItemInfo>
-					{itemData.school}
-					{itemData.school && itemData.degree ? " - " : ""}
-					{itemData.degree}
-					{!itemData.school && !itemData.degree && "（尚未填寫名稱）"}
+					<ItemTitle isHover={isHover}>
+						{itemData.school}
+						{itemData.school && itemData.degree ? " - " : ""}
+						{itemData.degree}
+						{!itemData.school && !itemData.degree && "尚未填寫名稱"}
+					</ItemTitle>
+					<ItemDuration>
+						{itemData.startDate}
+						{itemData.startDate && itemData.endDate ? " - " : ""}
+						{itemData.endDate}
+					</ItemDuration>
 				</ItemInfo>
-				<ItemDuration>
-					{itemData.startDate}
-					{itemData.startDate && itemData.endDate ? " - " : ""}
-					{itemData.endDate}
-				</ItemDuration>
 				<ItemArrowIcon
 					src={
 						isClick
@@ -181,6 +294,6 @@ export default function Item({ handleItemData }) {
 					</LongInputBox>
 				</form>
 			</MoreInput>
-		</>
+		</Root>
 	);
 }

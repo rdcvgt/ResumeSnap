@@ -53,6 +53,7 @@
 		"react-helmet": "^6.1.0",
 		"react-router-dom": "^6.6.2",
 		"react-scripts": "^5.0.1",
+		"react-uuid": "^2.0.0",
 		"sort-by": "^1.2.0",
 		"styled-components": "^5.3.6"
 	}
