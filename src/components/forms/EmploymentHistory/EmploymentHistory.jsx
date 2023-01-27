@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import TitleBlock from "../utils/TitleBlock";
 import Item from "./Item";
 import uuid from "react-uuid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import GetBlockDataContext from "../../../pages/EditPage";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -53,16 +52,13 @@ PersonalDetails.propTypes = {
 };
 
 export default function PersonalDetails({ handleInputData }) {
-	const [blockTitle, setBlockTitle] = useState("學歷");
+	const [blockTitle, setBlockTitle] = useState("工作經歷");
 	const [formData, setFormData] = useState([]);
 
 	const handleItemDataUpdate = (item) => {
 		let newFormData = [...formData];
 		const index = newFormData.findIndex((i) => i.id === item.id);
-		newFormData[index] = {
-			...newFormData[index],
-			content: item.content,
-		};
+		newFormData[index] = { ...newFormData[index], content: item.content };
 		setFormData(newFormData);
 	};
 
@@ -76,24 +72,21 @@ export default function PersonalDetails({ handleInputData }) {
 	};
 
 	//dnd後，進行 state 管理
-	const handleOnDragEnd = useCallback(
-		(result) => {
-			//如果拖曳至預設範圍外則 return
-			if (!result.destination) return;
-			//取出目前 formData 陣列 (item 順序)
-			const items = Array.from(formData);
-			//使用 splice(deletedIndex, deleteCount) 取出從陣列移除的元素
-			const [reorderItem] = items.splice(result.source.index, 1);
-			//使用 splice(deletedIndex, deleteCount, newElement) 取出從陣列插入元素
-			items.splice(result.destination.index, 0, reorderItem);
-			setFormData(items);
-		},
-		[formData]
-	);
+	const handleOnDragEnd = (result) => {
+		//如果拖曳至預設範圍外則 return
+		if (!result.destination) return;
+		//取出目前 formData 陣列 (item 順序)
+		const items = Array.from(formData);
+		//使用 splice(deletedIndex, deleteCount) 取出從陣列移除的元素
+		const [reorderItem] = items.splice(result.source.index, 1);
+		//使用 splice(deletedIndex, deleteCount, newElement) 取出從陣列插入元素
+		items.splice(result.destination.index, 0, reorderItem);
+		setFormData(items);
+	};
 
 	useEffect(() => {
 		let data = {
-			block: "Education",
+			block: "EmploymentHistory",
 			content: { formData, blockTitle },
 		};
 		handleInputData(data);
@@ -103,10 +96,10 @@ export default function PersonalDetails({ handleInputData }) {
 		<BlockContainer>
 			<TitleBlock title={{ blockTitle, setBlockTitle }} />
 			<BlockDescription>
-				盡可能的展現你豐富且多樣的學習歷程，無論是專業知識或專案研究，都能讓找尋工作更佳順利！
+				寫下最近十年內相關的工作經驗，並將你過去的成就以列點的方式呈現，若能使用數據來量化成就效果會更好
 			</BlockDescription>
 			<DragDropContext onDragEnd={handleOnDragEnd}>
-				<Droppable droppableId="educationItems">
+				<Droppable droppableId="employmentHistoryItems">
 					{(provided) => (
 						<div
 							ref={provided.innerRef}
@@ -123,8 +116,6 @@ export default function PersonalDetails({ handleInputData }) {
 												{...provided.draggableProps}>
 												<Item
 													itemId={item.id}
-													formData={formData}
-													setFormData={setFormData}
 													handleItemDataUpdate={
 														handleItemDataUpdate
 													}
@@ -147,7 +138,7 @@ export default function PersonalDetails({ handleInputData }) {
 			</DragDropContext>
 			<AddItemButton onClick={handleAddItemButtonClick}>
 				<AddItemIcon src="/images/icon/plus_blue.png" />
-				<AddItemText>新增學歷</AddItemText>
+				<AddItemText>新增工作經歷</AddItemText>
 			</AddItemButton>
 		</BlockContainer>
 	);

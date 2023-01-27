@@ -8,7 +8,7 @@ const ResumeContainer = styled.div`
 `;
 
 const TopBlock = styled.div`
-	margin-bottom: 15px;
+	margin-bottom: 25px;
 	width: 100%;
 `;
 
@@ -38,7 +38,7 @@ const Position = styled.div`
 
 const SubTitleBlock = styled.div`
 	text-align: center;
-	font-size: 12px;
+	font-size: 10px;
 	display: flex;
 	justify-content: center;
 `;
@@ -57,7 +57,7 @@ const Email = styled.div``;
 
 const MorePersonalDetails = styled.div`
 	display: flex;
-	font-size: 12px;
+	font-size: 10px;
 	justify-content: space-between;
 `;
 
@@ -73,21 +73,21 @@ const Nationality = styled.div`
 `;
 
 PersonalDetails.propTypes = {
-	inputData: PropTypes.object,
+	data: PropTypes.object,
 };
 
-export default function PersonalDetails({ inputData }) {
-	let address = inputData?.formData?.address;
-	let city = inputData?.formData?.city;
-	let country = inputData?.formData?.country;
-	let drivingLicense = inputData?.formData?.drivingLicense;
-	let email = inputData?.formData?.email;
-	let firstName = inputData?.formData?.firstName;
-	let lastName = inputData?.formData?.lastName;
-	let nationality = inputData?.formData?.nationality;
-	let phone = inputData?.formData?.phone;
-	let position = inputData?.formData?.position;
-	let postalCode = inputData?.formData?.postalCode;
+export default function PersonalDetails({ data }) {
+	let address = data?.formData?.address;
+	let city = data?.formData?.city;
+	let country = data?.formData?.country;
+	let drivingLicense = data?.formData?.drivingLicense;
+	let email = data?.formData?.email;
+	let firstName = data?.formData?.firstName;
+	let lastName = data?.formData?.lastName;
+	let nationality = data?.formData?.nationality;
+	let phone = data?.formData?.phone;
+	let position = data?.formData?.position;
+	let postalCode = data?.formData?.postalCode;
 	const space = "\u00A0";
 
 	return (

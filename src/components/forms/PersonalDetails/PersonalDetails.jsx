@@ -73,7 +73,11 @@ export default function PersonalDetails({ handleInputData }) {
 	};
 
 	useEffect(() => {
-		let data = { personalDetails: { formData, blockTitle } };
+		let data = {
+			block: "PersonalDetails",
+			content: { formData, blockTitle },
+		};
+		// { personalDetails: { formData, blockTitle } };
 		handleInputData(data);
 	}, [formData, blockTitle]);
 

@@ -62,7 +62,10 @@ export default function ProfessionalSummary({ handleInputData }) {
 
 	//當 professionalSummary 變動時，呼叫父層組件函式 handleInputData
 	useEffect(() => {
-		let data = { professionalSummary };
+		let data = {
+			block: "ProfessionalSummary",
+			content: professionalSummary,
+		};
 		handleInputData(data);
 	}, [professionalSummary]);
 
@@ -72,7 +75,7 @@ export default function ProfessionalSummary({ handleInputData }) {
 			<BlockDescription>
 				可以寫上 2 到 4 句話讓查看履歷的人對你產生興趣，
 				像是闡述你的個人特質或過去經驗，
-				最重要的是記得提及你的亮眼成就與專業技能！
+				最重要的是提及你的亮眼成就與專業技能
 			</BlockDescription>
 			<LongInputBox>
 				<InputEditor handleEditorInput={handleEditorInput} />

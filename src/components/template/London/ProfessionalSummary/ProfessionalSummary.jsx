@@ -10,8 +10,8 @@ const ResumeContainer = styled.div`
 const Block = styled.div`
 	height: auto;
 	border-top: 1px solid #000;
-	padding-top: 15px;
-	margin-bottom: 15px;
+	padding-top: 20px;
+	margin-bottom: 20px;
 	display: flex;
 `;
 
@@ -22,20 +22,20 @@ const Title = styled.div`
 `;
 
 const Content = styled.div`
-	font-size: 12px;
+	font-size: 10px;
 	text-decoration: none;
 	width: 80%;
 	line-height: 1.5em;
 `;
 
 ProfessionalSummary.propTypes = {
-	inputData: PropTypes.object,
+	data: PropTypes.object,
 };
 
-export default function ProfessionalSummary({ inputData }) {
-	if (!inputData) return;
-	let blockTitle = inputData.blockTitle;
-	let htmlText = inputData.inputHtml;
+export default function ProfessionalSummary({ data }) {
+	if (!data) return;
+	let blockTitle = data.blockTitle;
+	let htmlText = data.inputHtml;
 
 	let newHtmlText;
 	if (htmlText) {

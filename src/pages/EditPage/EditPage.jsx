@@ -1,8 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	useContext,
+	useCallback,
+	createContext,
+} from "react";
 import styled from "styled-components";
 import PersonalDetails from "../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../components/forms/ProfessionalSummary";
 import Education from "../../components/forms/Education";
+import EmploymentHistory from "../../components/forms/EmploymentHistory";
 import London from "../../components/template/London";
 
 // import PropTypes from "prop-types";
@@ -92,11 +100,33 @@ const ResumePreview = styled.div`
 	top: 50%;
 	transform: translate(-50%, -50%);
 	border-radius: 10px;
-	overflow: hidden;
+	/* overflow: hidden; */
 `;
 
+const RenderBlocks = ({ inputData, components, handleInputData }) => {
+	return inputData.map((block, index) => {
+		const blockName = block.block;
+		const Component = components[blockName];
+		if (!Component) return null;
+		return <Component key={index} handleInputData={handleInputData} />;
+	});
+};
+
 export default function EditPage() {
-	const [inputData, setInputData] = useState({});
+	const [inputData, setInputData] = useState([
+		{ block: "PersonalDetails", content: {} },
+		{ block: "ProfessionalSummary", content: {} },
+		{ block: "Education", content: {} },
+		{ block: "EmploymentHistory", content: {} },
+	]);
+
+	const components = {
+		PersonalDetails: PersonalDetails,
+		ProfessionalSummary: ProfessionalSummary,
+		Education: Education,
+		EmploymentHistory: EmploymentHistory,
+	};
+
 	const [resumeTitle, setResumeTitle] = useState("我的第一份履歷");
 	const resumeTitleRef = useRef(null);
 
@@ -108,9 +138,23 @@ export default function EditPage() {
 		resumeTitleRef.current.select();
 	};
 
-	const handleInputData = (blockInput) => {
-		setInputData(blockInput);
-	};
+	//更新各個 block 的資料
+
+	const handleInputData = useCallback(
+		(blockInput) => {
+			console.log(blockInput);
+			let newBlockData = [...inputData];
+			const index = newBlockData.findIndex(
+				(i) => i.block === blockInput.block
+			);
+			newBlockData[index] = {
+				...newBlockData[index],
+				content: blockInput.content,
+			};
+			setInputData(newBlockData);
+		},
+		[inputData]
+	);
 
 	return (
 		<Root>
@@ -129,17 +173,16 @@ export default function EditPage() {
 						/>
 					</TitleBlock>
 
-					<PersonalDetails handleInputData={handleInputData} />
-					<ProfessionalSummary handleInputData={handleInputData} />
-					<Education handleInputData={handleInputData} />
+					<RenderBlocks
+						inputData={inputData}
+						handleInputData={handleInputData}
+						components={components}
+					/>
 				</ResumeData>
 			</ResumeDataArea>
 			<ResumePreviewArea>
 				<ResumePreview>
-					<London
-						inputData={inputData}
-						test={console.log(inputData)}
-					/>
+					<London inputData={inputData} />
 				</ResumePreview>
 			</ResumePreviewArea>
 		</Root>

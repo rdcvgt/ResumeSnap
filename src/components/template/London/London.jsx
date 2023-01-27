@@ -9,6 +9,9 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import PersonalDetails from "./PersonalDetails";
 import ProfessionalSummary from "./ProfessionalSummary";
+import Education from "./Education";
+import EmploymentHistory from "./EmploymentHistory";
+
 import "../utils/htmlElement.css";
 
 import html2canvas from "html2canvas";
@@ -19,7 +22,7 @@ const Img = styled.img`
 `;
 
 const Hide = styled.div`
-	opacity: 0;
+	opacity: 1;
 `;
 const Root = styled.div`
 	width: 210mm;
@@ -35,37 +38,16 @@ const ResumeContainer = styled.div`
 `;
 
 London.propTypes = {
-	inputData: PropTypes.object,
+	inputData: PropTypes.array,
 };
 
 export default function London({ inputData }) {
-	const [personalDetails, setPersonalDetails] = useState(null);
-	const [professionalSummary, setProfessionalSummary] = useState(null);
-
-	//判斷 inputData 中的 block
-	if (
-		inputData.personalDetails &&
-		personalDetails !== inputData.personalDetails
-	) {
-		setPersonalDetails(inputData.personalDetails);
-	}
-
-	if (
-		inputData.professionalSummary &&
-		professionalSummary !== inputData.professionalSummary
-	) {
-		setProfessionalSummary(inputData.professionalSummary);
-	}
-
 	const componentRef = useRef();
 
 	//初始化或當 block 內容改變時，呼叫 handlePreviewChange;
 	useEffect(() => {
-		if (personalDetails === null || professionalSummary === null) {
-			return;
-		}
 		handlePreviewChange();
-	}, [personalDetails, professionalSummary]);
+	}, [inputData]);
 
 	useEffect(() => {
 		handlePreviewChange();
@@ -80,17 +62,31 @@ export default function London({ inputData }) {
 		});
 	};
 
+	const components = {
+		PersonalDetails: PersonalDetails,
+		ProfessionalSummary: ProfessionalSummary,
+		Education: Education,
+		EmploymentHistory: EmploymentHistory,
+	};
+
+	const RenderBlocks = () => {
+		return inputData.map((block, index) => {
+			const BlockName = block.block;
+			const data = block.content;
+			const Component = components[BlockName];
+			if (!Component) return null;
+			return <Component data={data} key={index} />;
+		});
+	};
+
 	return (
 		<>
-			{imgUrl && <Img src={imgUrl} alt="圖片" />}
+			{/* {imgUrl && <Img src={imgUrl} alt="圖片" />} */}
 			{
 				<Hide>
 					<Root ref={componentRef}>
 						<ResumeContainer>
-							<PersonalDetails inputData={personalDetails} />
-							<ProfessionalSummary
-								inputData={professionalSummary}
-							/>
+							<RenderBlocks />
 						</ResumeContainer>
 					</Root>
 				</Hide>
