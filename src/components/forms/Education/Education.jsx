@@ -5,7 +5,6 @@ import TitleBlock from "../utils/TitleBlock";
 import Item from "./Item";
 import uuid from "react-uuid";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import GetBlockDataContext from "../../../pages/EditPage";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -50,9 +49,10 @@ const AddItemText = styled.div`
 
 PersonalDetails.propTypes = {
 	handleInputData: PropTypes.func,
+	dragHandleProps: PropTypes.object,
 };
 
-export default function PersonalDetails({ handleInputData }) {
+export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 	const [blockTitle, setBlockTitle] = useState("學歷");
 	const [formData, setFormData] = useState([]);
 
@@ -101,7 +101,11 @@ export default function PersonalDetails({ handleInputData }) {
 
 	return (
 		<BlockContainer>
-			<TitleBlock title={{ blockTitle, setBlockTitle }} />
+			<TitleBlock
+				title={{ blockTitle, setBlockTitle }}
+				dragHandleProps={dragHandleProps}
+				hideDraggableIcon={false}
+			/>
 			<BlockDescription>
 				盡可能的展現你豐富且多樣的學習歷程，無論是專業知識或專案研究，都能讓找尋工作更佳順利！
 			</BlockDescription>

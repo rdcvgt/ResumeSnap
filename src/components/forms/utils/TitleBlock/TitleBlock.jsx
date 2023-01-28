@@ -46,6 +46,12 @@ const DragBlock = styled.div`
 		opacity: 1;
 		transition: filter 0.3s, opacity 0.3s;
 		`}
+
+	${(props) =>
+		props.hideDraggableIcon &&
+		`
+		display: none;
+		`}
 `;
 
 const DragIcon = styled.img`
@@ -72,9 +78,12 @@ const EditIcon = styled.img`
 
 TitleBlock.propTypes = {
 	title: PropTypes.object,
+	dragHandleProps: PropTypes.object,
+	hideDraggableIcon: PropTypes.bool,
 };
 
-function TitleBlock({ title }) {
+function TitleBlock({ title, dragHandleProps, hideDraggableIcon }) {
+	console.log(hideDraggableIcon);
 	const { blockTitle, setBlockTitle } = title;
 	const [isHover, setIsHover] = useState(false);
 
@@ -97,7 +106,10 @@ function TitleBlock({ title }) {
 				onMouseLeave={() => {
 					setIsHover(false);
 				}}>
-				<DragBlock isHover={isHover}>
+				<DragBlock
+					isHover={isHover}
+					{...dragHandleProps}
+					hideDraggableIcon={hideDraggableIcon}>
 					<DragIcon src="/images/icon/drag.png" />
 				</DragBlock>
 				<BlockTitle

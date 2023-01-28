@@ -49,9 +49,10 @@ const AddItemText = styled.div`
 
 PersonalDetails.propTypes = {
 	handleInputData: PropTypes.func,
+	dragHandleProps: PropTypes.object,
 };
 
-export default function PersonalDetails({ handleInputData }) {
+export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 	const [blockTitle, setBlockTitle] = useState("工作經歷");
 	const [formData, setFormData] = useState([]);
 
@@ -94,7 +95,11 @@ export default function PersonalDetails({ handleInputData }) {
 
 	return (
 		<BlockContainer>
-			<TitleBlock title={{ blockTitle, setBlockTitle }} />
+			<TitleBlock
+				title={{ blockTitle, setBlockTitle }}
+				dragHandleProps={dragHandleProps}
+				hideDraggableIcon={false}
+			/>
 			<BlockDescription>
 				寫下最近十年內相關的工作經驗，並將你過去的成就以列點的方式呈現，若能使用數據來量化成就效果會更好
 			</BlockDescription>

@@ -54,9 +54,10 @@ const AdditionalButton = styled.div`
 
 PersonalDetails.propTypes = {
 	handleInputData: PropTypes.func,
+	dragHandleProps: PropTypes.object,
 };
 
-export default function PersonalDetails({ handleInputData }) {
+export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 	const [isClick, setIsClick] = useState(false);
 	const [timer, setTimer] = useState(null);
 	const [blockTitle, setBlockTitle] = useState("個人資訊");
@@ -77,13 +78,17 @@ export default function PersonalDetails({ handleInputData }) {
 			block: "PersonalDetails",
 			content: { formData, blockTitle },
 		};
-		// { personalDetails: { formData, blockTitle } };
+		console.log(data, "test");
 		handleInputData(data);
 	}, [formData, blockTitle]);
 
 	return (
 		<BlockContainer>
-			<TitleBlock title={{ blockTitle, setBlockTitle }} />
+			<TitleBlock
+				title={{ blockTitle, setBlockTitle }}
+				dragHandleProps={dragHandleProps}
+				hideDraggableIcon={true}
+			/>
 			<form>
 				<BlockRow>
 					<LeftCol>

@@ -13,7 +13,6 @@ import Education from "./Education";
 import EmploymentHistory from "./EmploymentHistory";
 
 import "../utils/htmlElement.css";
-
 import html2canvas from "html2canvas";
 
 const Img = styled.img`

@@ -21,9 +21,13 @@ const LongInputBox = styled.div``;
 
 ProfessionalSummary.propTypes = {
 	handleInputData: PropTypes.func,
+	dragHandleProps: PropTypes.object,
 };
 
-export default function ProfessionalSummary({ handleInputData }) {
+export default function ProfessionalSummary({
+	handleInputData,
+	dragHandleProps,
+}) {
 	const [professionalSummary, setProfessionalSummary] = useState({
 		blockTitle: null,
 		inputHtml: null,
@@ -71,7 +75,11 @@ export default function ProfessionalSummary({ handleInputData }) {
 
 	return (
 		<BlockContainer>
-			<TitleBlock title={{ blockTitle, setBlockTitle }} />
+			<TitleBlock
+				title={{ blockTitle, setBlockTitle }}
+				dragHandleProps={dragHandleProps}
+				hideDraggableIcon={true}
+			/>
 			<BlockDescription>
 				可以寫上 2 到 4 句話讓查看履歷的人對你產生興趣，
 				像是闡述你的個人特質或過去經驗，

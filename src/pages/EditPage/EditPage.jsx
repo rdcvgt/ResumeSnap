@@ -5,7 +5,11 @@ import React, {
 	useContext,
 	useCallback,
 	createContext,
+	memo,
+	useMemo,
 } from "react";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import uuid from "react-uuid";
 import styled from "styled-components";
 import PersonalDetails from "../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../components/forms/ProfessionalSummary";
@@ -106,18 +110,39 @@ const ResumePreview = styled.div`
 const RenderBlocks = ({ inputData, components, handleInputData }) => {
 	return inputData.map((block, index) => {
 		const blockName = block.block;
+		const id = block.id;
 		const Component = components[blockName];
 		if (!Component) return null;
-		return <Component key={index} handleInputData={handleInputData} />;
+		return (
+			<Draggable
+				key={id}
+				draggableId={id}
+				index={index}
+				isDragDisabled={
+					blockName === "PersonalDetails" ||
+					blockName === "ProfessionalSummary"
+				}>
+				{(provided) => (
+					<div {...provided.draggableProps} ref={provided.innerRef}>
+						<Component
+							handleInputData={handleInputData}
+							dragHandleProps={{ ...provided.dragHandleProps }}
+						/>
+					</div>
+				)}
+			</Draggable>
+		);
 	});
 };
 
+React.memo(RenderBlocks);
+
 export default function EditPage() {
 	const [inputData, setInputData] = useState([
-		{ block: "PersonalDetails", content: {} },
-		{ block: "ProfessionalSummary", content: {} },
-		{ block: "Education", content: {} },
-		{ block: "EmploymentHistory", content: {} },
+		{ block: "PersonalDetails", content: {}, id: uuid() },
+		{ block: "ProfessionalSummary", content: {}, id: uuid() },
+		{ block: "Education", content: {}, id: uuid() },
+		{ block: "EmploymentHistory", content: {}, id: uuid() },
 	]);
 
 	const components = {
@@ -125,6 +150,31 @@ export default function EditPage() {
 		ProfessionalSummary: ProfessionalSummary,
 		Education: Education,
 		EmploymentHistory: EmploymentHistory,
+	};
+
+	const handleOnDragEndBlock = useCallback(
+		(result) => {
+			if (!result.destination) return;
+			const blocks = Array.from(inputData);
+			const [reorderBlock] = blocks.splice(result.source.index, 1);
+			blocks.splice(result.destination.index, 0, reorderBlock);
+			setInputData(blocks);
+		},
+		[inputData]
+	);
+
+	//更新各個 block 的資料
+	const handleInputData = (blockInput) => {
+		let newBlockData = [...inputData];
+		console.log(blockInput);
+		const index = newBlockData.findIndex(
+			(i) => i.block === blockInput.block
+		);
+		newBlockData[index] = {
+			...newBlockData[index],
+			content: blockInput.content,
+		};
+		setInputData(newBlockData);
 	};
 
 	const [resumeTitle, setResumeTitle] = useState("我的第一份履歷");
@@ -137,24 +187,6 @@ export default function EditPage() {
 	const handleResumeTitleIconClick = () => {
 		resumeTitleRef.current.select();
 	};
-
-	//更新各個 block 的資料
-
-	const handleInputData = useCallback(
-		(blockInput) => {
-			console.log(blockInput);
-			let newBlockData = [...inputData];
-			const index = newBlockData.findIndex(
-				(i) => i.block === blockInput.block
-			);
-			newBlockData[index] = {
-				...newBlockData[index],
-				content: blockInput.content,
-			};
-			setInputData(newBlockData);
-		},
-		[inputData]
-	);
 
 	return (
 		<Root>
@@ -172,12 +204,22 @@ export default function EditPage() {
 							onClick={handleResumeTitleIconClick}
 						/>
 					</TitleBlock>
-
-					<RenderBlocks
-						inputData={inputData}
-						handleInputData={handleInputData}
-						components={components}
-					/>
+					<DragDropContext onDragEnd={handleOnDragEndBlock}>
+						<Droppable droppableId="blocks">
+							{(provided) => (
+								<div
+									{...provided.droppableProps}
+									ref={provided.innerRef}>
+									<RenderBlocks
+										inputData={inputData}
+										handleInputData={handleInputData}
+										components={components}
+									/>
+									{provided.placeholder}
+								</div>
+							)}
+						</Droppable>
+					</DragDropContext>
 				</ResumeData>
 			</ResumeDataArea>
 			<ResumePreviewArea>
