@@ -10,6 +10,8 @@ const BlockContainer = styled.div`
 	width: 90%;
 	height: auto;
 	margin: 50px auto;
+	background-color: rgba(256, 256, 256, 0.8);
+	border-radius: 5px;
 `;
 
 const BlockDescription = styled.div`

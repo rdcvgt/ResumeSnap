@@ -104,29 +104,29 @@ const ResumePreview = styled.div`
 	top: 50%;
 	transform: translate(-50%, -50%);
 	border-radius: 10px;
-	/* overflow: hidden; */
+	overflow: hidden;
 `;
 
 const RenderBlocks = ({ inputData, components, handleInputData }) => {
 	return inputData.map((block, index) => {
 		const blockName = block.block;
+		if (
+			blockName === "PersonalDetails" ||
+			blockName === "ProfessionalSummary"
+		)
+			return null;
 		const id = block.id;
 		const Component = components[blockName];
 		if (!Component) return null;
 		return (
-			<Draggable
-				key={id}
-				draggableId={id}
-				index={index}
-				isDragDisabled={
-					blockName === "PersonalDetails" ||
-					blockName === "ProfessionalSummary"
-				}>
+			<Draggable key={id} draggableId={id} index={index}>
 				{(provided) => (
 					<div {...provided.draggableProps} ref={provided.innerRef}>
 						<Component
 							handleInputData={handleInputData}
-							dragHandleProps={{ ...provided.dragHandleProps }}
+							dragHandleProps={{
+								...provided.dragHandleProps,
+							}}
 						/>
 					</div>
 				)}
@@ -166,7 +166,6 @@ export default function EditPage() {
 	//更新各個 block 的資料
 	const handleInputData = (blockInput) => {
 		let newBlockData = [...inputData];
-		console.log(blockInput);
 		const index = newBlockData.findIndex(
 			(i) => i.block === blockInput.block
 		);
@@ -204,6 +203,8 @@ export default function EditPage() {
 							onClick={handleResumeTitleIconClick}
 						/>
 					</TitleBlock>
+					<PersonalDetails handleInputData={handleInputData} />
+					<ProfessionalSummary handleInputData={handleInputData} />
 					<DragDropContext onDragEnd={handleOnDragEndBlock}>
 						<Droppable droppableId="blocks">
 							{(provided) => (

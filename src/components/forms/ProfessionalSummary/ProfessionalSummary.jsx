@@ -21,13 +21,9 @@ const LongInputBox = styled.div``;
 
 ProfessionalSummary.propTypes = {
 	handleInputData: PropTypes.func,
-	dragHandleProps: PropTypes.object,
 };
 
-export default function ProfessionalSummary({
-	handleInputData,
-	dragHandleProps,
-}) {
+export default function ProfessionalSummary({ handleInputData }) {
 	const [professionalSummary, setProfessionalSummary] = useState({
 		blockTitle: null,
 		inputHtml: null,
@@ -77,7 +73,6 @@ export default function ProfessionalSummary({
 		<BlockContainer>
 			<TitleBlock
 				title={{ blockTitle, setBlockTitle }}
-				dragHandleProps={dragHandleProps}
 				hideDraggableIcon={true}
 			/>
 			<BlockDescription>

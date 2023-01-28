@@ -83,7 +83,6 @@ TitleBlock.propTypes = {
 };
 
 function TitleBlock({ title, dragHandleProps, hideDraggableIcon }) {
-	console.log(hideDraggableIcon);
 	const { blockTitle, setBlockTitle } = title;
 	const [isHover, setIsHover] = useState(false);
 

@@ -21,7 +21,7 @@ const Img = styled.img`
 `;
 
 const Hide = styled.div`
-	opacity: 1;
+	opacity: 0;
 `;
 const Root = styled.div`
 	width: 210mm;
@@ -80,7 +80,7 @@ export default function London({ inputData }) {
 
 	return (
 		<>
-			{/* {imgUrl && <Img src={imgUrl} alt="圖片" />} */}
+			{imgUrl && <Img src={imgUrl} alt="圖片" />}
 			{
 				<Hide>
 					<Root ref={componentRef}>
