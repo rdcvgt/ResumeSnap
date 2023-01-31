@@ -104,7 +104,7 @@ const ResumePreview = styled.div`
 	top: 50%;
 	transform: translate(-50%, -50%);
 	border-radius: 10px;
-	overflow: hidden;
+	/* overflow: hidden; */
 `;
 
 const RenderBlocks = ({ inputData, components, handleInputData }) => {

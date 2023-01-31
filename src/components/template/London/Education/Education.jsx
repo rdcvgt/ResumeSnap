@@ -55,10 +55,6 @@ const City = styled.div``;
 
 const Description = styled.div``;
 
-Education.propTypes = {
-	data: PropTypes.object,
-};
-
 const handleItemData = (item, index) => {
 	const school = item.content.school;
 	const degree = item.content.degree;
@@ -117,11 +113,23 @@ const handleItemData = (item, index) => {
 	);
 };
 
-export default function Education({ data }) {
+Education.propTypes = {
+	data: PropTypes.object,
+	blockId: PropTypes.string,
+	handleBlockHeight: PropTypes.func,
+};
+
+export default function Education({ data, blockId, handleBlockHeight }) {
 	const resumeContainerRef = useRef(null);
+
+	//回傳 component 高度
 	useEffect(() => {
-		if (resumeContainerRef.current)
-			console.log(resumeContainerRef.current.clientHeight);
+		if (resumeContainerRef.current) {
+			const containerHeight = resumeContainerRef.current.clientHeight;
+			if (handleBlockHeight) {
+				handleBlockHeight({ id: blockId, height: containerHeight });
+			}
+		}
 	}, [data]);
 
 	const dataLength = Object.keys(data).length;

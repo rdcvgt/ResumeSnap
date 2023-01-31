@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -74,9 +74,21 @@ const Nationality = styled.div`
 
 PersonalDetails.propTypes = {
 	data: PropTypes.object,
+	blockId: PropTypes.string,
+	handleBlockHeight: PropTypes.func,
 };
 
-export default function PersonalDetails({ data }) {
+export default function PersonalDetails({ data, blockId, handleBlockHeight }) {
+	const resumeContainerRef = useRef(null);
+	useEffect(() => {
+		if (resumeContainerRef.current) {
+			const containerHeight = resumeContainerRef.current.clientHeight;
+			if (handleBlockHeight) {
+				handleBlockHeight({ id: blockId, height: containerHeight });
+			}
+		}
+	}, [data]);
+
 	let address = data?.formData?.address;
 	let city = data?.formData?.city;
 	let country = data?.formData?.country;
@@ -91,7 +103,7 @@ export default function PersonalDetails({ data }) {
 	const space = "\u00A0";
 
 	return (
-		<ResumeContainer>
+		<ResumeContainer ref={resumeContainerRef}>
 			<TopBlock>
 				<TitleBlock>
 					<Name>

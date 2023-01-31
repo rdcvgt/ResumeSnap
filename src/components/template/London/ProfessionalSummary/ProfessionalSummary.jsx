@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -30,9 +30,26 @@ const Content = styled.div`
 
 ProfessionalSummary.propTypes = {
 	data: PropTypes.object,
+	blockId: PropTypes.string,
+	handleBlockHeight: PropTypes.func,
 };
 
-export default function ProfessionalSummary({ data }) {
+export default function ProfessionalSummary({
+	data,
+	blockId,
+	handleBlockHeight,
+}) {
+	const resumeContainerRef = useRef(null);
+
+	useEffect(() => {
+		if (resumeContainerRef.current) {
+			const containerHeight = resumeContainerRef.current.clientHeight;
+			if (handleBlockHeight) {
+				handleBlockHeight({ id: blockId, height: containerHeight });
+			}
+		}
+	}, [data]);
+
 	if (!data) return;
 	let blockTitle = data.blockTitle;
 	let htmlText = data.inputHtml;
@@ -48,7 +65,7 @@ export default function ProfessionalSummary({ data }) {
 	const space = "\u00A0";
 
 	return (
-		<ResumeContainer>
+		<ResumeContainer ref={resumeContainerRef}>
 			{htmlText && htmlText !== noContent && (
 				<Block>
 					<Title style={{ margin: 0 }}>{blockTitle}</Title>
