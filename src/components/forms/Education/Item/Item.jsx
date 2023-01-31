@@ -96,6 +96,7 @@ const ItemTitle = styled.div`
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	transition: color 0.3s;
+	height: 18px;
 
 	${(props) =>
 		props.isHover &&

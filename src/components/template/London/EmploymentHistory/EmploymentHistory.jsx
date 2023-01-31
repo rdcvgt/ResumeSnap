@@ -61,6 +61,64 @@ Education.propTypes = {
 	data: PropTypes.object,
 };
 
+const handleItemData = (item, index) => {
+	const jobTitle = item.content.jobTitle;
+	const employer = item.content.employer;
+	const city = item.content.city;
+	const startDate = item.content.startDate;
+	const endDate = item.content.endDate;
+	const htmlText = item.content.description;
+	const noContent = "<p><br></p>";
+
+	if (
+		!jobTitle &&
+		!employer &&
+		!city &&
+		!startDate &&
+		!endDate &&
+		(htmlText === noContent || !htmlText)
+	) {
+		return;
+	}
+
+	let description;
+	if (htmlText) {
+		description = htmlText.replace(
+			/(<a href)/g,
+			`<a style="color: #000000" href`
+		);
+	}
+
+	return (
+		<Item key={index}>
+			<LeftCol>
+				<Date>
+					{startDate}
+					{startDate && endDate && " - "}
+					{endDate}
+				</Date>
+			</LeftCol>
+
+			<RightCol>
+				<TopRow>
+					<Experience>
+						{jobTitle}
+						{jobTitle && employer && " "}
+						{employer}
+					</Experience>
+					<City>{city}</City>
+				</TopRow>
+				{htmlText && htmlText !== noContent && (
+					<Description
+						dangerouslySetInnerHTML={{
+							__html: description,
+						}}></Description>
+				)}
+			</RightCol>
+		</Item>
+	);
+};
+
 export default function Education({ data }) {
 	const dataLength = Object.keys(data).length;
 	if (dataLength === 0) return;
@@ -68,59 +126,11 @@ export default function Education({ data }) {
 	const blockTitle = data.blockTitle;
 	const itemArr = data.formData;
 
-	const handleItemData = (item, index) => {
-		const jobTitle = item.content.jobTitle;
-		const employer = item.content.employer;
-		const city = item.content.city;
-		const startDate = item.content.startDate;
-		const endDate = item.content.endDate;
-		const htmlText = item.content.description;
-
-		let description;
-		if (htmlText) {
-			description = htmlText.replace(
-				/(<a href)/g,
-				`<a style="color: #000000" href`
-			);
-		}
-		const noContent = "<p><br></p>";
-
-		return (
-			<Item key={index}>
-				<LeftCol>
-					<Date>
-						{startDate}
-						{startDate && endDate && " - "}
-						{endDate}
-					</Date>
-				</LeftCol>
-
-				<RightCol>
-					<TopRow>
-						<Experience>
-							{jobTitle}
-							{jobTitle && employer && " "}
-							{employer}
-						</Experience>
-						<City>{city}</City>
-					</TopRow>
-					{htmlText && htmlText !== noContent && (
-						<Description
-							dangerouslySetInnerHTML={{
-								__html: description,
-							}}></Description>
-					)}
-				</RightCol>
-			</Item>
-		);
-	};
-
 	return (
 		<ResumeContainer>
 			{itemArr.length !== 0 && (
 				<Block>
 					<Title>{blockTitle}</Title>
-
 					<Content>
 						{itemArr.map((item, index) => {
 							return handleItemData(item, index);

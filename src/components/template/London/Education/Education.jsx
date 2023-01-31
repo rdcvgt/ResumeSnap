@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -59,61 +59,78 @@ Education.propTypes = {
 	data: PropTypes.object,
 };
 
+const handleItemData = (item, index) => {
+	const school = item.content.school;
+	const degree = item.content.degree;
+	const city = item.content.city;
+	const startDate = item.content.startDate;
+	const endDate = item.content.endDate;
+	const htmlText = item.content.description;
+	const noContent = "<p><br></p>";
+
+	if (
+		!school &&
+		!degree &&
+		!city &&
+		!startDate &&
+		!endDate &&
+		(htmlText === noContent || !htmlText)
+	) {
+		return;
+	}
+
+	let description;
+	if (htmlText) {
+		description = htmlText.replace(
+			/(<a href)/g,
+			`<a style="color: #000000" href`
+		);
+	}
+
+	return (
+		<Item key={index}>
+			<LeftCol>
+				<Date>
+					{startDate}
+					{startDate && endDate && " - "}
+					{endDate}
+				</Date>
+			</LeftCol>
+
+			<RightCol>
+				<TopRow>
+					<Experience>
+						{school}
+						{school && degree && " "}
+						{degree}
+					</Experience>
+					<City>{city}</City>
+				</TopRow>
+				{htmlText && htmlText !== noContent && (
+					<Description
+						dangerouslySetInnerHTML={{
+							__html: description,
+						}}></Description>
+				)}
+			</RightCol>
+		</Item>
+	);
+};
+
 export default function Education({ data }) {
+	const resumeContainerRef = useRef(null);
+	useEffect(() => {
+		if (resumeContainerRef.current)
+			console.log(resumeContainerRef.current.clientHeight);
+	}, [data]);
+
 	const dataLength = Object.keys(data).length;
 	if (dataLength === 0) return;
 	const blockTitle = data.blockTitle;
 	const itemArr = data.formData;
 
-	const handleItemData = (item, index) => {
-		const school = item.content.school;
-		const degree = item.content.degree;
-		const city = item.content.city;
-		const startDate = item.content.startDate;
-		const endDate = item.content.endDate;
-		const htmlText = item.content.description;
-
-		let description;
-		if (htmlText) {
-			description = htmlText.replace(
-				/(<a href)/g,
-				`<a style="color: #000000" href`
-			);
-		}
-		const noContent = "<p><br></p>";
-
-		return (
-			<Item key={index}>
-				<LeftCol>
-					<Date>
-						{startDate}
-						{startDate && endDate && " - "}
-						{endDate}
-					</Date>
-				</LeftCol>
-
-				<RightCol>
-					<TopRow>
-						<Experience>
-							{school}
-							{school && degree && " "}
-							{degree}
-						</Experience>
-						<City>{city}</City>
-					</TopRow>
-					{htmlText && htmlText !== noContent && (
-						<Description
-							dangerouslySetInnerHTML={{
-								__html: description,
-							}}></Description>
-					)}
-				</RightCol>
-			</Item>
-		);
-	};
-
 	return (
-		<ResumeContainer>
+		<ResumeContainer ref={resumeContainerRef}>
 			{itemArr.length !== 0 && (
 				<Block>
 					<Title>{blockTitle}</Title>

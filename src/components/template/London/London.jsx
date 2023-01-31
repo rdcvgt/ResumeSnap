@@ -1,10 +1,4 @@
-import React, {
-	useState,
-	useEffect,
-	useRef,
-	useCallback,
-	dangerouslySetInnerHTML,
-} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import PersonalDetails from "./PersonalDetails";
@@ -14,6 +8,7 @@ import EmploymentHistory from "./EmploymentHistory";
 
 import "../utils/htmlElement.css";
 import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const Img = styled.img`
 	width: 100%;
@@ -21,7 +16,8 @@ const Img = styled.img`
 `;
 
 const Hide = styled.div`
-	opacity: 0;
+	opacity: 1;
+	/* scale: 0.8; */
 `;
 const Root = styled.div`
 	width: 210mm;
@@ -40,9 +36,25 @@ London.propTypes = {
 	inputData: PropTypes.array,
 };
 
+const components = {
+	PersonalDetails: PersonalDetails,
+	ProfessionalSummary: ProfessionalSummary,
+	Education: Education,
+	EmploymentHistory: EmploymentHistory,
+};
+
+const RenderBlocks = ({ inputData }) => {
+	return inputData.map((block, index) => {
+		const BlockName = block.block;
+		const data = block.content;
+		const Component = components[BlockName];
+		if (!Component) return null;
+		return <Component data={data} key={index} />;
+	});
+};
+
 export default function London({ inputData }) {
 	const componentRef = useRef();
-
 	//初始化或當 block 內容改變時，呼叫 handlePreviewChange;
 	useEffect(() => {
 		handlePreviewChange();
@@ -56,40 +68,30 @@ export default function London({ inputData }) {
 	const [imgUrl, setImgUrl] = useState("");
 	const handlePreviewChange = () => {
 		html2canvas(componentRef.current).then((canvas) => {
-			let imgUrl = canvas.toDataURL();
-			setImgUrl(imgUrl);
+			let imgURL = canvas.toDataURL("image/png");
+			setImgUrl(imgURL);
 		});
 	};
 
-	const components = {
-		PersonalDetails: PersonalDetails,
-		ProfessionalSummary: ProfessionalSummary,
-		Education: Education,
-		EmploymentHistory: EmploymentHistory,
-	};
-
-	const RenderBlocks = () => {
-		return inputData.map((block, index) => {
-			const BlockName = block.block;
-			const data = block.content;
-			const Component = components[BlockName];
-			if (!Component) return null;
-			return <Component data={data} key={index} />;
-		});
+	const downloadPdf = () => {
+		const doc = new jsPDF();
+		const pageWidth = doc.internal.pageSize.getWidth();
+		const pageHeight = doc.internal.pageSize.getHeight();
+		doc.addImage(imgUrl, "PNG", 0, 0, pageWidth, pageHeight);
+		doc.save("fileName.pdf");
 	};
 
 	return (
 		<>
-			{imgUrl && <Img src={imgUrl} alt="圖片" />}
-			{
-				<Hide>
-					<Root ref={componentRef}>
-						<ResumeContainer>
-							<RenderBlocks />
-						</ResumeContainer>
-					</Root>
-				</Hide>
-			}
+			{/* {imgUrl && <Img src={imgUrl} alt="圖片" />} */}
+			<Hide>
+				<Root ref={componentRef}>
+					<ResumeContainer>
+						<RenderBlocks inputData={inputData} />
+					</ResumeContainer>
+				</Root>
+			</Hide>
+			<button onClick={downloadPdf}>下載 pdf</button>
 		</>
 	);
 }

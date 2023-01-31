@@ -42,6 +42,7 @@ function InputEditor({ handleEditorInput }) {
 	const editorConfig = {
 		placeholder: "",
 		scroll: true,
+		autoFocus: true,
 		customPaste: (editor, event) => {
 			event.preventDefault();
 			const text = event.clipboardData.getData("text/plain");
