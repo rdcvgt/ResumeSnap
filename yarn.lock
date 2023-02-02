@@ -6070,11 +6070,6 @@
     "relateurl" "^0.2.7"
     "terser" "^5.10.0"
 
-"html-to-image@^1.11.4":
-  "integrity" "sha512-I6jeGpjSI/pea+p/8q6HAWPxptZkEYaZ40ZLnpCHuhCJJnUHQ/YzMEQMNY/KMdPZJ4+GJIwo9dnJy76eW9p9cg=="
-  "resolved" "https://registry.npmjs.org/html-to-image/-/html-to-image-1.11.4.tgz"
-  "version" "1.11.4"
-
 "html-void-elements@^2.0.0":
   "integrity" "sha512-0quDb7s97CfemeJAnW9wC0hw78MtW7NU3hqtCD75g2vFlDLt36llsYD7uB7SUzojLMP24N5IatXf7ylGXiGG9A=="
   "resolved" "https://registry.npmjs.org/html-void-elements/-/html-void-elements-2.0.1.tgz"

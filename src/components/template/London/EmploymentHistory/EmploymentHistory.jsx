@@ -2,15 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const ResumeContainer = styled.div`
-	width: 100%;
-	height: auto;
-`;
-
 const Block = styled.div`
 	height: auto;
 	border-top: 1px solid #000;
 	padding-top: 10px;
+`;
+
+const MarginBottom = styled.div`
 	margin-bottom: 20px;
 `;
 
@@ -21,43 +19,47 @@ const Title = styled.div`
 	margin-bottom: 15px;
 `;
 
-const Content = styled.div`
-	font-size: 10px;
-	text-decoration: none;
-	width: 100%;
-	line-height: 1.5em;
-`;
+const Item = styled.div``;
 
-const Item = styled.div`
-	display: flex;
-	margin-bottom: 20px;
-`;
-
-const LeftCol = styled.div`
-	width: 20%;
-`;
-const RightCol = styled.div`
-	width: 80%;
-`;
 const TopRow = styled.div`
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 10px;
-`;
-
-const Date = styled.div`
-	width: 100%;
-`;
-const Experience = styled.div`
-	font-weight: 600;
-`;
-const City = styled.div``;
-
-const Description = styled.div`
+	font-size: 10px;
+	text-decoration: none;
 	line-height: 1.5em;
 `;
 
-Education.propTypes = {
+const Date = styled.div`
+	width: 20%;
+`;
+const Experience = styled.div`
+	font-weight: 600;
+	width: 60%;
+`;
+const City = styled.div`
+	width: 20%;
+	text-align: right;
+`;
+
+const BottomRow = styled.div`
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+	font-size: 10px;
+	text-decoration: none;
+	line-height: 1.5em;
+`;
+
+const Space = styled.div`
+	width: 20%;
+`;
+
+const Description = styled.div`
+	width: 80%;
+`;
+
+EmploymentHistory.propTypes = {
 	data: PropTypes.object,
 };
 
@@ -91,53 +93,56 @@ const handleItemData = (item, index) => {
 
 	return (
 		<Item key={index}>
-			<LeftCol>
+			<TopRow>
 				<Date>
 					{startDate}
 					{startDate && endDate && " - "}
 					{endDate}
 				</Date>
-			</LeftCol>
 
-			<RightCol>
-				<TopRow>
-					<Experience>
-						{jobTitle}
-						{jobTitle && employer && " "}
-						{employer}
-					</Experience>
-					<City>{city}</City>
-				</TopRow>
+				<Experience>
+					{jobTitle}
+					{jobTitle && employer && " "}
+					{employer}
+				</Experience>
+				<City>{city}</City>
+			</TopRow>
+			<BottomRow>
+				<Space />
 				{htmlText && htmlText !== noContent && (
 					<Description
 						dangerouslySetInnerHTML={{
 							__html: description,
 						}}></Description>
 				)}
-			</RightCol>
+			</BottomRow>
 		</Item>
 	);
 };
 
-export default function Education({ data }) {
+export default function EmploymentHistory({ data }) {
 	const dataLength = Object.keys(data).length;
 	if (dataLength === 0) return;
-
 	const blockTitle = data.blockTitle;
 	const itemArr = data.formData;
 
 	return (
-		<ResumeContainer>
+		<>
 			{itemArr.length !== 0 && (
-				<Block>
-					<Title>{blockTitle}</Title>
-					<Content>
-						{itemArr.map((item, index) => {
-							return handleItemData(item, index);
-						})}
-					</Content>
-				</Block>
+				<>
+					<div>
+						<div>
+							<Block />
+							<Title>{blockTitle}</Title>
+						</div>
+					</div>
+
+					{itemArr.map((item, index) => {
+						return handleItemData(item, index);
+					})}
+					<MarginBottom />
+				</>
 			)}
-		</ResumeContainer>
+		</>
 	);
 }

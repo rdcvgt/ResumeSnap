@@ -78,17 +78,7 @@ PersonalDetails.propTypes = {
 	handleBlockHeight: PropTypes.func,
 };
 
-export default function PersonalDetails({ data, blockId, handleBlockHeight }) {
-	const resumeContainerRef = useRef(null);
-	useEffect(() => {
-		if (resumeContainerRef.current) {
-			const containerHeight = resumeContainerRef.current.clientHeight;
-			if (handleBlockHeight) {
-				handleBlockHeight({ id: blockId, height: containerHeight });
-			}
-		}
-	}, [data]);
-
+export default function PersonalDetails({ data }) {
 	let address = data?.formData?.address;
 	let city = data?.formData?.city;
 	let country = data?.formData?.country;
@@ -103,7 +93,7 @@ export default function PersonalDetails({ data, blockId, handleBlockHeight }) {
 	const space = "\u00A0";
 
 	return (
-		<ResumeContainer ref={resumeContainerRef}>
+		<ResumeContainer>
 			<TopBlock>
 				<TitleBlock>
 					<Name>

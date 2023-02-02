@@ -34,22 +34,7 @@ ProfessionalSummary.propTypes = {
 	handleBlockHeight: PropTypes.func,
 };
 
-export default function ProfessionalSummary({
-	data,
-	blockId,
-	handleBlockHeight,
-}) {
-	const resumeContainerRef = useRef(null);
-
-	useEffect(() => {
-		if (resumeContainerRef.current) {
-			const containerHeight = resumeContainerRef.current.clientHeight;
-			if (handleBlockHeight) {
-				handleBlockHeight({ id: blockId, height: containerHeight });
-			}
-		}
-	}, [data]);
-
+export default function ProfessionalSummary({ data }) {
 	if (!data) return;
 	let blockTitle = data.blockTitle;
 	let htmlText = data.inputHtml;
@@ -65,7 +50,7 @@ export default function ProfessionalSummary({
 	const space = "\u00A0";
 
 	return (
-		<ResumeContainer ref={resumeContainerRef}>
+		<ResumeContainer>
 			{htmlText && htmlText !== noContent && (
 				<Block>
 					<Title style={{ margin: 0 }}>{blockTitle}</Title>
