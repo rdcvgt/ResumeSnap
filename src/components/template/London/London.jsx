@@ -32,7 +32,6 @@ const RenderRoot = styled.div`
 const Root = styled.div`
 	width: 210mm;
 	height: 297mm;
-	background-color: #fff;
 `;
 
 const RenderContainer = styled.div`
@@ -70,6 +69,7 @@ London.propTypes = {
 	handleGetDownLoadPdfFunc: PropTypes.func,
 	getTotalPage: PropTypes.func,
 	currentPage: PropTypes.number,
+	setIsDownloading: PropTypes.func,
 };
 
 export default function London({
@@ -77,6 +77,7 @@ export default function London({
 	handleGetDownLoadPdfFunc,
 	getTotalPage,
 	currentPage,
+	setIsDownloading,
 }) {
 	const pageRef = useRef([]);
 	const renderContainerRef = useRef();
@@ -89,10 +90,8 @@ export default function London({
 	usePagination(renderContainerRef, setBlocks, inputData);
 
 	//下載 PDF，回傳給父層，偵測點擊事件
-	const downloadPdf = useDownloadPdf(blocks, pageRef);
-	useEffect(() => {
-		handleGetDownLoadPdfFunc(downloadPdf);
-	}, [blocks]);
+	const downloadPdf = useDownloadPdf(blocks, pageRef, setIsDownloading);
+	handleGetDownLoadPdfFunc(downloadPdf);
 
 	useEffect(() => {
 		getTotalPage(blocks.length);

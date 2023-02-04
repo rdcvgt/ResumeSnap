@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
-export default function useDownloadPdf(blocks, pageRef) {
+export default function useDownloadPdf(blocks, pageRef, setIsDownloading) {
 	return useCallback(() => {
 		const doc = new jsPDF();
 		const pageWidth = doc.internal.pageSize.getWidth();
@@ -24,6 +24,7 @@ export default function useDownloadPdf(blocks, pageRef) {
 
 		Promise.all(promises).then(() => {
 			doc.save("fileName.pdf");
+			setIsDownloading(false);
 		});
 	}, [blocks, pageRef]);
 }
