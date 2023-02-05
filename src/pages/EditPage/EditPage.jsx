@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import uuid from "react-uuid";
 import styled from "styled-components";
 import ResumePreviewArea from "./ResumePreviewArea";
@@ -29,6 +29,11 @@ const Body = styled.div`
 	display: flex;
 `;
 
+const templatesColorOrder = {
+	London: [null],
+	Sydney: ["#082A4D", "#581010", "#1D473A", "#32084D", "#1B212F"],
+};
+
 export default function EditPage() {
 	const [inputData, setInputData] = useState([
 		{ block: "PersonalDetails", content: {}, id: uuid() },
@@ -36,14 +41,18 @@ export default function EditPage() {
 		{ block: "Education", content: {}, id: uuid() },
 		{ block: "EmploymentHistory", content: {}, id: uuid() },
 	]);
-	const [resumeStyle, setResumeStyle] = useState({
-		template: null,
-		color: null,
-	});
-	const [tempDefaultColor, setTempDefaultColor] = useState([]);
-
-	const [isChoosingTemp, setIsChoosingTemp] = useState(false);
+	const [isChoosingTemp, setIsChoosingTemp] = useState(true);
 	const [isDownloading, setIsDownloading] = useState(false);
+	const [tempColors, setTempColors] = useState([]);
+	const [resumeStyle, setResumeStyle] = useState({
+		template: "London",
+		color: "#ccc",
+	});
+
+	useEffect(() => {
+		const temp = resumeStyle.template;
+		setTempColors(templatesColorOrder[temp]);
+	}, [resumeStyle]);
 
 	let downloadPdfFunc = null;
 	const handleGetDownLoadPdfFunc = (func) => {
@@ -66,6 +75,8 @@ export default function EditPage() {
 					isDownloading={isDownloading}
 					setIsChoosingTemp={setIsChoosingTemp}
 					setResumeStyle={setResumeStyle}
+					resumeStyle={resumeStyle}
+					tempColors={tempColors}
 				/>
 			)}
 			<Body isChoosingTemp={isChoosingTemp}>
@@ -77,8 +88,8 @@ export default function EditPage() {
 
 				{isChoosingTemp && (
 					<ResumeTemplateArea
-						isChoosingTemp={isChoosingTemp}
 						setResumeStyle={setResumeStyle}
+						resumeStyle={resumeStyle}
 					/>
 				)}
 				<ResumePreviewArea
@@ -89,6 +100,7 @@ export default function EditPage() {
 					handleDownloadPdf={handleDownloadPdf}
 					isDownloading={isDownloading}
 					setIsDownloading={setIsDownloading}
+					resumeStyle={resumeStyle}
 				/>
 			</Body>
 		</Root>

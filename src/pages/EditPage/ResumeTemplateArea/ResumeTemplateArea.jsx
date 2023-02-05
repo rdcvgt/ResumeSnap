@@ -43,7 +43,6 @@ const Template = styled.div`
 `;
 
 const Preview = styled.div`
-	/* scale: 0.95; */
 	width: 90%;
 	height: 0;
 	padding-bottom: calc(90% / 0.707);
@@ -54,12 +53,35 @@ const Preview = styled.div`
 	outline: 5px solid rgb(0, 0, 0, 0);
 	transition: outline 0.2s;
 	cursor: pointer;
-	/* outline: 5px solid #00ff00; */
+	position: relative;
+	outline: 5px solid
+		${(props) =>
+			props.status === true ? props.theme.color.blue[50] : "none"};
 
 	&:hover {
 		transition: outline 0.2s;
 		outline: 5px solid ${(props) => props.theme.color.blue[50]};
 	}
+`;
+
+const CurrentTemp = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 100%;
+	width: calc(20% * 1.414);
+	height: 20%;
+	background-color: ${(props) => props.theme.color.blue[50]};
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: ${(props) => (props.status === true ? "1" : "0")};
+	transition: all 0.3s;
+`;
+
+const CurrenTempIcon = styled.img`
+	width: 50%;
 `;
 
 const Name = styled.div`
@@ -68,30 +90,46 @@ const Name = styled.div`
 `;
 
 ResumeTemplateArea.propTypes = {
-	resumeStyle: PropTypes.object,
 	setResumeStyle: PropTypes.func,
+	resumeStyle: PropTypes.object,
 };
 
-export default function ResumeTemplateArea({ resumeStyle, setResumeStyle }) {
-	const handlePreviewClick = (tempName) => {
-		setResumeStyle({ ...resumeStyle, template: tempName });
-		console.log(tempName);
-	};
+const templateOrder = [
+	{ template: "Sydney", color: "#082A4D" },
+	{ template: "London", color: null },
+];
 
+const RenderTemplate = ({ setResumeStyle, resumeStyle }) => {
+	return templateOrder.map((template, index) => {
+		const status =
+			template.template === resumeStyle.template ? true : false;
+
+		return (
+			<Template key={index}>
+				<Preview
+					status={status}
+					onClick={() => {
+						setResumeStyle(template);
+					}}>
+					<CurrentTemp status={status}>
+						<CurrenTempIcon src="/images/icon/check.png" />
+					</CurrentTemp>
+				</Preview>
+				<Name>{template.template}</Name>
+			</Template>
+		);
+	});
+};
+
+export default function ResumeTemplateArea({ setResumeStyle, resumeStyle }) {
 	return (
 		<>
 			<ResumeTempBackground>
 				<TempCollectionsArea>
-					<Template>
-						<Preview
-							onClick={handlePreviewClick("Sydney")}></Preview>
-						<Name>Sydney</Name>
-					</Template>
-					<Template>
-						<Preview
-							onClick={handlePreviewClick("London")}></Preview>
-						<Name>London</Name>
-					</Template>
+					<RenderTemplate
+						setResumeStyle={setResumeStyle}
+						resumeStyle={resumeStyle}
+					/>
 				</TempCollectionsArea>
 			</ResumeTempBackground>
 		</>

@@ -1,7 +1,14 @@
-import React, { useState, useContext, createContext } from "react";
+import React, {
+	useState,
+	useEffect,
+	useContext,
+	createContext,
+	useMemo,
+} from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import London from "../../../components/template/London";
+import Sydney from "../../../components/template/Sydney";
 
 const ResumePreviewBackground = styled.div`
 	position: fixed;
@@ -239,6 +246,7 @@ ResumePreviewArea.propTypes = {
 	handleDownloadPdf: PropTypes.func,
 	isDownloading: PropTypes.bool,
 	setIsDownloading: PropTypes.func,
+	resumeStyle: PropTypes.object,
 };
 
 ResumePreviewTopFunc.propTypes = {
@@ -314,6 +322,10 @@ function ResumePreviewBottomFunc({
 }
 
 const TempStatusContext = createContext();
+const templates = {
+	London,
+	Sydney,
+};
 
 export default function ResumePreviewArea({
 	inputData,
@@ -323,6 +335,7 @@ export default function ResumePreviewArea({
 	handleDownloadPdf,
 	isDownloading,
 	setIsDownloading,
+	resumeStyle,
 }) {
 	const [totalPage, setTotalPage] = useState(1);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -341,6 +354,10 @@ export default function ResumePreviewArea({
 		setCurrentPage((prevPage) => prevPage - 1);
 	};
 
+	const Template = useMemo(() => {
+		return templates[resumeStyle.template];
+	}, [resumeStyle]);
+
 	return (
 		<>
 			<TempStatusContext.Provider value={isChoosingTemp}>
@@ -353,7 +370,7 @@ export default function ResumePreviewArea({
 							currentPage={currentPage}
 						/>
 						<ResumePreview isChoosingTemp={isChoosingTemp}>
-							<London
+							<Template
 								inputData={inputData}
 								handleGetDownLoadPdfFunc={
 									handleGetDownLoadPdfFunc
@@ -361,6 +378,7 @@ export default function ResumePreviewArea({
 								getTotalPage={getTotalPage}
 								currentPage={currentPage}
 								setIsDownloading={setIsDownloading}
+								resumeStyle={resumeStyle}
 							/>
 						</ResumePreview>
 						{isChoosingTemp && <BottomSpace></BottomSpace>}

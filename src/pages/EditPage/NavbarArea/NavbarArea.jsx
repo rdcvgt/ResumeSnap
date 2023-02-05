@@ -39,15 +39,24 @@ const SelectColorArea = styled.div`
 	align-items: center;
 `;
 
+const NoColor = styled.div`
+	display: flex;
+	align-items: center;
+`;
+
 const Color = styled.div`
 	width: 30px;
 	height: 30px;
 	border-radius: 20px;
-	border: 2px solid #ccc;
-	background-color: #333;
-	cursor: pointer;
+	border: 2px solid rgb(256, 256, 256, 0.3);
+	background-color: ${(props) => props.color};
+	cursor: ${(props) => (props.status === null ? "default" : "pointer")};
 	position: relative;
-	margin-right: 10px;
+	margin-right: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	justify-content: center;
 
 	&::before {
 		content: "";
@@ -64,8 +73,19 @@ const Color = styled.div`
 
 	&:hover::before {
 		transition: all 0.3s;
-		background-color: rgb(256, 256, 256, 1);
+		background-color: ${(props) =>
+			props.status === null || props.status === true ? "none" : "#fff"};
 	}
+`;
+
+const CurrentColorIcon = styled.img`
+	width: 12px;
+	opacity: ${(props) => (props.status === true ? "1" : "0")};
+	transition: all 0.3s;
+`;
+
+const LockIcon = styled.img`
+	width: 12px;
 `;
 
 const ButtonIcon = styled.img`
@@ -123,17 +143,45 @@ const ShareLinkButton = styled.div`
 	}
 `;
 
+const Colors = ({ setResumeStyle, tempColors, resumeStyle }) => {
+	return tempColors.map((color) => {
+		const status = color === resumeStyle.color ? true : false;
+
+		return (
+			<Color
+				key={color}
+				color={color}
+				status={status}
+				onClick={() => {
+					setResumeStyle((prev) => ({ ...prev, color }));
+				}}>
+				<CurrentColorIcon
+					status={status}
+					src="/images/icon/check.png"
+				/>
+			</Color>
+		);
+	});
+};
+
 NavbarArea.propTypes = {
 	handleDownloadPdf: PropTypes.func,
 	isDownloading: PropTypes.bool,
 	setIsChoosingTemp: PropTypes.func,
+	setResumeStyle: PropTypes.func,
+	resumeStyle: PropTypes.object,
+	tempColors: PropTypes.array,
 };
 
 export default function NavbarArea({
 	handleDownloadPdf,
 	isDownloading,
 	setIsChoosingTemp,
+	setResumeStyle,
+	resumeStyle,
+	tempColors,
 }) {
+	console.log(tempColors.length);
 	return (
 		<NavBar>
 			<BackToEditorButton
@@ -144,11 +192,35 @@ export default function NavbarArea({
 				返回編輯器
 			</BackToEditorButton>
 			<SelectColorArea>
-				<Color></Color>
-				<Color></Color>
-				<Color></Color>
-				<Color></Color>
-				<Color></Color>
+				{tempColors.length === 5 && (
+					<Colors
+						setResumeStyle={setResumeStyle}
+						resumeStyle={resumeStyle}
+						tempColors={tempColors}
+					/>
+				)}
+				{tempColors.length === 1 && (
+					<NoColor>
+						<Color color={"#000"} status={true}>
+							<CurrentColorIcon
+								status={true}
+								src="/images/icon/check.png"
+							/>
+						</Color>
+						<Color color={"#aaa"} status={null}>
+							<LockIcon src="/images/icon/lock.png" />
+						</Color>
+						<Color color={"#aaa"} status={null}>
+							<LockIcon src="/images/icon/lock.png" />
+						</Color>
+						<Color color={"#aaa"} status={null}>
+							<LockIcon src="/images/icon/lock.png" />
+						</Color>
+						<Color color={"#aaa"} status={null}>
+							<LockIcon src="/images/icon/lock.png" />
+						</Color>
+					</NoColor>
+				)}
 			</SelectColorArea>
 			<OutputButtonArea>
 				<DownloadPdfButton
