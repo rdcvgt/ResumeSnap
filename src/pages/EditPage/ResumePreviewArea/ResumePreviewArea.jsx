@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, createContext } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import London from "../../../components/template/London";
@@ -7,27 +7,71 @@ const ResumePreviewBackground = styled.div`
 	position: fixed;
 	top: 0px;
 	right: 0px;
-	width: 50%;
+	width: ${(props) => (props.isChoosingTemp === true ? "85%" : "50%")};
 	height: 100%;
-	background-color: rgb(101, 110, 131);
-	/* padding: 80px 70px 80px 70px; */
+	background-color: ${(props) =>
+		props.isChoosingTemp === true
+			? props.theme.color.neutral[70]
+			: props.theme.color.neutral[60]};
+	padding-top: ${(props) => (props.isChoosingTemp === true ? "60px" : "0")};
+	overflow-y: auto;
+	scrollbar-gutter: stable;
+
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: none;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(0, 0, 0, 0.3);
+		border-radius: 10px;
+	}
 `;
 
 const ResumePreviewInfo = styled.div`
 	width: 80%;
 	height: 100%;
-	margin: auto auto;
+	margin: 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+`;
+
+const ResumePreview = styled.div`
+	height: 0;
+	width: ${(props) => (props.isChoosingTemp === true ? "60%" : "80%")};
+	padding-bottom: ${(props) =>
+		props.isChoosingTemp === true
+			? "calc(60% / 0.707)"
+			: "calc(80% / 0.707)"};
+	background-color: #fff;
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 20px auto;
 	position: relative;
 `;
 
-const ResumePreviewTopFunc = styled.div`
+const BottomSpace = styled.div`
+	height: 30px;
 	width: 100%;
-	height: auto;
-	position: absolute;
-	top: 20px;
+`;
+
+const ResumePreviewTopArea = styled.div`
+	width: 80%;
+	margin-top: 20px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	${(props) =>
+		props.isChoosingTemp &&
+		`
+		position: fixed; 
+		bottom: 10%; 
+	`}
+	z-index: 1;
 `;
 
 const SavingProgress = styled.div``;
@@ -35,6 +79,13 @@ const SavingProgress = styled.div``;
 const PaginationArea = styled.div`
 	display: flex;
 	align-items: center;
+	${(props) =>
+		props.isChoosingTemp &&
+		`
+		border-radius: 30px; 
+		background-color: rgb(0, 0, 0, 0.7); 
+		height: 30px;
+	`}
 `;
 
 const PrePage = styled.div`
@@ -89,11 +140,11 @@ const Pages = styled.div`
 	cursor: default;
 `;
 
-const ResumePreviewBottomFunc = styled.div`
-	width: 100%;
+const ResumePreviewBottomArea = styled.div`
+	width: 80%;
+	margin: 0px auto;
+	margin-bottom: 20px;
 	height: auto;
-	position: absolute;
-	bottom: 20px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -134,20 +185,6 @@ const OutputButtonArea = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-`;
-
-const ResumePreview = styled.div`
-	width: 50vw;
-	height: calc((297 / 210) * 50vw);
-	max-height: 85vh;
-	max-width: calc((210 / 297) * 85vh);
-	background-color: #fff;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	border-radius: 10px;
-	overflow: hidden;
 `;
 
 const DownloadPdfButton = styled.div`
@@ -196,25 +233,99 @@ const ShareLinkButton = styled.div`
 
 ResumePreviewArea.propTypes = {
 	inputData: PropTypes.array,
+	isChoosingTemp: PropTypes.bool,
+	setIsChoosingTemp: PropTypes.func,
+	handleGetDownLoadPdfFunc: PropTypes.func,
+	handleDownloadPdf: PropTypes.func,
+	isDownloading: PropTypes.bool,
+	setIsDownloading: PropTypes.func,
 };
 
-export default function ResumePreviewArea({ inputData }) {
+ResumePreviewTopFunc.propTypes = {
+	handleNextPageClick: PropTypes.func,
+	handlePrePageClick: PropTypes.func,
+	totalPage: PropTypes.number,
+	currentPage: PropTypes.number,
+};
+
+ResumePreviewBottomFunc.propTypes = {
+	handleDownloadPdf: PropTypes.func,
+	isDownloading: PropTypes.bool,
+	setIsChoosingTemp: PropTypes.func,
+};
+
+function ResumePreviewTopFunc({
+	handleNextPageClick,
+	handlePrePageClick,
+	totalPage,
+	currentPage,
+}) {
+	const isChoosingTemp = useContext(TempStatusContext);
+	return (
+		<ResumePreviewTopArea isChoosingTemp={isChoosingTemp}>
+			<SavingProgress></SavingProgress>
+			<PaginationArea isChoosingTemp={isChoosingTemp}>
+				<PrePage onClick={handlePrePageClick} currentPage={currentPage}>
+					<PrePageIcon src="/images/icon/left.png" />
+				</PrePage>
+				<Pages>
+					{currentPage} / {totalPage}
+				</Pages>
+				<NextPage
+					onClick={handleNextPageClick}
+					currentPage={currentPage}
+					totalPage={totalPage}>
+					<NextPageIcon src="/images/icon/right.png" />
+				</NextPage>
+			</PaginationArea>
+		</ResumePreviewTopArea>
+	);
+}
+
+function ResumePreviewBottomFunc({
+	handleDownloadPdf,
+	isDownloading,
+	setIsChoosingTemp,
+}) {
+	return (
+		<ResumePreviewBottomArea>
+			<SelectTemplateButtonArea>
+				<SelectTemplateIcon src="/images/icon/menu.png" />
+				<SelectTemplateButton
+					onClick={() => {
+						setIsChoosingTemp(true);
+					}}>
+					選擇履歷模板
+				</SelectTemplateButton>
+			</SelectTemplateButtonArea>
+
+			<OutputButtonArea>
+				<DownloadPdfButton
+					onClick={handleDownloadPdf}
+					isDownloading={isDownloading}>
+					{isDownloading === false ? "下載 PDF" : "下載中..."}
+				</DownloadPdfButton>
+				<ShareLinkButton onClick={handleDownloadPdf}>
+					分享履歷連結
+				</ShareLinkButton>
+			</OutputButtonArea>
+		</ResumePreviewBottomArea>
+	);
+}
+
+const TempStatusContext = createContext();
+
+export default function ResumePreviewArea({
+	inputData,
+	isChoosingTemp,
+	setIsChoosingTemp,
+	handleGetDownLoadPdfFunc,
+	handleDownloadPdf,
+	isDownloading,
+	setIsDownloading,
+}) {
 	const [totalPage, setTotalPage] = useState(1);
 	const [currentPage, setCurrentPage] = useState(1);
-	const [isDownloading, setIsDownloading] = useState(false);
-
-	let downloadPdfFunc = null;
-	const handleGetDownLoadPdfFunc = (func) => {
-		downloadPdfFunc = func;
-	};
-
-	const handleDownloadPdf = () => {
-		if (isDownloading) return;
-		if (downloadPdfFunc) {
-			setIsDownloading(true);
-			downloadPdfFunc();
-		}
-	};
 
 	const getTotalPage = (count) => {
 		setTotalPage(count);
@@ -232,59 +343,38 @@ export default function ResumePreviewArea({ inputData }) {
 
 	return (
 		<>
-			<ResumePreviewBackground>
-				<ResumePreviewInfo>
-					<ResumePreviewTopFunc>
-						<SavingProgress></SavingProgress>
-						<PaginationArea>
-							<PrePage
-								onClick={handlePrePageClick}
-								currentPage={currentPage}>
-								<PrePageIcon src="/images/icon/left.png" />
-							</PrePage>
-							<Pages>
-								{currentPage} / {totalPage}
-							</Pages>
-							<NextPage
-								onClick={handleNextPageClick}
-								currentPage={currentPage}
-								totalPage={totalPage}>
-								<NextPageIcon src="/images/icon/right.png" />
-							</NextPage>
-						</PaginationArea>
-					</ResumePreviewTopFunc>
-					<ResumePreview>
-						<London
-							inputData={inputData}
-							handleGetDownLoadPdfFunc={handleGetDownLoadPdfFunc}
-							getTotalPage={getTotalPage}
+			<TempStatusContext.Provider value={isChoosingTemp}>
+				<ResumePreviewBackground isChoosingTemp={isChoosingTemp}>
+					<ResumePreviewInfo isChoosingTemp={isChoosingTemp}>
+						<ResumePreviewTopFunc
+							handleNextPageClick={handleNextPageClick}
+							handlePrePageClick={handlePrePageClick}
+							totalPage={totalPage}
 							currentPage={currentPage}
-							setIsDownloading={setIsDownloading}
 						/>
-					</ResumePreview>
-					<ResumePreviewBottomFunc>
-						<SelectTemplateButtonArea>
-							<SelectTemplateIcon src="/images/icon/menu.png" />
-							<SelectTemplateButton>
-								選擇履歷模板
-							</SelectTemplateButton>
-						</SelectTemplateButtonArea>
+						<ResumePreview isChoosingTemp={isChoosingTemp}>
+							<London
+								inputData={inputData}
+								handleGetDownLoadPdfFunc={
+									handleGetDownLoadPdfFunc
+								}
+								getTotalPage={getTotalPage}
+								currentPage={currentPage}
+								setIsDownloading={setIsDownloading}
+							/>
+						</ResumePreview>
+						{isChoosingTemp && <BottomSpace></BottomSpace>}
 
-						<OutputButtonArea>
-							<DownloadPdfButton
-								onClick={handleDownloadPdf}
-								isDownloading={isDownloading}>
-								{isDownloading === false
-									? "下載 PDF"
-									: "下載中..."}
-							</DownloadPdfButton>
-							<ShareLinkButton onClick={handleDownloadPdf}>
-								分享履歷連結
-							</ShareLinkButton>
-						</OutputButtonArea>
-					</ResumePreviewBottomFunc>
-				</ResumePreviewInfo>
-			</ResumePreviewBackground>
+						{!isChoosingTemp && (
+							<ResumePreviewBottomFunc
+								handleDownloadPdf={handleDownloadPdf}
+								isDownloading={isDownloading}
+								setIsChoosingTemp={setIsChoosingTemp}
+							/>
+						)}
+					</ResumePreviewInfo>
+				</ResumePreviewBackground>
+			</TempStatusContext.Provider>
 		</>
 	);
 }

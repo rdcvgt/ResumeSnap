@@ -13,6 +13,7 @@ import "../utils/htmlElement.css";
 const Img = styled.img`
 	width: 100%;
 	height: 100%;
+	position: absolute;
 `;
 
 const HideRender = styled.div`

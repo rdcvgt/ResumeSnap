@@ -8,8 +8,10 @@ import Education from "../../../components/forms/Education";
 import EmploymentHistory from "../../../components/forms/EmploymentHistory";
 
 const ResumeFormBackground = styled.div`
-	width: 100%;
+	width: ${(props) => (props.isChoosingTemp === true ? "0%" : "100%")};
 	height: 100%;
+	overflow-y: auto;
+	scrollbar-gutter: stable;
 `;
 
 const ResumeData = styled.div`
@@ -93,9 +95,14 @@ React.memo(RenderBlocks);
 ResumeFormArea.propTypes = {
 	inputData: PropTypes.array,
 	setInputData: PropTypes.func,
+	isChoosingTemp: PropTypes.bool,
 };
 
-export default function ResumeFormArea({ inputData, setInputData }) {
+export default function ResumeFormArea({
+	inputData,
+	setInputData,
+	isChoosingTemp,
+}) {
 	const [resumeTitle, setResumeTitle] = useState("我的第一份履歷");
 
 	const resumeTitleRef = useRef(null);
@@ -134,7 +141,7 @@ export default function ResumeFormArea({ inputData, setInputData }) {
 
 	return (
 		<>
-			<ResumeFormBackground>
+			<ResumeFormBackground isChoosingTemp={isChoosingTemp}>
 				<ResumeData>
 					<TitleBlock>
 						<ResumeTitle
