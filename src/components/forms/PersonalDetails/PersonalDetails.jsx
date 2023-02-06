@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import { updateInputData } from "../../../redux/slices/formDataSlice";
+
 import TitleBlock from "../utils/TitleBlock";
 
 const BlockContainer = styled.div`
@@ -52,47 +54,56 @@ const AdditionalButton = styled.div`
 	cursor: pointer;
 `;
 
-PersonalDetails.propTypes = {
-	handleInputData: PropTypes.func,
-};
-
-export default function PersonalDetails({ handleInputData }) {
+export default function PersonalDetails() {
 	const [isClick, setIsClick] = useState(false);
-	const [timer, setTimer] = useState(null);
-	const [blockTitle, setBlockTitle] = useState("個人資訊");
-
-	const [formData, setFormData] = useState({});
+	const dispatch = useDispatch();
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
-		clearTimeout(timer);
-		const newTimer = setTimeout(() => {
-			setFormData({ ...formData, [name]: value });
-		}, 300);
-		setTimer(newTimer);
+		dispatch(
+			updateInputData({
+				blockName: "PersonalDetails",
+				inputTitle: name,
+				inputValue: value,
+			})
+		);
 	};
 
-	useEffect(() => {
-		let data = {
-			block: "PersonalDetails",
-			content: { formData, blockTitle },
-		};
-		handleInputData(data);
-	}, [formData, blockTitle]);
+	const [blockData] = useSelector((state) =>
+		state.formData.formBlocks.filter(
+			(block) => block.block === "PersonalDetails"
+		)
+	);
+
+	const blockTitle = blockData.content.blockTitle || "";
+	const inputData = blockData.content.inputData;
+	const position = inputData.position || "";
+	const firstName = inputData.firstName || "";
+	const lastName = inputData.lastName || "";
+	const email = inputData.email || "";
+	const phone = inputData.phone || "";
+	const country = inputData.country || "";
+	const city = inputData.city || "";
+	const address = inputData.address || "";
+	const postalCode = inputData.postalCode || "";
+	const drivingLicense = inputData.drivingLicense || "";
+	const nationality = inputData.nationality || "";
 
 	return (
 		<BlockContainer>
 			<TitleBlock
-				title={{ blockTitle, setBlockTitle }}
+				blockTitle={blockTitle}
+				blockName="PersonalDetails"
 				hideDraggableIcon={true}
 			/>
 			<form>
 				<BlockRow>
 					<LeftCol>
-						<InputTitle>求職職位</InputTitle>
+						<InputTitle>Wanted Job Title</InputTitle>
 						<ShortInput
 							type="text"
 							name="position"
+							value={position}
 							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
@@ -102,82 +113,92 @@ export default function PersonalDetails({ handleInputData }) {
 				</BlockRow>
 				<BlockRow>
 					<LeftCol>
-						<InputTitle>姓氏</InputTitle>
-						<ShortInput
-							type="text"
-							name="lastName"
-							onChange={handleInputChange}></ShortInput>
-					</LeftCol>
-					<RightCol>
-						<InputTitle>名字</InputTitle>
+						<InputTitle>First Name</InputTitle>
 						<ShortInput
 							type="text"
 							name="firstName"
+							value={firstName}
+							onChange={handleInputChange}></ShortInput>
+					</LeftCol>
+					<RightCol>
+						<InputTitle>Last Name</InputTitle>
+						<ShortInput
+							type="text"
+							name="lastName"
+							value={lastName}
 							onChange={handleInputChange}></ShortInput>
 					</RightCol>
 				</BlockRow>
 				<BlockRow>
 					<LeftCol>
-						<InputTitle>電子郵件</InputTitle>
+						<InputTitle>Email</InputTitle>
 						<ShortInput
 							type="text"
 							name="email"
+							value={email}
 							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
-						<InputTitle>手機號碼</InputTitle>
+						<InputTitle>Phone</InputTitle>
 						<ShortInput
 							type="text"
 							name="phone"
+							value={phone}
 							onChange={handleInputChange}></ShortInput>
 					</RightCol>
 				</BlockRow>
 				<MoreInput isClick={isClick}>
 					<BlockRow>
 						<LeftCol>
-							<InputTitle>居住國家</InputTitle>
+							<InputTitle>Country</InputTitle>
 							<ShortInput
 								type="text"
 								name="country"
+								value={country}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
-							<InputTitle>現居城市</InputTitle>
+							<InputTitle>City</InputTitle>
 							<ShortInput
 								type="text"
 								name="city"
+								value={city}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>
 					<BlockRow>
 						<LeftCol>
-							<InputTitle>通訊地址</InputTitle>
+							<InputTitle>Address</InputTitle>
 							<ShortInput
 								type="text"
 								name="address"
+								value={address}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
-							<InputTitle>郵遞區號</InputTitle>
+							<InputTitle>Postal Code</InputTitle>
 							<ShortInput
 								type="text"
 								name="postalCode"
+								value={postalCode}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>
 					<BlockRow>
 						<LeftCol>
-							<InputTitle>駕駛執照</InputTitle>
+							<InputTitle>Driving License</InputTitle>
 							<ShortInput
 								type="text"
 								name="drivingLicense"
+								value={drivingLicense}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
-							<InputTitle>國籍</InputTitle>
+							<InputTitle>Nationality</InputTitle>
 							<ShortInput
 								type="text"
 								name="nationality"
+								value={nationality}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>
@@ -187,7 +208,7 @@ export default function PersonalDetails({ handleInputData }) {
 				onClick={() => {
 					setIsClick(!isClick);
 				}}>
-				{isClick === true ? "隱藏" : "展開"}更多資訊
+				{isClick === true ? "Hide " : "Edit "}additional details
 			</AdditionalButton>
 		</BlockContainer>
 	);

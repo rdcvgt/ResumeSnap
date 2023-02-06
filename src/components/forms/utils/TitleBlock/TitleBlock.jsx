@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import { updateBlockTitle } from "../../../../redux/slices/formDataSlice";
 
 const Block = styled.div`
 	display: flex;
@@ -77,23 +79,36 @@ const EditIcon = styled.img`
 `;
 
 TitleBlock.propTypes = {
-	title: PropTypes.object,
+	blockName: PropTypes.string,
+	blockTitle: PropTypes.string,
 	dragHandleProps: PropTypes.object,
 	hideDraggableIcon: PropTypes.bool,
 };
 
-function TitleBlock({ title, dragHandleProps, hideDraggableIcon }) {
-	const { blockTitle, setBlockTitle } = title;
+function TitleBlock({
+	blockName,
+	blockTitle,
+	dragHandleProps,
+	hideDraggableIcon,
+}) {
 	const [isHover, setIsHover] = useState(false);
 
+	//全選 input 資料
 	const blockTitleRef = useRef(null);
-
-	const handleBlockTitleChange = (e) => {
-		setBlockTitle(e.target.value);
-	};
-
 	const handleResumeTitleIconClick = () => {
 		blockTitleRef.current.select();
+	};
+
+	//當標題資料更動時更新資料
+	const dispatch = useDispatch();
+	const handleBlockTitleChange = (e) => {
+		const { value } = e.target;
+		dispatch(
+			updateBlockTitle({
+				blockName: blockName,
+				blockTitle: value,
+			})
+		);
 	};
 
 	return (

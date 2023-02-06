@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import uuid from "react-uuid";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+
 import ResumePreviewArea from "./ResumePreviewArea";
 import ResumeFormArea from "./ResumeFormArea";
 import ResumeTemplateArea from "./ResumeTemplateArea";
 import NavbarArea from "./NavbarArea";
+
+import uuid from "react-uuid";
 
 // import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";

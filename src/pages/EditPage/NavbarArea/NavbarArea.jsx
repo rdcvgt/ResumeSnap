@@ -181,7 +181,6 @@ export default function NavbarArea({
 	resumeStyle,
 	tempColors,
 }) {
-	console.log(tempColors.length);
 	return (
 		<NavBar>
 			<BackToEditorButton
