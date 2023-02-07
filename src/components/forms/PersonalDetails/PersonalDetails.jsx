@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { updateInputData } from "../../../redux/slices/formDataSlice";
 
+import { updateInputData } from "../../../redux/slices/formDataSlice";
 import TitleBlock from "../utils/TitleBlock";
 
 const BlockContainer = styled.div`

@@ -1,7 +1,10 @@
 import React, { useState, useRef, useCallback } from "react";
+import styled from "styled-components";
 import PropTypes from "prop-types";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+
+import { updateBlockOrder } from "../../../redux/slices/formDataSlice";
 import PersonalDetails from "../../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../../components/forms/ProfessionalSummary";
 import Education from "../../../components/forms/Education";
@@ -62,8 +65,8 @@ const components = {
 	EmploymentHistory: EmploymentHistory,
 };
 
-const RenderBlocks = ({ inputData, handleInputData }) => {
-	return inputData.map((block, index) => {
+const RenderBlocks = ({ formBlocks }) => {
+	return formBlocks.map((block, index) => {
 		const blockName = block.block;
 		if (
 			blockName === "PersonalDetails" ||
@@ -78,7 +81,6 @@ const RenderBlocks = ({ inputData, handleInputData }) => {
 				{(provided) => (
 					<div {...provided.draggableProps} ref={provided.innerRef}>
 						<Component
-							handleInputData={handleInputData}
 							dragHandleProps={{
 								...provided.dragHandleProps,
 							}}
@@ -93,51 +95,32 @@ const RenderBlocks = ({ inputData, handleInputData }) => {
 React.memo(RenderBlocks);
 
 ResumeFormArea.propTypes = {
-	inputData: PropTypes.array,
-	setInputData: PropTypes.func,
 	isChoosingTemp: PropTypes.bool,
 };
 
-export default function ResumeFormArea({
-	inputData,
-	setInputData,
-	isChoosingTemp,
-}) {
+export default function ResumeFormArea({ isChoosingTemp }) {
 	const [resumeTitle, setResumeTitle] = useState("我的第一份履歷");
-
 	const resumeTitleRef = useRef(null);
-
-	const handleOnDragEndBlock = useCallback(
-		(result) => {
-			if (!result.destination) return;
-			const blocks = Array.from(inputData);
-			const [reorderBlock] = blocks.splice(result.source.index, 1);
-			blocks.splice(result.destination.index, 0, reorderBlock);
-			setInputData(blocks);
-		},
-		[inputData]
-	);
-
-	//更新各個 block 的資料
-	const handleInputData = (blockInput) => {
-		let newBlockData = [...inputData];
-		const index = newBlockData.findIndex(
-			(i) => i.block === blockInput.block
-		);
-		newBlockData[index] = {
-			...newBlockData[index],
-			content: blockInput.content,
-		};
-		setInputData(newBlockData);
-	};
 
 	const handleResumeTitleChange = (e) => {
 		setResumeTitle(e.target.value);
 	};
-
 	const handleResumeTitleIconClick = () => {
 		resumeTitleRef.current.select();
 	};
+
+	const dispatch = useDispatch();
+	const formBlocks = useSelector((state) => state.formData.formBlocks);
+	const handleOnDragEndBlock = useCallback(
+		(result) => {
+			if (!result.destination) return;
+			const blocks = Array.from(formBlocks);
+			const [reorderBlock] = blocks.splice(result.source.index, 1);
+			blocks.splice(result.destination.index, 0, reorderBlock);
+			dispatch(updateBlockOrder({ newBlockOrder: blocks }));
+		},
+		[formBlocks]
+	);
 
 	return (
 		<>
@@ -155,18 +138,15 @@ export default function ResumeFormArea({
 							onClick={handleResumeTitleIconClick}
 						/>
 					</TitleBlock>
-					<PersonalDetails handleInputData={handleInputData} />
-					<ProfessionalSummary handleInputData={handleInputData} />
+					<PersonalDetails />
+					<ProfessionalSummary />
 					<DragDropContext onDragEnd={handleOnDragEndBlock}>
 						<Droppable droppableId="blocks">
 							{(provided) => (
 								<div
 									{...provided.droppableProps}
 									ref={provided.innerRef}>
-									<RenderBlocks
-										inputData={inputData}
-										handleInputData={handleInputData}
-									/>
+									<RenderBlocks formBlocks={formBlocks} />
 									{provided.placeholder}
 								</div>
 							)}

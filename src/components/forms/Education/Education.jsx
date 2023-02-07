@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useSelector, useDispatch } from "react-redux";
+
+import { addItem, updateItemOrder } from "../../../redux/slices/formDataSlice";
 import TitleBlock from "../utils/TitleBlock";
 import Item from "./Item";
-import uuid from "react-uuid";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -49,32 +51,22 @@ const AddItemText = styled.div`
 	color: ${(props) => props.theme.color.blue[50]};
 `;
 
-PersonalDetails.propTypes = {
-	handleInputData: PropTypes.func,
+Education.propTypes = {
 	dragHandleProps: PropTypes.object,
 };
 
-export default function PersonalDetails({ handleInputData, dragHandleProps }) {
-	const [blockTitle, setBlockTitle] = useState("學歷");
-	const [formData, setFormData] = useState([]);
+export default function Education({ dragHandleProps }) {
+	const dispatch = useDispatch();
+	const [blockData] = useSelector((state) =>
+		state.formData.formBlocks.filter((block) => block.block === "Education")
+	);
 
-	const handleItemDataUpdate = (item) => {
-		let newFormData = [...formData];
-		const index = newFormData.findIndex((i) => i.id === item.id);
-		newFormData[index] = {
-			...newFormData[index],
-			content: item.content,
-		};
-		setFormData(newFormData);
-	};
+	const blockTitle = blockData.content.blockTitle || "";
+	const itemData = blockData.content.itemData;
 
-	const handleItemDelete = (itemId) => {
-		setFormData(formData.filter((item) => item.id !== itemId));
-	};
-
+	//增加新 item
 	const handleAddItemButtonClick = () => {
-		const itemId = uuid();
-		setFormData([...formData, { id: itemId, content: {} }]);
+		dispatch(addItem({ blockName: "Education" }));
 	};
 
 	//dnd後，進行 state 管理
@@ -83,33 +75,33 @@ export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 			//如果拖曳至預設範圍外則 return
 			if (!result.destination) return;
 			//取出目前 formData 陣列 (item 順序)
-			const items = Array.from(formData);
+			const items = Array.from(itemData);
 			//使用 splice(deletedIndex, deleteCount) 取出從陣列移除的元素
 			const [reorderItem] = items.splice(result.source.index, 1);
 			//使用 splice(deletedIndex, deleteCount, newElement) 取出從陣列插入元素
 			items.splice(result.destination.index, 0, reorderItem);
-			setFormData(items);
-		},
-		[formData]
-	);
 
-	useEffect(() => {
-		let data = {
-			block: "Education",
-			content: { formData, blockTitle },
-		};
-		handleInputData(data);
-	}, [formData, blockTitle]);
+			dispatch(
+				updateItemOrder({
+					blockName: "Education",
+					newItemOrder: items,
+				})
+			);
+		},
+		[itemData, dispatch]
+	);
 
 	return (
 		<BlockContainer>
 			<TitleBlock
-				title={{ blockTitle, setBlockTitle }}
+				blockTitle={blockTitle}
+				blockName="Education"
 				dragHandleProps={dragHandleProps}
 				hideDraggableIcon={false}
 			/>
 			<BlockDescription>
-				盡可能的展現你豐富且多樣的學習歷程，無論是專業知識或專案研究，都能讓找尋工作更佳順利！
+				A varied education on your resume sums up the value that your
+				learnings and background will bring to job.
 			</BlockDescription>
 			<DragDropContext onDragEnd={handleOnDragEnd}>
 				<Droppable droppableId="educationItems">
@@ -118,7 +110,7 @@ export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 							ref={provided.innerRef}
 							{...provided.droppableProps}>
 							<MainBlock>
-								{formData.map((item, index) => (
+								{itemData.map((item, index) => (
 									<Draggable
 										key={item.id}
 										draggableId={item.id}
@@ -128,15 +120,7 @@ export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 												ref={provided.innerRef}
 												{...provided.draggableProps}>
 												<Item
-													itemId={item.id}
-													formData={formData}
-													setFormData={setFormData}
-													handleItemDataUpdate={
-														handleItemDataUpdate
-													}
-													handleItemDelete={
-														handleItemDelete
-													}
+													item={item}
 													dragHandleProps={{
 														...provided.dragHandleProps,
 													}}
@@ -153,7 +137,7 @@ export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 			</DragDropContext>
 			<AddItemButton onClick={handleAddItemButtonClick}>
 				<AddItemIcon src="/images/icon/plus_blue.png" />
-				<AddItemText>新增學歷</AddItemText>
+				<AddItemText>Add one more education</AddItemText>
 			</AddItemButton>
 		</BlockContainer>
 	);

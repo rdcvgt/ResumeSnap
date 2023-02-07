@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+
+import { updateInputData } from "../../../redux/slices/formDataSlice";
 import InputEditor from "../utils/Editor";
-import PropTypes from "prop-types";
 import TitleBlock from "../utils/TitleBlock";
 
 const BlockContainer = styled.div`
@@ -19,69 +21,44 @@ const BlockDescription = styled.div`
 
 const LongInputBox = styled.div``;
 
-ProfessionalSummary.propTypes = {
-	handleInputData: PropTypes.func,
-};
-
-export default function ProfessionalSummary({ handleInputData }) {
-	const [professionalSummary, setProfessionalSummary] = useState({
-		blockTitle: null,
-		inputHtml: null,
-	});
-	const [blockTitle, setBlockTitle] = useState("個人簡介");
-	const [timer, setTimer] = useState(null);
-	const [inputHtml, setInputHtml] = useState(null);
-
-	//從子組件取得 inputHtml，並儲存 state
+export default function ProfessionalSummary() {
+	const dispatch = useDispatch();
 	const handleEditorInput = (inputHtml) => {
-		setInputHtml(inputHtml);
+		dispatch(
+			updateInputData({
+				blockName: "ProfessionalSummary",
+				inputTitle: "inputHtml",
+				inputValue: inputHtml,
+			})
+		);
 	};
 
-	//當inputHtml 變動時呼叫 updateInputData
-	useEffect(() => {
-		updateInputData("inputHtml", inputHtml);
-	}, [inputHtml]);
-
-	//若使用者閒置輸入超過 1 秒，則 setProfessionalSummary
-	const updateInputData = (inputName, state) => {
-		clearTimeout(timer);
-		const newTimer = setTimeout(() => {
-			//保留先前已儲存的其他 state 資料，只改變有變動的項目
-			setProfessionalSummary((preData) => ({
-				...preData,
-				[inputName]: state,
-			}));
-		}, 300);
-		setTimer(newTimer);
-	};
-
-	//表格項目有變動 state，則呼叫 updateInputData
-	useEffect(() => {
-		updateInputData("blockTitle", blockTitle);
-	}, [blockTitle]);
-
-	//當 professionalSummary 變動時，呼叫父層組件函式 handleInputData
-	useEffect(() => {
-		let data = {
-			block: "ProfessionalSummary",
-			content: professionalSummary,
-		};
-		handleInputData(data);
-	}, [professionalSummary]);
+	const [blockData] = useSelector((state) =>
+		state.formData.formBlocks.filter(
+			(block) => block.block === "ProfessionalSummary"
+		)
+	);
+	const blockTitle = blockData.content.blockTitle || "";
+	const inputData = blockData.content.inputData;
+	const inputHtml = inputData.inputHtml;
 
 	return (
 		<BlockContainer>
 			<TitleBlock
-				title={{ blockTitle, setBlockTitle }}
+				blockTitle={blockTitle}
+				blockName="ProfessionalSummary"
 				hideDraggableIcon={true}
 			/>
 			<BlockDescription>
-				可以寫上 2 到 4 句話讓查看履歷的人對你產生興趣，
-				像是闡述你的個人特質或過去經驗，
-				最重要的是提及你的亮眼成就與專業技能
+				Write 2-4 short & energetic sentences to interest the reader!
+				Mention your role, experience & most importantly - your biggest
+				achievements, best qualities and skills.
 			</BlockDescription>
 			<LongInputBox>
-				<InputEditor handleEditorInput={handleEditorInput} />
+				<InputEditor
+					handleEditorInput={handleEditorInput}
+					inputHtml={inputHtml}
+				/>
 			</LongInputBox>
 		</BlockContainer>
 	);

@@ -1,6 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+
+import {
+	deleteItem,
+	updateItemData,
+} from "../../../../redux/slices/formDataSlice";
 import InputEditor from "../../utils/Editor";
 
 const Root = styled.div`
@@ -173,47 +179,66 @@ const MoreInput = styled.div`
 `;
 
 Item.propTypes = {
-	itemId: PropTypes.string,
-	handleItemDataUpdate: PropTypes.func,
-	handleItemDelete: PropTypes.func,
+	item: PropTypes.object,
 	dragHandleProps: PropTypes.object,
 };
 
-export default function Item({
-	itemId,
-	handleItemDataUpdate,
-	handleItemDelete,
-	dragHandleProps,
-}) {
+export default function Item({ item, dragHandleProps }) {
 	const [isClick, setIsClick] = useState(true);
 	const [isHover, setIsHover] = useState(false);
-	const [timer, setTimer] = useState(null);
-	const [itemData, setItemData] = useState({});
+	const dispatch = useDispatch();
 
+	//刪除 item
 	const handleDeleteIconClick = () => {
-		handleItemDelete(itemId);
+		dispatch(deleteItem({ blockName: "Education", itemId: item.id }));
 	};
 
+	//更新 item data
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		let newValue = value;
 		if (name === "startDate" || name === "endDate") {
 			newValue = value.replace("-", " / ");
 		}
-		clearTimeout(timer);
-		const newTimer = setTimeout(() => {
-			setItemData({ ...itemData, [name]: newValue });
-		}, 300);
-		setTimer(newTimer);
+		dispatch(
+			updateItemData({
+				blockName: "Education",
+				itemId: item.id,
+				itemInputTitle: name,
+				itemInputValue: newValue,
+			})
+		);
 	};
 
+	//更新 item description
 	const handleEditorInput = (inputHtml) => {
-		setItemData({ ...itemData, description: inputHtml });
+		dispatch(
+			updateItemData({
+				blockName: "Education",
+				itemId: item.id,
+				itemInputTitle: "description",
+				itemInputValue: inputHtml,
+			})
+		);
 	};
 
-	useEffect(() => {
-		handleItemDataUpdate({ id: itemId, content: itemData });
-	}, [itemData]);
+	const school = item.content.school || "";
+	const degree = item.content.degree || "";
+	const city = item.content.city || "";
+	const description = item.content.description || "";
+	let startDate = item.content.startDate;
+	let endDate = item.content.endDate;
+	if (startDate) {
+		startDate = startDate.replace(" / ", "-");
+	} else {
+		startDate = "";
+	}
+
+	if (endDate) {
+		endDate = endDate.replace(" / ", "-");
+	} else {
+		endDate = "";
+	}
 
 	return (
 		<Root>
@@ -235,15 +260,15 @@ export default function Item({
 				}}>
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
-						{itemData.school}
-						{itemData.school && itemData.degree ? " - " : ""}
-						{itemData.degree}
-						{!itemData.school && !itemData.degree && "尚未填寫名稱"}
+						{school}
+						{school && degree ? " - " : ""}
+						{degree}
+						{!school && !degree && "(Not Specified)"}
 					</ItemTitle>
 					<ItemDuration>
-						{itemData.startDate}
-						{itemData.startDate && itemData.endDate ? " - " : ""}
-						{itemData.endDate}
+						{startDate}
+						{startDate && endDate ? " - " : ""}
+						{endDate}
 					</ItemDuration>
 				</ItemInfo>
 				<ItemArrowIcon
@@ -258,45 +283,54 @@ export default function Item({
 				<form>
 					<BlockRow>
 						<LeftCol>
-							<InputTitle>學校名稱</InputTitle>
+							<InputTitle>School</InputTitle>
 							<ShortInput
 								type="text"
 								name="school"
+								value={school}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
-							<InputTitle>科系名稱</InputTitle>
+							<InputTitle>Degree</InputTitle>
 							<ShortInput
 								type="text"
 								name="degree"
+								value={degree}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>
 					<BlockRow>
 						<LeftCol>
-							<InputTitle>就讀期間</InputTitle>
+							<InputTitle>Start & End Date</InputTitle>
 							<DateBlock>
 								<DateInput
 									type="month"
 									name="startDate"
+									value={startDate}
 									onChange={handleInputChange}></DateInput>
 								<DateInput
 									type="month"
 									name="endDate"
+									value={endDate}
 									onChange={handleInputChange}></DateInput>
 							</DateBlock>
 						</LeftCol>
 						<RightCol>
-							<InputTitle>學校地區</InputTitle>
+							<InputTitle>City</InputTitle>
 							<ShortInput
 								type="text"
 								name="city"
+								value={city}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>
 					<MoreInput isClick={isClick}></MoreInput>
 					<LongInputBox>
-						<InputEditor handleEditorInput={handleEditorInput} />
+						<InputTitle>Description</InputTitle>
+						<InputEditor
+							handleEditorInput={handleEditorInput}
+							inputHtml={description}
+						/>
 					</LongInputBox>
 				</form>
 			</MoreInput>

@@ -44,7 +44,9 @@ export default function EditPage() {
 		{ block: "Education", content: {}, id: uuid() },
 		{ block: "EmploymentHistory", content: {}, id: uuid() },
 	]);
-	const [isChoosingTemp, setIsChoosingTemp] = useState(true);
+
+	console.log(inputData);
+	const [isChoosingTemp, setIsChoosingTemp] = useState(false);
 	const [isDownloading, setIsDownloading] = useState(false);
 	const [tempColors, setTempColors] = useState([]);
 	const [resumeStyle, setResumeStyle] = useState({

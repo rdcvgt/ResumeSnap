@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import "@wangeditor/editor/dist/css/style.css";
 import { i18nChangeLanguage } from "@wangeditor/editor";
 import { Editor, Toolbar } from "@wangeditor/editor-for-react";
-import PropTypes from "prop-types";
 
 const EditorBlock = styled.div`
 	z-index: 100;
-	margin-top: "15px";
 	padding-top: 5px;
 	border-radius: 5px;
 	background-color: ${(props) => props.theme.color.neutral[10]};
@@ -16,18 +15,31 @@ const EditorBlock = styled.div`
 
 InputEditor.propTypes = {
 	handleEditorInput: PropTypes.func,
+	inputHtml: PropTypes.string,
 };
 
-function InputEditor({ handleEditorInput }) {
-	const [editor, setEditor] = useState(null); // 存储 editor 实例
-	const [html, setHtml] = useState(null);
-	const [timer, setTimer] = useState(null);
+function InputEditor({ handleEditorInput, inputHtml }) {
+	const [editor, setEditor] = useState(null); // 存储 editor
+	const [html, setHtml] = useState(inputHtml);
 
+	// 即時銷毀 editor
+	useEffect(() => {
+		return () => {
+			if (editor == null) return;
+			editor.destroy();
+			setEditor(null);
+		};
+	}, [editor]);
+
+	//回傳父層 html
+	useEffect(() => {
+		handleEditorInput(html);
+	}, [html]);
+
+	//編輯器配置
 	i18nChangeLanguage("en");
-
 	const toolbarConfig = {};
 	toolbarConfig.toolbarKeys = [
-		// 菜单 key
 		"bold",
 		"italic",
 		"underline",
@@ -49,23 +61,6 @@ function InputEditor({ handleEditorInput }) {
 			editor.insertText(text);
 		},
 	};
-
-	// 及时销毁 editor
-	useEffect(() => {
-		return () => {
-			if (editor == null) return;
-			editor.destroy();
-			setEditor(null);
-		};
-	}, [editor]);
-
-	useEffect(() => {
-		clearTimeout(timer);
-		const newTimer = setTimeout(() => {
-			handleEditorInput(html);
-		}, 1000);
-		setTimer(newTimer);
-	}, [html]);
 
 	return (
 		<>

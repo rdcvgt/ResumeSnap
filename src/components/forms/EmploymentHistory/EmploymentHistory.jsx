@@ -1,10 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useSelector, useDispatch } from "react-redux";
+
+import { addItem, updateItemOrder } from "../../../redux/slices/formDataSlice";
 import TitleBlock from "../utils/TitleBlock";
 import Item from "./Item";
-import uuid from "react-uuid";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -49,61 +51,60 @@ const AddItemText = styled.div`
 	color: ${(props) => props.theme.color.blue[50]};
 `;
 
-PersonalDetails.propTypes = {
-	handleInputData: PropTypes.func,
+EmploymentHistory.propTypes = {
 	dragHandleProps: PropTypes.object,
 };
 
-export default function PersonalDetails({ handleInputData, dragHandleProps }) {
-	const [blockTitle, setBlockTitle] = useState("工作經歷");
-	const [formData, setFormData] = useState([]);
+export default function EmploymentHistory({ dragHandleProps }) {
+	const dispatch = useDispatch();
+	const [blockData] = useSelector((state) =>
+		state.formData.formBlocks.filter(
+			(block) => block.block === "EmploymentHistory"
+		)
+	);
 
-	const handleItemDataUpdate = (item) => {
-		let newFormData = [...formData];
-		const index = newFormData.findIndex((i) => i.id === item.id);
-		newFormData[index] = { ...newFormData[index], content: item.content };
-		setFormData(newFormData);
-	};
+	const blockTitle = blockData.content.blockTitle || "";
+	const itemData = blockData.content.itemData;
 
-	const handleItemDelete = (itemId) => {
-		setFormData(formData.filter((item) => item.id !== itemId));
-	};
-
+	//增加新 item
 	const handleAddItemButtonClick = () => {
-		const itemId = uuid();
-		setFormData([...formData, { id: itemId, content: {} }]);
+		dispatch(addItem({ blockName: "EmploymentHistory" }));
 	};
 
 	//dnd後，進行 state 管理
-	const handleOnDragEnd = (result) => {
-		//如果拖曳至預設範圍外則 return
-		if (!result.destination) return;
-		//取出目前 formData 陣列 (item 順序)
-		const items = Array.from(formData);
-		//使用 splice(deletedIndex, deleteCount) 取出從陣列移除的元素
-		const [reorderItem] = items.splice(result.source.index, 1);
-		//使用 splice(deletedIndex, deleteCount, newElement) 取出從陣列插入元素
-		items.splice(result.destination.index, 0, reorderItem);
-		setFormData(items);
-	};
+	const handleOnDragEnd = useCallback(
+		(result) => {
+			//如果拖曳至預設範圍外則 return
+			if (!result.destination) return;
+			//取出目前 formData 陣列 (item 順序)
+			const items = Array.from(itemData);
+			//使用 splice(deletedIndex, deleteCount) 取出從陣列移除的元素
+			const [reorderItem] = items.splice(result.source.index, 1);
+			//使用 splice(deletedIndex, deleteCount, newElement) 取出從陣列插入元素
+			items.splice(result.destination.index, 0, reorderItem);
 
-	useEffect(() => {
-		let data = {
-			block: "EmploymentHistory",
-			content: { formData, blockTitle },
-		};
-		handleInputData(data);
-	}, [formData, blockTitle]);
+			dispatch(
+				updateItemOrder({
+					blockName: "EmploymentHistory",
+					newItemOrder: items,
+				})
+			);
+		},
+		[itemData, dispatch]
+	);
 
 	return (
 		<BlockContainer>
 			<TitleBlock
-				title={{ blockTitle, setBlockTitle }}
+				blockTitle={blockTitle}
+				blockName="EmploymentHistory"
 				dragHandleProps={dragHandleProps}
 				hideDraggableIcon={false}
 			/>
 			<BlockDescription>
-				寫下最近十年內相關的工作經驗，並將你過去的成就以列點的方式呈現，若能使用數據來量化成就效果會更好
+				Show your relevant experience (last 10 years). Use bullet points
+				to note your achievements, if possible - use numbers/facts
+				(Achieved X, measured by Y, by doing Z).
 			</BlockDescription>
 			<DragDropContext onDragEnd={handleOnDragEnd}>
 				<Droppable droppableId="employmentHistoryItems">
@@ -112,7 +113,7 @@ export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 							ref={provided.innerRef}
 							{...provided.droppableProps}>
 							<MainBlock>
-								{formData.map((item, index) => (
+								{itemData.map((item, index) => (
 									<Draggable
 										key={item.id}
 										draggableId={item.id}
@@ -122,13 +123,7 @@ export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 												ref={provided.innerRef}
 												{...provided.draggableProps}>
 												<Item
-													itemId={item.id}
-													handleItemDataUpdate={
-														handleItemDataUpdate
-													}
-													handleItemDelete={
-														handleItemDelete
-													}
+													item={item}
 													dragHandleProps={{
 														...provided.dragHandleProps,
 													}}
@@ -145,7 +140,7 @@ export default function PersonalDetails({ handleInputData, dragHandleProps }) {
 			</DragDropContext>
 			<AddItemButton onClick={handleAddItemButtonClick}>
 				<AddItemIcon src="/images/icon/plus_blue.png" />
-				<AddItemText>新增工作經歷</AddItemText>
+				<AddItemText>Add one more employment</AddItemText>
 			</AddItemButton>
 		</BlockContainer>
 	);
