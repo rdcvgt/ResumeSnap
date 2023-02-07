@@ -4,7 +4,10 @@ import PropTypes from "prop-types";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateBlockOrder } from "../../../redux/slices/formDataSlice";
+import {
+	updateBlockOrder,
+	updateResumeName,
+} from "../../../redux/slices/formDataSlice";
 import PersonalDetails from "../../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../../components/forms/ProfessionalSummary";
 import Education from "../../../components/forms/Education";
@@ -99,17 +102,18 @@ ResumeFormArea.propTypes = {
 };
 
 export default function ResumeFormArea({ isChoosingTemp }) {
-	const [resumeTitle, setResumeTitle] = useState("我的第一份履歷");
 	const resumeTitleRef = useRef(null);
+	const dispatch = useDispatch();
 
+	const resumeName = useSelector((state) => state.formData.resumeName);
 	const handleResumeTitleChange = (e) => {
-		setResumeTitle(e.target.value);
+		dispatch(updateResumeName({ resumeName: e.target.value }));
 	};
+
 	const handleResumeTitleIconClick = () => {
 		resumeTitleRef.current.select();
 	};
 
-	const dispatch = useDispatch();
 	const formBlocks = useSelector((state) => state.formData.formBlocks);
 	const handleOnDragEndBlock = useCallback(
 		(result) => {
@@ -119,7 +123,7 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 			blocks.splice(result.destination.index, 0, reorderBlock);
 			dispatch(updateBlockOrder({ newBlockOrder: blocks }));
 		},
-		[formBlocks]
+		[formBlocks, dispatch]
 	);
 
 	return (
@@ -129,7 +133,7 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 					<TitleBlock>
 						<ResumeTitle
 							type="text"
-							value={resumeTitle}
+							value={resumeName}
 							onChange={handleResumeTitleChange}
 							ref={resumeTitleRef}
 						/>

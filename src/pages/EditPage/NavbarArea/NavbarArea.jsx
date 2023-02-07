@@ -1,6 +1,9 @@
-import React, { useState, useRef, useCallback } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+
+import { updateTemplateColor } from "../../../redux/slices/formDataSlice";
 
 const NavBar = styled.div`
 	width: 100%;
@@ -22,7 +25,7 @@ const BackToEditorButton = styled.div`
 	justify-content: center;
 	${(props) => props.theme.font.content};
 	color: #fff;
-	width: 120px;
+	width: 130px;
 	height: 40px;
 	border-radius: 20px;
 	cursor: pointer;
@@ -100,7 +103,7 @@ const OutputButtonArea = styled.div`
 `;
 
 const DownloadPdfButton = styled.div`
-	width: 120px;
+	width: 130px;
 	height: 40px;
 	border-radius: 5px;
 	cursor: ${(props) =>
@@ -124,7 +127,7 @@ const DownloadPdfButton = styled.div`
 `;
 
 const ShareLinkButton = styled.div`
-	width: 120px;
+	width: 130px;
 	height: 40px;
 	border-radius: 5px;
 	cursor: pointer;
@@ -143,9 +146,12 @@ const ShareLinkButton = styled.div`
 	}
 `;
 
-const Colors = ({ setResumeStyle, tempColors, resumeStyle }) => {
+const Colors = ({ tempColors }) => {
+	const currentColor = useSelector((state) => state.formData.color);
+	const dispatch = useDispatch();
+
 	return tempColors.map((color) => {
-		const status = color === resumeStyle.color ? true : false;
+		const status = color === currentColor ? true : false;
 
 		return (
 			<Color
@@ -153,7 +159,7 @@ const Colors = ({ setResumeStyle, tempColors, resumeStyle }) => {
 				color={color}
 				status={status}
 				onClick={() => {
-					setResumeStyle((prev) => ({ ...prev, color }));
+					dispatch(updateTemplateColor({ color }));
 				}}>
 				<CurrentColorIcon
 					status={status}
@@ -168,8 +174,6 @@ NavbarArea.propTypes = {
 	handleDownloadPdf: PropTypes.func,
 	isDownloading: PropTypes.bool,
 	setIsChoosingTemp: PropTypes.func,
-	setResumeStyle: PropTypes.func,
-	resumeStyle: PropTypes.object,
 	tempColors: PropTypes.array,
 };
 
@@ -177,8 +181,6 @@ export default function NavbarArea({
 	handleDownloadPdf,
 	isDownloading,
 	setIsChoosingTemp,
-	setResumeStyle,
-	resumeStyle,
 	tempColors,
 }) {
 	return (
@@ -188,16 +190,10 @@ export default function NavbarArea({
 					setIsChoosingTemp(false);
 				}}>
 				<ButtonIcon src="/images/icon/left.png" />
-				返回編輯器
+				Back to editor
 			</BackToEditorButton>
 			<SelectColorArea>
-				{tempColors.length === 5 && (
-					<Colors
-						setResumeStyle={setResumeStyle}
-						resumeStyle={resumeStyle}
-						tempColors={tempColors}
-					/>
-				)}
+				{tempColors.length === 5 && <Colors tempColors={tempColors} />}
 				{tempColors.length === 1 && (
 					<NoColor>
 						<Color color={"#000"} status={true}>
@@ -225,10 +221,12 @@ export default function NavbarArea({
 				<DownloadPdfButton
 					onClick={handleDownloadPdf}
 					isDownloading={isDownloading}>
-					{isDownloading === false ? "下載 PDF" : "下載中..."}
+					{isDownloading === false
+						? "Download PDF"
+						: "Downloading..."}
 				</DownloadPdfButton>
 				<ShareLinkButton onClick={handleDownloadPdf}>
-					分享履歷連結
+					Share Link
 				</ShareLinkButton>
 			</OutputButtonArea>
 		</NavBar>

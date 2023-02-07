@@ -9,7 +9,6 @@ export default function usePagination(
 	useEffect(() => {
 		//確認選取到 renderResume 元素
 		const renderResume = renderContainerRef.current;
-		console.log(renderResume, 1);
 		if (!renderResume) return;
 
 		//確認 renderResume 中已有子節點

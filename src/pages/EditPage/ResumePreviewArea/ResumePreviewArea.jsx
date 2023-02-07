@@ -1,12 +1,8 @@
-import React, {
-	useState,
-	useEffect,
-	useContext,
-	createContext,
-	useMemo,
-} from "react";
+import React, { useState, useContext, createContext, useMemo } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+
 import London from "../../../components/template/London";
 import Sydney from "../../../components/template/Sydney";
 
@@ -158,7 +154,7 @@ const ResumePreviewBottomArea = styled.div`
 `;
 
 const SelectTemplateButtonArea = styled.div`
-	width: 150px;
+	width: 180px;
 	height: 40px;
 	border-radius: 20px;
 	cursor: pointer;
@@ -195,7 +191,7 @@ const OutputButtonArea = styled.div`
 `;
 
 const DownloadPdfButton = styled.div`
-	width: 120px;
+	width: 130px;
 	height: 40px;
 	border-radius: 5px;
 	cursor: ${(props) =>
@@ -219,7 +215,7 @@ const DownloadPdfButton = styled.div`
 `;
 
 const ShareLinkButton = styled.div`
-	width: 120px;
+	width: 130px;
 	height: 40px;
 	border-radius: 5px;
 	cursor: pointer;
@@ -239,14 +235,10 @@ const ShareLinkButton = styled.div`
 `;
 
 ResumePreviewArea.propTypes = {
-	inputData: PropTypes.array,
-	isChoosingTemp: PropTypes.bool,
-	setIsChoosingTemp: PropTypes.func,
+	choosingTempState: PropTypes.object,
 	handleGetDownLoadPdfFunc: PropTypes.func,
 	handleDownloadPdf: PropTypes.func,
-	isDownloading: PropTypes.bool,
-	setIsDownloading: PropTypes.func,
-	resumeStyle: PropTypes.object,
+	isDownloadingState: PropTypes.object,
 };
 
 ResumePreviewTopFunc.propTypes = {
@@ -303,7 +295,7 @@ function ResumePreviewBottomFunc({
 					onClick={() => {
 						setIsChoosingTemp(true);
 					}}>
-					選擇履歷模板
+					Select Template
 				</SelectTemplateButton>
 			</SelectTemplateButtonArea>
 
@@ -311,10 +303,12 @@ function ResumePreviewBottomFunc({
 				<DownloadPdfButton
 					onClick={handleDownloadPdf}
 					isDownloading={isDownloading}>
-					{isDownloading === false ? "下載 PDF" : "下載中..."}
+					{isDownloading === false
+						? "Download PDF"
+						: "Downloading..."}
 				</DownloadPdfButton>
 				<ShareLinkButton onClick={handleDownloadPdf}>
-					分享履歷連結
+					Share Link
 				</ShareLinkButton>
 			</OutputButtonArea>
 		</ResumePreviewBottomArea>
@@ -328,34 +322,32 @@ const templates = {
 };
 
 export default function ResumePreviewArea({
-	isChoosingTemp,
-	setIsChoosingTemp,
+	choosingTempState,
 	handleGetDownLoadPdfFunc,
 	handleDownloadPdf,
-	isDownloading,
-	setIsDownloading,
-	resumeStyle,
+	isDownloadingState,
 }) {
+	const { isChoosingTemp, setIsChoosingTemp } = choosingTempState;
+	const { isDownloading, setIsDownloading } = isDownloadingState;
+
 	const [totalPage, setTotalPage] = useState(1);
 	const [currentPage, setCurrentPage] = useState(1);
-
 	const getTotalPage = (count) => {
 		setTotalPage(count);
 	};
-
 	const handleNextPageClick = () => {
 		if (currentPage === totalPage) return;
 		setCurrentPage((prevPage) => prevPage + 1);
 	};
-
 	const handlePrePageClick = () => {
 		if (currentPage === 1) return;
 		setCurrentPage((prevPage) => prevPage - 1);
 	};
 
+	const currentTemplate = useSelector((state) => state.formData.template);
 	const Template = useMemo(() => {
-		return templates[resumeStyle.template];
-	}, [resumeStyle]);
+		return templates[currentTemplate];
+	}, [currentTemplate]);
 
 	return (
 		<>
@@ -376,7 +368,6 @@ export default function ResumePreviewArea({
 								getTotalPage={getTotalPage}
 								currentPage={currentPage}
 								setIsDownloading={setIsDownloading}
-								resumeStyle={resumeStyle}
 							/>
 						</ResumePreview>
 						{isChoosingTemp && <BottomSpace></BottomSpace>}

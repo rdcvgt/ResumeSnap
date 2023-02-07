@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import ResumePreviewArea from "./ResumePreviewArea";
 import ResumeFormArea from "./ResumeFormArea";
 import ResumeTemplateArea from "./ResumeTemplateArea";
 import NavbarArea from "./NavbarArea";
-
-import uuid from "react-uuid";
 
 // import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
@@ -41,15 +39,11 @@ export default function EditPage() {
 	const [isChoosingTemp, setIsChoosingTemp] = useState(false);
 	const [isDownloading, setIsDownloading] = useState(false);
 	const [tempColors, setTempColors] = useState([]);
-	const [resumeStyle, setResumeStyle] = useState({
-		template: "London",
-		color: "#ccc",
-	});
 
+	const template = useSelector((state) => state.formData.template);
 	useEffect(() => {
-		const temp = resumeStyle.template;
-		setTempColors(templatesColorOrder[temp]);
-	}, [resumeStyle]);
+		setTempColors(templatesColorOrder[template]);
+	}, [template]);
 
 	let downloadPdfFunc = null;
 	const handleGetDownLoadPdfFunc = (func) => {
@@ -71,28 +65,18 @@ export default function EditPage() {
 					handleDownloadPdf={handleDownloadPdf}
 					isDownloading={isDownloading}
 					setIsChoosingTemp={setIsChoosingTemp}
-					setResumeStyle={setResumeStyle}
-					resumeStyle={resumeStyle}
 					tempColors={tempColors}
 				/>
 			)}
 			<Body isChoosingTemp={isChoosingTemp}>
 				<ResumeFormArea isChoosingTemp={isChoosingTemp} />
 
-				{isChoosingTemp && (
-					<ResumeTemplateArea
-						setResumeStyle={setResumeStyle}
-						resumeStyle={resumeStyle}
-					/>
-				)}
+				{isChoosingTemp && <ResumeTemplateArea />}
 				<ResumePreviewArea
-					isChoosingTemp={isChoosingTemp}
-					setIsChoosingTemp={setIsChoosingTemp}
+					choosingTempState={{ isChoosingTemp, setIsChoosingTemp }}
 					handleGetDownLoadPdfFunc={handleGetDownLoadPdfFunc}
 					handleDownloadPdf={handleDownloadPdf}
-					isDownloading={isDownloading}
-					setIsDownloading={setIsDownloading}
-					resumeStyle={resumeStyle}
+					isDownloadingState={{ isDownloading, setIsDownloading }}
 				/>
 			</Body>
 		</Root>

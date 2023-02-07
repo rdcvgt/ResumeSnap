@@ -4,11 +4,14 @@ import uuid from "react-uuid";
 export const formDataSlice = createSlice({
 	name: "formData",
 	initialState: {
+		resumeName: "First Resume",
+		template: "London",
+		color: null,
 		formBlocks: [
 			{
 				block: "PersonalDetails",
 				content: {
-					blockTitle: "個人資訊",
+					blockTitle: "Personal Details",
 					inputData: {},
 				},
 				id: uuid(),
@@ -16,24 +19,37 @@ export const formDataSlice = createSlice({
 			{
 				block: "ProfessionalSummary",
 				content: {
-					blockTitle: "個人簡介",
+					blockTitle: "Profile",
 					inputData: {},
 				},
 				id: uuid(),
 			},
 			{
 				block: "Education",
-				content: { blockTitle: "學歷", itemData: [] },
+				content: { blockTitle: "Education", itemData: [] },
 				id: uuid(),
 			},
 			{
 				block: "EmploymentHistory",
-				content: { blockTitle: "工作經歷", itemData: [] },
+				content: { blockTitle: "Employment History", itemData: [] },
 				id: uuid(),
 			},
 		],
 	},
 	reducers: {
+		updateResumeName: (state, action) => {
+			const { resumeName } = action.payload;
+			state.resumeName = resumeName;
+		},
+		updateTemplate: (state, action) => {
+			const { templateName } = action.payload;
+			state.template = templateName;
+		},
+		updateTemplateColor: (state, action) => {
+			const { color } = action.payload;
+			state.color = color;
+		},
+
 		updateBlockTitle: (state, action) => {
 			const { blockName, blockTitle } = action.payload;
 			const index = state.formBlocks.findIndex(
@@ -52,6 +68,7 @@ export const formDataSlice = createSlice({
 				[inputTitle]: inputValue,
 			};
 		},
+
 		addItem: (state, action) => {
 			const { blockName } = action.payload;
 			const index = state.formBlocks.findIndex(
@@ -95,6 +112,7 @@ export const formDataSlice = createSlice({
 				[itemInputTitle]: itemInputValue,
 			};
 		},
+
 		updateBlockOrder: (state, action) => {
 			const { newBlockOrder } = action.payload;
 			state.formBlocks = newBlockOrder;
@@ -106,14 +124,13 @@ export const formDataSlice = createSlice({
 			);
 			state.formBlocks[index].content.itemData = newItemOrder;
 		},
-
-		incrementByAmount: (state, action) => {
-			state.value += action.payload;
-		},
 	},
 });
 
 export const {
+	updateResumeName,
+	updateTemplate,
+	updateTemplateColor,
 	updateBlockTitle,
 	updateInputData,
 	addItem,
@@ -121,7 +138,6 @@ export const {
 	updateItemData,
 	updateBlockOrder,
 	updateItemOrder,
-	incrementByAmount,
 } = formDataSlice.actions;
 
 export default formDataSlice.reducer;

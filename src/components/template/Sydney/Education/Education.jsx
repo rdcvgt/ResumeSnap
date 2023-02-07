@@ -117,16 +117,14 @@ const handleItemData = (item, index) => {
 };
 
 Education.propTypes = {
-	data: PropTypes.object,
-	blockId: PropTypes.string,
-	handleBlockHeight: PropTypes.func,
+	content: PropTypes.object,
 };
 
-export default function Education({ data }) {
-	const dataLength = Object.keys(data).length;
+export default function Education({ content }) {
+	const dataLength = content.itemData.length;
 	if (dataLength === 0) return;
-	const blockTitle = data.blockTitle;
-	const itemArr = data.formData;
+	const blockTitle = content.blockTitle;
+	const itemArr = content.itemData;
 
 	return (
 		<>

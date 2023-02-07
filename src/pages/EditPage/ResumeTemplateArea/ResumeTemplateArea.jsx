@@ -1,6 +1,11 @@
-import React, { useState, useRef, useCallback } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+
+import {
+	updateTemplate,
+	updateTemplateColor,
+} from "../../../redux/slices/formDataSlice";
 
 const ResumeTempBackground = styled.div`
 	width: 15%;
@@ -89,27 +94,29 @@ const Name = styled.div`
 	color: #fff;
 `;
 
-ResumeTemplateArea.propTypes = {
-	setResumeStyle: PropTypes.func,
-	resumeStyle: PropTypes.object,
-};
-
 const templateOrder = [
 	{ template: "Sydney", color: "#082A4D" },
 	{ template: "London", color: null },
 ];
 
-const RenderTemplate = ({ setResumeStyle, resumeStyle }) => {
+const RenderTemplate = () => {
+	const currentTemplate = useSelector((state) => state.formData.template);
+	const dispatch = useDispatch();
+
 	return templateOrder.map((template, index) => {
-		const status =
-			template.template === resumeStyle.template ? true : false;
+		const status = template.template === currentTemplate ? true : false;
 
 		return (
 			<Template key={index}>
 				<Preview
 					status={status}
 					onClick={() => {
-						setResumeStyle(template);
+						dispatch(
+							updateTemplate({ templateName: template.template })
+						);
+						dispatch(
+							updateTemplateColor({ color: template.color })
+						);
 					}}>
 					<CurrentTemp status={status}>
 						<CurrenTempIcon src="/images/icon/check.png" />
@@ -121,15 +128,12 @@ const RenderTemplate = ({ setResumeStyle, resumeStyle }) => {
 	});
 };
 
-export default function ResumeTemplateArea({ setResumeStyle, resumeStyle }) {
+export default function ResumeTemplateArea() {
 	return (
 		<>
 			<ResumeTempBackground>
 				<TempCollectionsArea>
-					<RenderTemplate
-						setResumeStyle={setResumeStyle}
-						resumeStyle={resumeStyle}
-					/>
+					<RenderTemplate />
 				</TempCollectionsArea>
 			</ResumeTempBackground>
 		</>

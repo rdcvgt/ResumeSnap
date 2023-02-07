@@ -60,7 +60,7 @@ const Description = styled.div`
 `;
 
 EmploymentHistory.propTypes = {
-	data: PropTypes.object,
+	content: PropTypes.object,
 };
 
 const handleItemData = (item, index) => {
@@ -120,11 +120,11 @@ const handleItemData = (item, index) => {
 	);
 };
 
-export default function EmploymentHistory({ data }) {
-	const dataLength = Object.keys(data).length;
+export default function EmploymentHistory({ content }) {
+	const dataLength = content.itemData.length;
 	if (dataLength === 0) return;
-	const blockTitle = data.blockTitle;
-	const itemArr = data.formData;
+	const blockTitle = content.blockTitle;
+	const itemArr = content.itemData;
 
 	return (
 		<>
