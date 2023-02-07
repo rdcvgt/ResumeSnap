@@ -73,23 +73,22 @@ const Nationality = styled.div`
 `;
 
 PersonalDetails.propTypes = {
-	data: PropTypes.object,
-	blockId: PropTypes.string,
-	handleBlockHeight: PropTypes.func,
+	content: PropTypes.object,
 };
 
-export default function PersonalDetails({ data }) {
-	let address = data?.formData?.address;
-	let city = data?.formData?.city;
-	let country = data?.formData?.country;
-	let drivingLicense = data?.formData?.drivingLicense;
-	let email = data?.formData?.email;
-	let firstName = data?.formData?.firstName;
-	let lastName = data?.formData?.lastName;
-	let nationality = data?.formData?.nationality;
-	let phone = data?.formData?.phone;
-	let position = data?.formData?.position;
-	let postalCode = data?.formData?.postalCode;
+export default function PersonalDetails({ content }) {
+	const inputData = content.inputData;
+	let address = inputData?.address;
+	let city = inputData?.city;
+	let country = inputData?.country;
+	let drivingLicense = inputData?.drivingLicense;
+	let email = inputData?.email;
+	let firstName = inputData?.firstName;
+	let lastName = inputData?.lastName;
+	let nationality = inputData?.nationality;
+	let phone = inputData?.phone;
+	let position = inputData?.position;
+	let postalCode = inputData?.postalCode;
 	const space = "\u00A0";
 
 	return (

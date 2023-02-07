@@ -3,12 +3,13 @@ import { useEffect } from "react";
 export default function usePagination(
 	renderContainerRef,
 	setBlocks,
-	inputData
+	formBlocks
 ) {
 	/*計算組件、頁面高度與換頁邏輯 */
 	useEffect(() => {
 		//確認選取到 renderResume 元素
 		const renderResume = renderContainerRef.current;
+		console.log(renderResume, 1);
 		if (!renderResume) return;
 
 		//確認 renderResume 中已有子節點
@@ -48,5 +49,5 @@ export default function usePagination(
 			});
 		});
 		setBlocks(newBlocks);
-	}, [inputData, renderContainerRef, setBlocks]);
+	}, [renderContainerRef, setBlocks, formBlocks]);
 }

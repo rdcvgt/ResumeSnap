@@ -29,15 +29,13 @@ const Content = styled.div`
 `;
 
 ProfessionalSummary.propTypes = {
-	data: PropTypes.object,
-	blockId: PropTypes.string,
-	handleBlockHeight: PropTypes.func,
+	content: PropTypes.object,
 };
 
-export default function ProfessionalSummary({ data }) {
-	if (!data) return;
-	let blockTitle = data.blockTitle;
-	let htmlText = data.inputHtml;
+export default function ProfessionalSummary({ content }) {
+	if (!content.inputData) return;
+	let blockTitle = content.blockTitle;
+	let htmlText = content.inputData.inputHtml;
 
 	let newHtmlText;
 	if (htmlText) {

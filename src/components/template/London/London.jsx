@@ -1,19 +1,23 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import PersonalDetails from "./PersonalDetails";
-import ProfessionalSummary from "./ProfessionalSummary";
-import Education from "./Education";
-import EmploymentHistory from "./EmploymentHistory";
+import { useSelector } from "react-redux";
+
 import usePagination from "../utils/hooks/usePagination";
 import useDownloadPdf from "../utils/hooks/useDownloadPdf";
 import usePreview from "../utils/hooks/usePreview";
 import "../utils/htmlElement.css";
 
+import PersonalDetails from "./PersonalDetails";
+import ProfessionalSummary from "./ProfessionalSummary";
+import Education from "./Education";
+import EmploymentHistory from "./EmploymentHistory";
+
 const Img = styled.img`
 	width: 100%;
 	height: 100%;
 	position: absolute;
+	opacity: 1;
 `;
 
 const HideRender = styled.div`
@@ -54,19 +58,18 @@ const components = {
 	EmploymentHistory: EmploymentHistory,
 };
 
-const RenderBlocks = ({ inputData }) => {
-	return inputData.map((block, index) => {
+const RenderBlocks = ({ formBlocks }) => {
+	return formBlocks.map((block) => {
 		const BlockName = block.block;
-		const data = block.content;
+		const content = block.content;
 		const id = block.id;
 		const Component = components[BlockName];
 		if (!Component) return null;
-		return <Component data={data} key={id} />;
+		return <Component content={content} key={id} />;
 	});
 };
 
 London.propTypes = {
-	inputData: PropTypes.array,
 	handleGetDownLoadPdfFunc: PropTypes.func,
 	getTotalPage: PropTypes.func,
 	currentPage: PropTypes.number,
@@ -74,21 +77,23 @@ London.propTypes = {
 };
 
 export default function London({
-	inputData,
 	handleGetDownLoadPdfFunc,
 	getTotalPage,
 	currentPage,
 	setIsDownloading,
 }) {
-	const pageRef = useRef([]);
-	const renderContainerRef = useRef();
 	const [blocks, setBlocks] = useState([]);
 	const [imgUrl, setImgUrl] = useState("");
-	//將履歷內容轉換成 png 檔並儲存到 state
-	usePreview(pageRef, setImgUrl, blocks, currentPage);
+	const pageRef = useRef([]);
+	const renderContainerRef = useRef();
+
+	const formBlocks = useSelector((state) => state.formData.formBlocks);
 
 	//實現分頁邏輯
-	usePagination(renderContainerRef, setBlocks, inputData);
+	usePagination(renderContainerRef, setBlocks, formBlocks);
+
+	//將履歷內容轉換成 png 檔並儲存到 state
+	usePreview(pageRef, setImgUrl, blocks, currentPage);
 
 	//下載 PDF，回傳給父層，偵測點擊事件
 	const downloadPdf = useDownloadPdf(blocks, pageRef, setIsDownloading);
@@ -126,7 +131,7 @@ export default function London({
 			<HideRender>
 				<RenderRoot>
 					<RenderContainer ref={renderContainerRef}>
-						<RenderBlocks inputData={inputData} />
+						<RenderBlocks formBlocks={formBlocks} />
 					</RenderContainer>
 				</RenderRoot>
 			</HideRender>

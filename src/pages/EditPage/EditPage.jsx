@@ -38,14 +38,6 @@ const templatesColorOrder = {
 };
 
 export default function EditPage() {
-	const [inputData, setInputData] = useState([
-		{ block: "PersonalDetails", content: {}, id: uuid() },
-		{ block: "ProfessionalSummary", content: {}, id: uuid() },
-		{ block: "Education", content: {}, id: uuid() },
-		{ block: "EmploymentHistory", content: {}, id: uuid() },
-	]);
-
-	console.log(inputData);
 	const [isChoosingTemp, setIsChoosingTemp] = useState(false);
 	const [isDownloading, setIsDownloading] = useState(false);
 	const [tempColors, setTempColors] = useState([]);
@@ -85,11 +77,7 @@ export default function EditPage() {
 				/>
 			)}
 			<Body isChoosingTemp={isChoosingTemp}>
-				<ResumeFormArea
-					inputData={inputData}
-					setInputData={setInputData}
-					isChoosingTemp={isChoosingTemp}
-				/>
+				<ResumeFormArea isChoosingTemp={isChoosingTemp} />
 
 				{isChoosingTemp && (
 					<ResumeTemplateArea
@@ -98,7 +86,6 @@ export default function EditPage() {
 					/>
 				)}
 				<ResumePreviewArea
-					inputData={inputData}
 					isChoosingTemp={isChoosingTemp}
 					setIsChoosingTemp={setIsChoosingTemp}
 					handleGetDownLoadPdfFunc={handleGetDownLoadPdfFunc}

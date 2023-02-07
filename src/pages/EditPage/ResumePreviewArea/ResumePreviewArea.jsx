@@ -328,7 +328,6 @@ const templates = {
 };
 
 export default function ResumePreviewArea({
-	inputData,
 	isChoosingTemp,
 	setIsChoosingTemp,
 	handleGetDownLoadPdfFunc,
@@ -371,7 +370,6 @@ export default function ResumePreviewArea({
 						/>
 						<ResumePreview isChoosingTemp={isChoosingTemp}>
 							<Template
-								inputData={inputData}
 								handleGetDownLoadPdfFunc={
 									handleGetDownLoadPdfFunc
 								}
