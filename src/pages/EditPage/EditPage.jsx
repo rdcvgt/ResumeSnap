@@ -51,7 +51,7 @@ export default function EditPage() {
 	};
 
 	const handleDownloadPdf = () => {
-		if (isDownloading.current) return;
+		if (isDownloading) return;
 		if (downloadPdfFunc) {
 			setIsDownloading(true);
 			downloadPdfFunc();

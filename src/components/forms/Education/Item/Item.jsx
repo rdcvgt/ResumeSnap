@@ -180,17 +180,18 @@ const MoreInput = styled.div`
 
 Item.propTypes = {
 	item: PropTypes.object,
+	blockId: PropTypes.string,
 	dragHandleProps: PropTypes.object,
 };
 
-export default function Item({ item, dragHandleProps }) {
+export default function Item({ item, blockId, dragHandleProps }) {
 	const [isClick, setIsClick] = useState(true);
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useDispatch();
 
 	//刪除 item
 	const handleDeleteIconClick = () => {
-		dispatch(deleteItem({ blockName: "Education", itemId: item.id }));
+		dispatch(deleteItem({ blockId, itemId: item.id }));
 	};
 
 	//更新 item data
@@ -202,7 +203,7 @@ export default function Item({ item, dragHandleProps }) {
 		}
 		dispatch(
 			updateItemData({
-				blockName: "Education",
+				blockId,
 				itemId: item.id,
 				itemInputTitle: name,
 				itemInputValue: newValue,
@@ -214,7 +215,7 @@ export default function Item({ item, dragHandleProps }) {
 	const handleEditorInput = (inputHtml) => {
 		dispatch(
 			updateItemData({
-				blockName: "Education",
+				blockId,
 				itemId: item.id,
 				itemInputTitle: "description",
 				itemInputValue: inputHtml,

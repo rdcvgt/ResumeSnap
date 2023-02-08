@@ -52,15 +52,14 @@ const AddItemText = styled.div`
 `;
 
 EmploymentHistory.propTypes = {
+	blockId: PropTypes.string,
 	dragHandleProps: PropTypes.object,
 };
 
-export default function EmploymentHistory({ dragHandleProps }) {
+export default function EmploymentHistory({ blockId, dragHandleProps }) {
 	const dispatch = useDispatch();
 	const [blockData] = useSelector((state) =>
-		state.formData.formBlocks.filter(
-			(block) => block.block === "EmploymentHistory"
-		)
+		state.formData.formBlocks.filter((block) => block.id === blockId)
 	);
 
 	const blockTitle = blockData.content.blockTitle || "";
@@ -68,7 +67,7 @@ export default function EmploymentHistory({ dragHandleProps }) {
 
 	//增加新 item
 	const handleAddItemButtonClick = () => {
-		dispatch(addItem({ blockName: "EmploymentHistory" }));
+		dispatch(addItem({ blockId }));
 	};
 
 	//dnd後，進行 state 管理
@@ -85,7 +84,7 @@ export default function EmploymentHistory({ dragHandleProps }) {
 
 			dispatch(
 				updateItemOrder({
-					blockName: "EmploymentHistory",
+					blockId,
 					newItemOrder: items,
 				})
 			);
@@ -97,9 +96,8 @@ export default function EmploymentHistory({ dragHandleProps }) {
 		<BlockContainer>
 			<TitleBlock
 				blockTitle={blockTitle}
-				blockName="EmploymentHistory"
+				blockId={blockId}
 				dragHandleProps={dragHandleProps}
-				hideDraggableIcon={false}
 			/>
 			<BlockDescription>
 				Show your relevant experience (last 10 years). Use bullet points
@@ -124,6 +122,7 @@ export default function EmploymentHistory({ dragHandleProps }) {
 												{...provided.draggableProps}>
 												<Item
 													item={item}
+													blockId={blockId}
 													dragHandleProps={{
 														...provided.dragHandleProps,
 													}}

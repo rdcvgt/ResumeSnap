@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import London from "../../../components/template/London";
 import Sydney from "../../../components/template/Sydney";
+import OutputButtonArea from "../../../components/buttons/OutputButtonArea";
 
 const ResumePreviewBackground = styled.div`
 	position: fixed;
@@ -184,74 +185,11 @@ const SelectTemplateButton = styled.div`
 	justify-content: center;
 `;
 
-const OutputButtonArea = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-`;
-
-const DownloadPdfButton = styled.div`
-	width: 130px;
-	height: 40px;
-	border-radius: 5px;
-	cursor: ${(props) =>
-		props.isDownloading === true ? "default" : "pointer"};
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: #fff;
-	${(props) => props.theme.font.itemBold};
-	margin-left: 20px;
-	background-color: ${(props) =>
-		props.isDownloading === true
-			? props.theme.color.blue[60]
-			: props.theme.color.blue[50]};
-	transition: background-color 0.3s;
-
-	&:hover {
-		transition: background-color 0.3s;
-		background-color: ${(props) => props.theme.color.blue[60]};
-	}
-`;
-
-const ShareLinkButton = styled.div`
-	width: 130px;
-	height: 40px;
-	border-radius: 5px;
-	cursor: pointer;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	color: #fff;
-	${(props) => props.theme.font.itemBold};
-	margin-left: 20px;
-	background-color: ${(props) => props.theme.color.blue[50]};
-	transition: background-color 0.3s;
-
-	&:hover {
-		transition: background-color 0.3s;
-		background-color: ${(props) => props.theme.color.blue[60]};
-	}
-`;
-
-ResumePreviewArea.propTypes = {
-	choosingTempState: PropTypes.object,
-	handleGetDownLoadPdfFunc: PropTypes.func,
-	handleDownloadPdf: PropTypes.func,
-	isDownloadingState: PropTypes.object,
-};
-
 ResumePreviewTopFunc.propTypes = {
 	handleNextPageClick: PropTypes.func,
 	handlePrePageClick: PropTypes.func,
 	totalPage: PropTypes.number,
 	currentPage: PropTypes.number,
-};
-
-ResumePreviewBottomFunc.propTypes = {
-	handleDownloadPdf: PropTypes.func,
-	isDownloading: PropTypes.bool,
-	setIsChoosingTemp: PropTypes.func,
 };
 
 function ResumePreviewTopFunc({
@@ -282,6 +220,12 @@ function ResumePreviewTopFunc({
 	);
 }
 
+ResumePreviewBottomFunc.propTypes = {
+	handleDownloadPdf: PropTypes.func,
+	isDownloading: PropTypes.bool,
+	setIsChoosingTemp: PropTypes.func,
+};
+
 function ResumePreviewBottomFunc({
 	handleDownloadPdf,
 	isDownloading,
@@ -298,22 +242,20 @@ function ResumePreviewBottomFunc({
 					Select Template
 				</SelectTemplateButton>
 			</SelectTemplateButtonArea>
-
-			<OutputButtonArea>
-				<DownloadPdfButton
-					onClick={handleDownloadPdf}
-					isDownloading={isDownloading}>
-					{isDownloading === false
-						? "Download PDF"
-						: "Downloading..."}
-				</DownloadPdfButton>
-				<ShareLinkButton onClick={handleDownloadPdf}>
-					Share Link
-				</ShareLinkButton>
-			</OutputButtonArea>
+			<OutputButtonArea
+				handleDownloadPdf={handleDownloadPdf}
+				isDownloading={isDownloading}
+			/>
 		</ResumePreviewBottomArea>
 	);
 }
+
+ResumePreviewArea.propTypes = {
+	choosingTempState: PropTypes.object,
+	handleGetDownLoadPdfFunc: PropTypes.func,
+	handleDownloadPdf: PropTypes.func,
+	isDownloadingState: PropTypes.object,
+};
 
 const TempStatusContext = createContext();
 const templates = {

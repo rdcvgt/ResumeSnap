@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import { updateInputData } from "../../../redux/slices/formDataSlice";
@@ -54,7 +55,11 @@ const AdditionalButton = styled.div`
 	cursor: pointer;
 `;
 
-export default function PersonalDetails() {
+PersonalDetails.propTypes = {
+	blockId: PropTypes.string,
+};
+
+export default function PersonalDetails({ blockId }) {
 	const [isClick, setIsClick] = useState(false);
 	const dispatch = useDispatch();
 
@@ -93,13 +98,14 @@ export default function PersonalDetails() {
 		<BlockContainer>
 			<TitleBlock
 				blockTitle={blockTitle}
-				blockName="PersonalDetails"
+				blockId={blockId}
 				hideDraggableIcon={true}
 			/>
 			<form>
 				<BlockRow>
 					<LeftCol>
 						<InputTitle>Wanted Job Title</InputTitle>
+
 						<ShortInput
 							type="text"
 							name="position"

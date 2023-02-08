@@ -52,13 +52,14 @@ const AddItemText = styled.div`
 `;
 
 Education.propTypes = {
+	blockId: PropTypes.string,
 	dragHandleProps: PropTypes.object,
 };
 
-export default function Education({ dragHandleProps }) {
+export default function Education({ blockId, dragHandleProps }) {
 	const dispatch = useDispatch();
 	const [blockData] = useSelector((state) =>
-		state.formData.formBlocks.filter((block) => block.block === "Education")
+		state.formData.formBlocks.filter((block) => block.id === blockId)
 	);
 
 	const blockTitle = blockData.content.blockTitle || "";
@@ -66,7 +67,7 @@ export default function Education({ dragHandleProps }) {
 
 	//增加新 item
 	const handleAddItemButtonClick = () => {
-		dispatch(addItem({ blockName: "Education" }));
+		dispatch(addItem({ blockId }));
 	};
 
 	//dnd後，進行 state 管理
@@ -83,7 +84,7 @@ export default function Education({ dragHandleProps }) {
 
 			dispatch(
 				updateItemOrder({
-					blockName: "Education",
+					blockId,
 					newItemOrder: items,
 				})
 			);
@@ -95,9 +96,8 @@ export default function Education({ dragHandleProps }) {
 		<BlockContainer>
 			<TitleBlock
 				blockTitle={blockTitle}
-				blockName="Education"
+				blockId={blockId}
 				dragHandleProps={dragHandleProps}
-				hideDraggableIcon={false}
 			/>
 			<BlockDescription>
 				A varied education on your resume sums up the value that your
@@ -121,6 +121,7 @@ export default function Education({ dragHandleProps }) {
 												{...provided.draggableProps}>
 												<Item
 													item={item}
+													blockId={blockId}
 													dragHandleProps={{
 														...provided.dragHandleProps,
 													}}

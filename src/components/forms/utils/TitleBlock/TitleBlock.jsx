@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+
 import { useDispatch } from "react-redux";
 import { updateBlockTitle } from "../../../../redux/slices/formDataSlice";
+import ConfirmCard from "../../../cards/ConfirmCard";
 
 const Block = styled.div`
 	display: flex;
@@ -28,7 +30,7 @@ const DragBlock = styled.div`
 	height: 20px;
 	width: 30px;
 	position: absolute;
-	left: 20px;
+	left: 50px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -48,22 +50,17 @@ const DragBlock = styled.div`
 		opacity: 1;
 		transition: filter 0.3s, opacity 0.3s;
 		`}
-
-	${(props) =>
-		props.hideDraggableIcon &&
-		`
-		display: none;
-		`}
 `;
 
 const DragIcon = styled.img`
 	height: 100%;
 `;
 
-const EditIcon = styled.img`
+const ToolIcon = styled.img`
 	max-height: 15px;
 	opacity: 0;
 	transition: opacity 0.3s, filter 0.3s;
+	margin-right: 10px;
 	cursor: pointer;
 	&:hover {
 		filter: brightness(1);
@@ -74,24 +71,29 @@ const EditIcon = styled.img`
 		`
 		opacity: 1;
 		filter: brightness(1.4);
-		transition: opacity 0.3s, filter 0.3s;
+		transition: all 0.3s;
 		`}
 `;
 
 TitleBlock.propTypes = {
-	blockName: PropTypes.string,
+	blockId: PropTypes.string,
 	blockTitle: PropTypes.string,
 	dragHandleProps: PropTypes.object,
+	handleDeleteButtonClick: PropTypes.func,
 	hideDraggableIcon: PropTypes.bool,
+	hideDeleteIcon: PropTypes.bool,
 };
 
 function TitleBlock({
-	blockName,
+	blockId,
 	blockTitle,
 	dragHandleProps,
-	hideDraggableIcon,
+	handleDeleteButtonClick,
+	hideDraggableIcon = false,
+	hideDeleteIcon = true,
 }) {
 	const [isHover, setIsHover] = useState(false);
+	const [isClickDelete, setIsClickDelete] = useState(false);
 
 	//全選 input 資料
 	const blockTitleRef = useRef(null);
@@ -105,7 +107,7 @@ function TitleBlock({
 		const { value } = e.target;
 		dispatch(
 			updateBlockTitle({
-				blockName: blockName,
+				blockId,
 				blockTitle: value,
 			})
 		);
@@ -120,23 +122,44 @@ function TitleBlock({
 				onMouseLeave={() => {
 					setIsHover(false);
 				}}>
-				<DragBlock
-					isHover={isHover}
-					{...dragHandleProps}
-					hideDraggableIcon={hideDraggableIcon}>
-					<DragIcon src="/images/icon/drag.png" />
-				</DragBlock>
+				{!hideDraggableIcon && (
+					<DragBlock isHover={isHover} {...dragHandleProps}>
+						<DragIcon src="/images/icon/drag.png" />
+					</DragBlock>
+				)}
 				<BlockTitle
 					type="text"
 					value={blockTitle}
 					onChange={handleBlockTitleChange}
 					ref={blockTitleRef}
 				/>
-				<EditIcon
+				<ToolIcon
 					src="/images/icon/edit.png"
 					onClick={handleResumeTitleIconClick}
 					isHover={isHover}
 				/>
+				{!hideDeleteIcon && (
+					<ToolIcon
+						src="/images/icon/delete.png"
+						onClick={() => {
+							setIsClickDelete(true);
+						}}
+						isHover={isHover}
+					/>
+				)}
+				{!hideDeleteIcon && isClickDelete && (
+					<ConfirmCard
+						text={{
+							title: "Delete Session",
+							description:
+								"Are you sure you want to delete this section?",
+							leftButton: "Delete",
+							rightButton: "Cancel",
+						}}
+						setIsClickDelete={setIsClickDelete}
+						handleDeleteButtonClick={handleDeleteButtonClick}
+					/>
+				)}
 			</Block>
 		</>
 	);

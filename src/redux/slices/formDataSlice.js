@@ -37,6 +37,30 @@ export const formDataSlice = createSlice({
 		],
 	},
 	reducers: {
+		addBlock: (state, action) => {
+			const { blockData } = action.payload;
+			const { blockName, blockTitle } = blockData;
+
+			const newBlock = {
+				block: blockName,
+				content: {
+					blockTitle: blockTitle,
+					itemData: [],
+				},
+				id: uuid(),
+			};
+			console.log(newBlock);
+			state.formBlocks.push(newBlock);
+		},
+		deleteBlock: (state, action) => {
+			const { blockId } = action.payload;
+			console.log(blockId);
+			const newFormBlock = state.formBlocks.filter(
+				(block) => block.id !== blockId
+			);
+			state.formBlocks = newFormBlock;
+		},
+
 		updateResumeName: (state, action) => {
 			const { resumeName } = action.payload;
 			state.resumeName = resumeName;
@@ -51,9 +75,9 @@ export const formDataSlice = createSlice({
 		},
 
 		updateBlockTitle: (state, action) => {
-			const { blockName, blockTitle } = action.payload;
+			const { blockId, blockTitle } = action.payload;
 			const index = state.formBlocks.findIndex(
-				(block) => block.block === blockName
+				(block) => block.id === blockId
 			);
 			state.formBlocks[index].content.blockTitle = blockTitle;
 		},
@@ -70,9 +94,9 @@ export const formDataSlice = createSlice({
 		},
 
 		addItem: (state, action) => {
-			const { blockName } = action.payload;
+			const { blockId } = action.payload;
 			const index = state.formBlocks.findIndex(
-				(block) => block.block === blockName
+				(block) => block.id === blockId
 			);
 			const prevInputData = state.formBlocks[index].content.itemData;
 			state.formBlocks[index].content.itemData = [
@@ -84,9 +108,9 @@ export const formDataSlice = createSlice({
 			];
 		},
 		deleteItem: (state, action) => {
-			const { blockName, itemId } = action.payload;
+			const { blockId, itemId } = action.payload;
 			const index = state.formBlocks.findIndex(
-				(block) => block.block === blockName
+				(block) => block.id === blockId
 			);
 			const newItems = state.formBlocks[index].content.itemData.filter(
 				(item) => item.id !== itemId
@@ -95,10 +119,10 @@ export const formDataSlice = createSlice({
 			state.formBlocks[index].content.itemData = newItems;
 		},
 		updateItemData: (state, action) => {
-			const { blockName, itemId, itemInputTitle, itemInputValue } =
+			const { blockId, itemId, itemInputTitle, itemInputValue } =
 				action.payload;
 			const index = state.formBlocks.findIndex(
-				(block) => block.block === blockName
+				(block) => block.id === blockId
 			);
 			const itemIndex = state.formBlocks[
 				index
@@ -118,9 +142,9 @@ export const formDataSlice = createSlice({
 			state.formBlocks = newBlockOrder;
 		},
 		updateItemOrder: (state, action) => {
-			const { blockName, newItemOrder } = action.payload;
+			const { blockId, newItemOrder } = action.payload;
 			const index = state.formBlocks.findIndex(
-				(block) => block.block === blockName
+				(block) => block.id === blockId
 			);
 			state.formBlocks[index].content.itemData = newItemOrder;
 		},
@@ -128,6 +152,8 @@ export const formDataSlice = createSlice({
 });
 
 export const {
+	addBlock,
+	deleteBlock,
 	updateResumeName,
 	updateTemplate,
 	updateTemplateColor,

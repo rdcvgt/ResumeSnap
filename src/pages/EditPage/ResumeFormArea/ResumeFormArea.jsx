@@ -5,6 +5,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+	addBlock,
+	deleteBlock,
 	updateBlockOrder,
 	updateResumeName,
 } from "../../../redux/slices/formDataSlice";
@@ -12,6 +14,9 @@ import PersonalDetails from "../../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../../components/forms/ProfessionalSummary";
 import Education from "../../../components/forms/Education";
 import EmploymentHistory from "../../../components/forms/EmploymentHistory";
+import ECActivities from "../../../components/forms/ECActivities";
+import Internships from "../../../components/forms/Internships";
+import CustomSection from "../../../components/forms/CustomSection";
 
 const ResumeFormBackground = styled.div`
 	width: ${(props) => (props.isChoosingTemp === true ? "0%" : "100%")};
@@ -61,14 +66,78 @@ const ResumeTitleIcon = styled.img`
 	}
 `;
 
+const AddSection = styled.div`
+	width: 90%;
+	margin: 0 auto;
+`;
+const AddSectionTitle = styled.div`
+	${(props) => props.theme.font.blockTitle};
+	margin-bottom: 30px;
+`;
+const SectionRow = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 30px;
+`;
+const Section = styled.div`
+	width: 50%;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition: all 0.3s;
+
+	&:hover {
+		color: ${(props) => props.theme.color.blue[50]};
+		transition: all 0.3s;
+	}
+
+	${(props) =>
+		(props.isUsingECActivities ||
+			props.isUsingInternships ||
+			props.isUsingCustomSection) &&
+		`
+		opacity: 0.4;
+		cursor: default;
+		&:hover {color: #000}
+		`}
+`;
+
+const Icon = styled.img`
+	width: 30px;
+	margin-right: 10px;
+`;
+
+const SectionName = styled.div`
+	${(props) => props.theme.font.content};
+`;
+
 const components = {
 	PersonalDetails: PersonalDetails,
 	ProfessionalSummary: ProfessionalSummary,
 	Education: Education,
 	EmploymentHistory: EmploymentHistory,
+	ECActivities: ECActivities,
+	Internships: Internships,
+	CustomSection: CustomSection,
 };
 
-const RenderBlocks = ({ formBlocks }) => {
+const blockData = {
+	ECActivities: {
+		blockName: "ECActivities",
+		blockTitle: "Extra-curricular Activities",
+	},
+	Internships: {
+		blockName: "Internships",
+		blockTitle: "Internships",
+	},
+	CustomSection: {
+		blockName: "CustomSection",
+		blockTitle: "Custom Section",
+	},
+};
+
+const RenderBlocks = ({ formBlocks, handleDeleteButtonClick }) => {
 	return formBlocks.map((block, index) => {
 		const blockName = block.block;
 		if (
@@ -87,6 +156,8 @@ const RenderBlocks = ({ formBlocks }) => {
 							dragHandleProps={{
 								...provided.dragHandleProps,
 							}}
+							blockId={id}
+							handleDeleteButtonClick={handleDeleteButtonClick}
 						/>
 					</div>
 				)}
@@ -102,18 +173,17 @@ ResumeFormArea.propTypes = {
 };
 
 export default function ResumeFormArea({ isChoosingTemp }) {
-	const resumeTitleRef = useRef(null);
-	const dispatch = useDispatch();
+	const [isUsingECActivities, setIsUsingECActivities] = useState(false);
+	const [isUsingInternships, setIsUsingInternships] = useState(false);
 
+	const dispatch = useDispatch();
+	const resumeTitleRef = useRef(null);
 	const resumeName = useSelector((state) => state.formData.resumeName);
 	const handleResumeTitleChange = (e) => {
 		dispatch(updateResumeName({ resumeName: e.target.value }));
 	};
 
-	const handleResumeTitleIconClick = () => {
-		resumeTitleRef.current.select();
-	};
-
+	//block 調整順序後重新排序資料陣列
 	const formBlocks = useSelector((state) => state.formData.formBlocks);
 	const handleOnDragEndBlock = useCallback(
 		(result) => {
@@ -125,6 +195,29 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 		},
 		[formBlocks, dispatch]
 	);
+
+	//點選編輯按鈕，標題全選
+	const handleResumeTitleIconClick = () => {
+		resumeTitleRef.current.select();
+	};
+
+	//點擊刪除 block 按鈕後，最下方各 block 狀態恢復可點選新增
+	const handleDeleteButtonClick = (blockId, blockName) => {
+		dispatch(deleteBlock({ blockId }));
+		switch (blockName) {
+			case "ECActivities": {
+				setIsUsingECActivities(false);
+				break;
+			}
+			case "Internships": {
+				setIsUsingInternships(false);
+				break;
+			}
+			default: {
+				return;
+			}
+		}
+	};
 
 	return (
 		<>
@@ -142,20 +235,89 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 							onClick={handleResumeTitleIconClick}
 						/>
 					</TitleBlock>
-					<PersonalDetails />
-					<ProfessionalSummary />
+					<PersonalDetails blockId={formBlocks[0].id} />
+					<ProfessionalSummary blockId={formBlocks[1].id} />
 					<DragDropContext onDragEnd={handleOnDragEndBlock}>
 						<Droppable droppableId="blocks">
 							{(provided) => (
 								<div
 									{...provided.droppableProps}
 									ref={provided.innerRef}>
-									<RenderBlocks formBlocks={formBlocks} />
+									<RenderBlocks
+										formBlocks={formBlocks}
+										handleDeleteButtonClick={
+											handleDeleteButtonClick
+										}
+									/>
 									{provided.placeholder}
 								</div>
 							)}
 						</Droppable>
 					</DragDropContext>
+					<AddSection>
+						<AddSectionTitle>Add Section</AddSectionTitle>
+						<SectionRow>
+							<Section
+								onClick={() => {
+									dispatch(
+										addBlock({
+											blockData: blockData.CustomSection,
+										})
+									);
+								}}>
+								<Icon src="/images/icon/custom.png" />
+								<SectionName>Custom Section</SectionName>
+							</Section>
+							<Section>
+								<Icon src="/images/icon/courses.png" />
+								<SectionName>Courses</SectionName>
+							</Section>
+						</SectionRow>
+						<SectionRow>
+							<Section
+								isUsingECActivities={isUsingECActivities}
+								onClick={() => {
+									!isUsingECActivities &&
+										dispatch(
+											addBlock({
+												blockData:
+													blockData.ECActivities,
+											})
+										);
+									setIsUsingECActivities(true);
+								}}>
+								<Icon src="/images/icon/activity.png" />
+								<SectionName>
+									Extra-curricular Activities
+								</SectionName>
+							</Section>
+							<Section
+								isUsingInternships={isUsingInternships}
+								onClick={() => {
+									!isUsingInternships &&
+										dispatch(
+											addBlock({
+												blockData:
+													blockData.Internships,
+											})
+										);
+									setIsUsingInternships(true);
+								}}>
+								<Icon src="/images/icon/internship.png" />
+								<SectionName>Internships</SectionName>
+							</Section>
+						</SectionRow>
+						<SectionRow>
+							<Section>
+								<Icon src="/images/icon/hobby.png" />
+								<SectionName>Hobbies</SectionName>
+							</Section>
+							<Section>
+								<Icon src="/images/icon/language.png" />
+								<SectionName>Languages</SectionName>
+							</Section>
+						</SectionRow>
+					</AddSection>
 				</ResumeData>
 			</ResumeFormBackground>
 		</>

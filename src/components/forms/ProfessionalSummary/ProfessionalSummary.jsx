@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import { updateInputData } from "../../../redux/slices/formDataSlice";
@@ -21,7 +22,11 @@ const BlockDescription = styled.div`
 
 const LongInputBox = styled.div``;
 
-export default function ProfessionalSummary() {
+ProfessionalSummary.propTypes = {
+	blockId: PropTypes.string,
+};
+
+export default function ProfessionalSummary({ blockId }) {
 	const dispatch = useDispatch();
 	const handleEditorInput = (inputHtml) => {
 		dispatch(
@@ -46,7 +51,7 @@ export default function ProfessionalSummary() {
 		<BlockContainer>
 			<TitleBlock
 				blockTitle={blockTitle}
-				blockName="ProfessionalSummary"
+				blockId={blockId}
 				hideDraggableIcon={true}
 			/>
 			<BlockDescription>
