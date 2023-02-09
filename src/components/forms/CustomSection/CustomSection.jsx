@@ -12,7 +12,7 @@ CustomSection.propTypes = {
 const blockInfo = {
 	blockName: "CustomSection",
 	blockDescription: null,
-	addItemText: "Add one more item",
+	addItemText: "item",
 };
 
 export default function CustomSection({

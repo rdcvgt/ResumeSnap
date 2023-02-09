@@ -7,7 +7,6 @@ import {
 	deleteItem,
 	updateItemData,
 } from "../../../../redux/slices/formDataSlice";
-import InputEditor from "../../utils/Editor";
 
 const Root = styled.div`
 	border-radius: 5px;
@@ -141,27 +140,12 @@ const RightCol = styled.div`
 	width: 50%;
 `;
 
-const DateBlock = styled.div`
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-`;
-
-const DateInput = styled.input`
-	${(props) => props.theme.input.shortInput};
-	width: 45%;
-`;
-
 const InputTitle = styled.div`
 	${(props) => props.theme.input.title};
 `;
 
 const ShortInput = styled.input`
 	${(props) => props.theme.input.shortInput};
-`;
-
-const LongInputBox = styled.div`
-	margin-bottom: 20px;
 `;
 
 const MoreInput = styled.div`
@@ -211,22 +195,8 @@ export default function Item({ item, blockId, dragHandleProps }) {
 		);
 	};
 
-	//更新 item description
-	const handleEditorInput = (inputHtml) => {
-		dispatch(
-			updateItemData({
-				blockId,
-				itemId: item.id,
-				itemInputTitle: "description",
-				itemInputValue: inputHtml,
-			})
-		);
-	};
-
-	const jobTitle = item.content.jobTitle || "";
-	const employer = item.content.employer || "";
-	const city = item.content.city || "";
-	const description = item.content.description || "";
+	const label = item.content.label || "";
+	const link = item.content.link || "";
 	let startDate = item.content.startDate;
 	let endDate = item.content.endDate;
 	if (startDate) {
@@ -261,16 +231,10 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				}}>
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
-						{jobTitle}
-						{jobTitle && employer ? " at " : ""}
-						{employer}
-						{!jobTitle && !employer && "(Not Specified)"}
+						{label}
+						{!label && "(Not Specified)"}
 					</ItemTitle>
-					<ItemDuration>
-						{startDate}
-						{startDate && endDate ? " - " : ""}
-						{endDate}
-					</ItemDuration>
+					<ItemDuration>{link}</ItemDuration>
 				</ItemInfo>
 				<ItemArrowIcon
 					src={
@@ -284,55 +248,23 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				<form>
 					<BlockRow>
 						<LeftCol>
-							<InputTitle>Job Title</InputTitle>
+							<InputTitle>Label</InputTitle>
 							<ShortInput
 								type="text"
-								name="jobTitle"
-								value={jobTitle}
+								name="label"
+								value={label}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
-							<InputTitle>Employer</InputTitle>
+							<InputTitle>Link</InputTitle>
 							<ShortInput
 								type="text"
-								name="employer"
-								value={employer}
-								onChange={handleInputChange}></ShortInput>
-						</RightCol>
-					</BlockRow>
-					<BlockRow>
-						<LeftCol>
-							<InputTitle>Start & End Date</InputTitle>
-							<DateBlock>
-								<DateInput
-									type="month"
-									name="startDate"
-									value={startDate}
-									onChange={handleInputChange}></DateInput>
-								<DateInput
-									type="month"
-									name="endDate"
-									value={endDate}
-									onChange={handleInputChange}></DateInput>
-							</DateBlock>
-						</LeftCol>
-						<RightCol>
-							<InputTitle>City</InputTitle>
-							<ShortInput
-								type="text"
-								name="city"
-								value={city}
+								name="link"
+								value={link}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>
 					<MoreInput isClick={isClick}></MoreInput>
-					<LongInputBox>
-						<InputTitle>Description</InputTitle>
-						<InputEditor
-							handleEditorInput={handleEditorInput}
-							inputHtml={description}
-						/>
-					</LongInputBox>
 				</form>
 			</MoreInput>
 		</Root>

@@ -14,9 +14,13 @@ import PersonalDetails from "../../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../../components/forms/ProfessionalSummary";
 import Education from "../../../components/forms/Education";
 import EmploymentHistory from "../../../components/forms/EmploymentHistory";
+import WebsiteLink from "../../../components/forms/WebsiteLink";
 import ECActivities from "../../../components/forms/ECActivities";
 import Internships from "../../../components/forms/Internships";
 import CustomSection from "../../../components/forms/CustomSection";
+import Courses from "../../../components/forms/Courses";
+import Skills from "../../../components/forms/Skills";
+import Languages from "../../../components/forms/Languages";
 
 const ResumeFormBackground = styled.div`
 	width: ${(props) => (props.isChoosingTemp === true ? "0%" : "100%")};
@@ -95,7 +99,10 @@ const Section = styled.div`
 	${(props) =>
 		(props.isUsingECActivities ||
 			props.isUsingInternships ||
-			props.isUsingCustomSection) &&
+			props.isUsingCustomSection ||
+			props.isUsingCourses ||
+			props.isUsingSkills ||
+			props.isUsingLanguages) &&
 		`
 		opacity: 0.4;
 		cursor: default;
@@ -117,9 +124,13 @@ const components = {
 	ProfessionalSummary: ProfessionalSummary,
 	Education: Education,
 	EmploymentHistory: EmploymentHistory,
+	WebsiteLink: WebsiteLink,
 	ECActivities: ECActivities,
 	Internships: Internships,
 	CustomSection: CustomSection,
+	Courses: Courses,
+	Skills: Skills,
+	Languages: Languages,
 };
 
 const blockData = {
@@ -134,6 +145,18 @@ const blockData = {
 	CustomSection: {
 		blockName: "CustomSection",
 		blockTitle: "Custom Section",
+	},
+	Courses: {
+		blockName: "Courses",
+		blockTitle: "Courses",
+	},
+	Hobbies: {
+		blockName: "Skills",
+		blockTitle: "Skills",
+	},
+	Languages: {
+		blockName: "Languages",
+		blockTitle: "Languages",
 	},
 };
 
@@ -175,6 +198,9 @@ ResumeFormArea.propTypes = {
 export default function ResumeFormArea({ isChoosingTemp }) {
 	const [isUsingECActivities, setIsUsingECActivities] = useState(false);
 	const [isUsingInternships, setIsUsingInternships] = useState(false);
+	const [isUsingCourses, setIsUsingCourses] = useState(false);
+	const [isUsingSkills, setIsUsingSkills] = useState(false);
+	const [isUsingLanguages, setIsUsingLanguages] = useState(false);
 
 	const dispatch = useDispatch();
 	const resumeTitleRef = useRef(null);
@@ -211,6 +237,18 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 			}
 			case "Internships": {
 				setIsUsingInternships(false);
+				break;
+			}
+			case "Courses": {
+				setIsUsingCourses(false);
+				break;
+			}
+			case "Skills": {
+				setIsUsingSkills(false);
+				break;
+			}
+			case "Languages": {
+				setIsUsingLanguages(false);
 				break;
 			}
 			default: {
@@ -268,7 +306,17 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 								<Icon src="/images/icon/custom.png" />
 								<SectionName>Custom Section</SectionName>
 							</Section>
-							<Section>
+							<Section
+								isUsingCourses={isUsingCourses}
+								onClick={() => {
+									!isUsingCourses &&
+										dispatch(
+											addBlock({
+												blockData: blockData.Courses,
+											})
+										);
+									setIsUsingCourses(true);
+								}}>
 								<Icon src="/images/icon/courses.png" />
 								<SectionName>Courses</SectionName>
 							</Section>
@@ -308,11 +356,31 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 							</Section>
 						</SectionRow>
 						<SectionRow>
-							<Section>
+							<Section
+								isUsingSkills={isUsingSkills}
+								onClick={() => {
+									!isUsingSkills &&
+										dispatch(
+											addBlock({
+												blockData: blockData.Hobbies,
+											})
+										);
+									setIsUsingSkills(true);
+								}}>
 								<Icon src="/images/icon/hobby.png" />
-								<SectionName>Hobbies</SectionName>
+								<SectionName>Skills</SectionName>
 							</Section>
-							<Section>
+							<Section
+								isUsingLanguages={isUsingLanguages}
+								onClick={() => {
+									!isUsingLanguages &&
+										dispatch(
+											addBlock({
+												blockData: blockData.Languages,
+											})
+										);
+									setIsUsingLanguages(true);
+								}}>
 								<Icon src="/images/icon/language.png" />
 								<SectionName>Languages</SectionName>
 							</Section>

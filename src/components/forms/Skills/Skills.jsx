@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 import Block from "../utils/Block";
 import Item from "./Item";
 
-ECActivities.propTypes = {
+Courses.propTypes = {
 	dragHandleProps: PropTypes.object,
 	blockId: PropTypes.string,
 	handleDeleteButtonClick: PropTypes.func,
 };
 
 const blockInfo = {
-	blockName: "ECActivities",
+	blockName: "Skills",
 	blockDescription: null,
-	addItemText: "activity",
+	addItemText: "skill",
 };
 
-export default function ECActivities({
+export default function Courses({
 	dragHandleProps,
 	blockId,
 	handleDeleteButtonClick,

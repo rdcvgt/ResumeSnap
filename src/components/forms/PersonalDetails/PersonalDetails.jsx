@@ -100,6 +100,7 @@ export default function PersonalDetails({ blockId }) {
 				blockTitle={blockTitle}
 				blockId={blockId}
 				hideDraggableIcon={true}
+				hideDeleteIcon={true}
 			/>
 			<form>
 				<BlockRow>

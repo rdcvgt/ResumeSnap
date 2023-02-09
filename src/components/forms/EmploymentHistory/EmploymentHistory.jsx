@@ -13,7 +13,7 @@ const blockInfo = {
 	blockName: "EmploymentHistory",
 	blockDescription:
 		"Show your relevant experience (last 10 years). Use bullet points to note your achievements, if possible - use numbers/facts (Achieved X, measured by Y, by doing Z).",
-	addItemText: "Add one more employment",
+	addItemText: "employment",
 };
 
 export default function EmploymentHistory({
@@ -27,6 +27,7 @@ export default function EmploymentHistory({
 			blockInfo={blockInfo}
 			dragHandleProps={dragHandleProps}
 			handleDeleteButtonClick={handleDeleteButtonClick}
+			hideDeleteIcon={true}
 			Item={Item}
 		/>
 	);

@@ -223,7 +223,7 @@ export default function Item({ item, blockId, dragHandleProps }) {
 		);
 	};
 
-	const jobTitle = item.content.jobTitle || "";
+	const functionTitle = item.content.functionTitle || "";
 	const employer = item.content.employer || "";
 	const city = item.content.city || "";
 	const description = item.content.description || "";
@@ -261,10 +261,10 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				}}>
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
-						{jobTitle}
-						{jobTitle && employer ? " at " : ""}
+						{functionTitle}
+						{functionTitle && employer ? " - " : ""}
 						{employer}
-						{!jobTitle && !employer && "(Not Specified)"}
+						{!functionTitle && !employer && "(Not Specified)"}
 					</ItemTitle>
 					<ItemDuration>
 						{startDate}
@@ -284,11 +284,11 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				<form>
 					<BlockRow>
 						<LeftCol>
-							<InputTitle>Job Title</InputTitle>
+							<InputTitle>Function Title</InputTitle>
 							<ShortInput
 								type="text"
-								name="jobTitle"
-								value={jobTitle}
+								name="functionTitle"
+								value={functionTitle}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
@@ -316,23 +316,9 @@ export default function Item({ item, blockId, dragHandleProps }) {
 									onChange={handleInputChange}></DateInput>
 							</DateBlock>
 						</LeftCol>
-						<RightCol>
-							<InputTitle>City</InputTitle>
-							<ShortInput
-								type="text"
-								name="city"
-								value={city}
-								onChange={handleInputChange}></ShortInput>
-						</RightCol>
+						<RightCol></RightCol>
 					</BlockRow>
 					<MoreInput isClick={isClick}></MoreInput>
-					<LongInputBox>
-						<InputTitle>Description</InputTitle>
-						<InputEditor
-							handleEditorInput={handleEditorInput}
-							inputHtml={description}
-						/>
-					</LongInputBox>
 				</form>
 			</MoreInput>
 		</Root>

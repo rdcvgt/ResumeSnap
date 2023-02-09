@@ -16,7 +16,7 @@ ul li:before {
 	content: "•";
 	font-weight: bold;
 	display: inline-block;
-	width: 1em;
+	width: 2em;
 	margin-left: -1em;
 }
 

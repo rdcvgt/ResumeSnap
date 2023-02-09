@@ -13,7 +13,7 @@ const blockInfo = {
 	blockName: "Education",
 	blockDescription:
 		"A varied education on your resume sums up the value that your learnings and background will bring to job.",
-	addItemText: "Add one more education",
+	addItemText: "education",
 };
 
 export default function Education({
@@ -27,6 +27,7 @@ export default function Education({
 			blockInfo={blockInfo}
 			dragHandleProps={dragHandleProps}
 			handleDeleteButtonClick={handleDeleteButtonClick}
+			hideDeleteIcon={true}
 			Item={Item}
 		/>
 	);

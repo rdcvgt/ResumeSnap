@@ -58,6 +58,8 @@ Block.propTypes = {
 	blockInfo: PropTypes.object,
 	dragHandleProps: PropTypes.object,
 	handleDeleteButtonClick: PropTypes.func,
+	hideDeleteIcon: PropTypes.bool,
+	hideDraggableIcon: PropTypes.bool,
 	Item: PropTypes.func,
 };
 
@@ -66,9 +68,10 @@ export default function Block({
 	blockInfo,
 	dragHandleProps,
 	handleDeleteButtonClick,
+	hideDraggableIcon,
+	hideDeleteIcon,
 	Item,
 }) {
-	console.log(Item);
 	const dispatch = useDispatch();
 	const [blockData] = useSelector((state) =>
 		state.formData.formBlocks.filter((block) => block.id === blockId)
@@ -113,8 +116,8 @@ export default function Block({
 				handleDeleteButtonClick={() => {
 					handleDeleteButtonClick(blockId, blockInfo.blockName);
 				}}
-				hideDraggableIcon={false}
-				hideDeleteIcon={false}
+				hideDraggableIcon={hideDraggableIcon}
+				hideDeleteIcon={hideDeleteIcon}
 			/>
 			<BlockDescription>{blockInfo.blockDescription}</BlockDescription>
 			<DragDropContext onDragEnd={handleOnDragEnd}>
@@ -152,7 +155,10 @@ export default function Block({
 			</DragDropContext>
 			<AddItemButton onClick={handleAddItemButtonClick}>
 				<AddItemIcon src="/images/icon/plus_blue.png" />
-				<AddItemText>{blockInfo.addItemText}</AddItemText>
+				<AddItemText>
+					Add{itemData.length === 0 ? " " : " one more "}
+					{blockInfo.addItemText}
+				</AddItemText>
 			</AddItemButton>
 		</BlockContainer>
 	);

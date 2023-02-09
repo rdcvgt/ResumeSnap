@@ -30,7 +30,7 @@ const DragBlock = styled.div`
 	height: 20px;
 	width: 30px;
 	position: absolute;
-	left: 50px;
+	left: 25px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -90,7 +90,7 @@ function TitleBlock({
 	dragHandleProps,
 	handleDeleteButtonClick,
 	hideDraggableIcon = false,
-	hideDeleteIcon = true,
+	hideDeleteIcon = false,
 }) {
 	const [isHover, setIsHover] = useState(false);
 	const [isClickDelete, setIsClickDelete] = useState(false);

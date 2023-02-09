@@ -262,7 +262,7 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
 						{jobTitle}
-						{jobTitle && employer ? " - " : ""}
+						{jobTitle && employer ? " at " : ""}
 						{employer}
 						{!jobTitle && !employer && "(Not Specified)"}
 					</ItemTitle>

@@ -26,12 +26,26 @@ export const formDataSlice = createSlice({
 			},
 			{
 				block: "Education",
-				content: { blockTitle: "Education", itemData: [] },
+				content: {
+					blockTitle: "Education",
+					itemData: [],
+				},
 				id: uuid(),
 			},
 			{
 				block: "EmploymentHistory",
-				content: { blockTitle: "Employment History", itemData: [] },
+				content: {
+					blockTitle: "Employment History",
+					itemData: [],
+				},
+				id: uuid(),
+			},
+			{
+				block: "WebsiteLink",
+				content: {
+					blockTitle: "Websites & Social Links",
+					itemData: [],
+				},
 				id: uuid(),
 			},
 		],
@@ -45,7 +59,12 @@ export const formDataSlice = createSlice({
 				block: blockName,
 				content: {
 					blockTitle: blockTitle,
-					itemData: [],
+					itemData: [
+						{
+							id: uuid(),
+							content: {},
+						},
+					],
 				},
 				id: uuid(),
 			};

@@ -261,9 +261,9 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				}}>
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
-						{school}
-						{school && degree ? " - " : ""}
 						{degree}
+						{school && degree ? " at " : ""}
+						{school}
 						{!school && !degree && "(Not Specified)"}
 					</ItemTitle>
 					<ItemDuration>

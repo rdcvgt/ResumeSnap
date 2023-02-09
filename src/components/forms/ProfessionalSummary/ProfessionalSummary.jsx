@@ -53,6 +53,7 @@ export default function ProfessionalSummary({ blockId }) {
 				blockTitle={blockTitle}
 				blockId={blockId}
 				hideDraggableIcon={true}
+				hideDeleteIcon={true}
 			/>
 			<BlockDescription>
 				Write 2-4 short & energetic sentences to interest the reader!

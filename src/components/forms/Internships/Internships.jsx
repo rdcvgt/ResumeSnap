@@ -12,7 +12,7 @@ Internships.propTypes = {
 const blockInfo = {
 	blockName: "Internships",
 	blockDescription: null,
-	addItemText: "Add one more internship",
+	addItemText: "internship",
 };
 
 export default function Internships({
