@@ -68,7 +68,6 @@ export const formDataSlice = createSlice({
 				},
 				id: uuid(),
 			};
-			console.log(newBlock);
 			state.formBlocks.push(newBlock);
 		},
 		deleteBlock: (state, action) => {

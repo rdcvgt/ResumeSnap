@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect, useRef } from "react";
+import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 
@@ -7,7 +7,6 @@ import {
 	deleteItem,
 	updateItemData,
 } from "../../../../redux/slices/formDataSlice";
-import InputEditor from "../../utils/Editor";
 
 const Root = styled.div`
 	border-radius: 5px;
@@ -141,27 +140,12 @@ const RightCol = styled.div`
 	width: 50%;
 `;
 
-const DateBlock = styled.div`
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
-`;
-
-const DateInput = styled.input`
-	${(props) => props.theme.input.shortInput};
-	width: 45%;
-`;
-
 const InputTitle = styled.div`
 	${(props) => props.theme.input.title};
 `;
 
 const ShortInput = styled.input`
 	${(props) => props.theme.input.shortInput};
-`;
-
-const LongInputBox = styled.div`
-	margin-bottom: 20px;
 `;
 
 const MoreInput = styled.div`
@@ -178,6 +162,92 @@ const MoreInput = styled.div`
 	`}
 `;
 
+const Menu = styled.div`
+	width: 100%;
+	height: 50px;
+	border-radius: 5px;
+	background-color: ${(props) => props.theme.color.neutral[10]};
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: pointer;
+	position: relative;
+	user-select: none;
+
+	${(props) =>
+		props.isSelect &&
+		`
+		border-radius: 5px 5px 0px 0px;
+	`}
+`;
+
+const DefaultText = styled.div`
+	${(props) => props.theme.font.content};
+	margin: 15px;
+	color: ${(props) => (props.level ? "#000" : props.theme.color.neutral[40])};
+`;
+
+const ArrowIcon = styled.img`
+	width: 15px;
+	margin: 15px;
+`;
+
+const fadeIn = keyframes`
+	0% { opacity: 0; }
+	100% { opacity: 1;}
+`;
+
+const Options = styled.ul`
+	list-style: none;
+	position: absolute;
+	top: 50px;
+	list-style-type: none;
+	width: 100%;
+	border-radius: 0px 0px 5px 5px;
+	background-color: ${(props) => props.theme.color.neutral[10]};
+	height: 120px;
+	overflow-y: scroll;
+	scrollbar-gutter: stable;
+	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+	animation: ${fadeIn} 0.3s forwards;
+	z-index: 10;
+
+	&::-webkit-scrollbar {
+		width: 5px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: none;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(0, 0, 0, 0.3);
+		border-radius: 10px;
+	}
+`;
+
+const Option = styled.li`
+	${(props) => props.theme.font.content};
+	height: 40px;
+	display: flex;
+	align-items: center;
+	padding: 0px 15px;
+
+	&:before {
+		content: "";
+		display: none;
+	}
+
+	&:first-child {
+		color: ${(props) => props.theme.color.neutral[40]};
+	}
+
+	&:hover {
+		background-color: ${(props) => props.theme.color.blue[20]};
+		color: ${(props) => props.theme.color.blue[50]};
+	}
+`;
+
 Item.propTypes = {
 	item: PropTypes.object,
 	blockId: PropTypes.string,
@@ -187,6 +257,8 @@ Item.propTypes = {
 export default function Item({ item, blockId, dragHandleProps }) {
 	const [isClick, setIsClick] = useState(true);
 	const [isHover, setIsHover] = useState(false);
+	const [isSelect, setIsSelect] = useState(false);
+	const MenuRef = useRef(null);
 	const dispatch = useDispatch();
 
 	//刪除 item
@@ -198,9 +270,6 @@ export default function Item({ item, blockId, dragHandleProps }) {
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
 		let newValue = value;
-		if (name === "startDate" || name === "endDate") {
-			newValue = value.replace("-", " / ");
-		}
 		dispatch(
 			updateItemData({
 				blockId,
@@ -211,35 +280,31 @@ export default function Item({ item, blockId, dragHandleProps }) {
 		);
 	};
 
-	//更新 item description
-	const handleEditorInput = (inputHtml) => {
+	//根據使用者所選澤的選項，顯示在畫面上，並更新 item data
+	const handleOptionClick = (e) => {
+		const selectedText =
+			e.target.innerText === "Select Level" ? null : e.target.innerText;
 		dispatch(
 			updateItemData({
 				blockId,
 				itemId: item.id,
-				itemInputTitle: "description",
-				itemInputValue: inputHtml,
+				itemInputTitle: "level",
+				itemInputValue: selectedText,
 			})
 		);
 	};
 
-	const functionTitle = item.content.functionTitle || "";
-	const level = item.content.level || "";
-	const city = item.content.city || "";
-	const description = item.content.description || "";
-	let startDate = item.content.startDate;
-	let endDate = item.content.endDate;
-	if (startDate) {
-		startDate = startDate.replace(" / ", "-");
-	} else {
-		startDate = "";
-	}
+	//若使用者點擊 level 選單以外區域則會關閉選單
+	useEffect(() => {
+		window.addEventListener("click", (e) => {
+			if (!MenuRef.current.contains(e.target)) {
+				setIsSelect(false);
+			}
+		});
+	}, [MenuRef]);
 
-	if (endDate) {
-		endDate = endDate.replace(" / ", "-");
-	} else {
-		endDate = "";
-	}
+	const skill = item.content.skill || "";
+	const level = item.content.level || "";
 
 	return (
 		<Root>
@@ -261,16 +326,10 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				}}>
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
-						{functionTitle}
-						{functionTitle && level ? " - " : ""}
-						{level}
-						{!functionTitle && !level && "(Not Specified)"}
+						{skill}
+						{!skill && !level && "(Not Specified)"}
 					</ItemTitle>
-					<ItemDuration>
-						{startDate}
-						{startDate && endDate ? " - " : ""}
-						{endDate}
-					</ItemDuration>
+					<ItemDuration>{level}</ItemDuration>
 				</ItemInfo>
 				<ItemArrowIcon
 					src={
@@ -287,17 +346,41 @@ export default function Item({ item, blockId, dragHandleProps }) {
 							<InputTitle>Skill</InputTitle>
 							<ShortInput
 								type="text"
-								name="functionTitle"
-								value={functionTitle}
+								name="skill"
+								value={skill}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
 							<InputTitle>Level</InputTitle>
-							<ShortInput
-								type="text"
-								name="level"
-								value={level}
-								onChange={handleInputChange}></ShortInput>
+							<Menu
+								ref={MenuRef}
+								className="Menu"
+								onClick={() => {
+									setIsSelect(!isSelect);
+								}}
+								isSelect={isSelect}>
+								<DefaultText level={level}>
+									{!level && "Select Level"}
+									{level && level}
+								</DefaultText>
+								<ArrowIcon
+									src={
+										isSelect
+											? "/images/icon/up_blue.png"
+											: "/images/icon/down_blue.png"
+									}
+								/>
+								{isSelect && (
+									<Options onClick={handleOptionClick}>
+										<Option>Select Level</Option>
+										<Option>Novice</Option>
+										<Option>Beginner</Option>
+										<Option>Skillful</Option>
+										<Option>Experienced</Option>
+										<Option>Expert</Option>
+									</Options>
+								)}
+							</Menu>
 						</RightCol>
 					</BlockRow>
 					<MoreInput isClick={isClick}></MoreInput>

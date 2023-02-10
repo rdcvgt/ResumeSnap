@@ -16,7 +16,7 @@ const Title = styled.div`
 	font-size: 14px;
 	font-weight: 500;
 	display: block;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 `;
 
 const Item = styled.div``;
@@ -97,9 +97,9 @@ const handleItemData = (item, index) => {
 				</Date>
 
 				<Experience>
-					{school}
-					{school && degree && " "}
 					{degree}
+					{school && degree && ", "}
+					{school}
 				</Experience>
 				<City>{city}</City>
 			</TopRow>

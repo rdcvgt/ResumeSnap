@@ -184,8 +184,7 @@ const Menu = styled.div`
 const DefaultText = styled.div`
 	${(props) => props.theme.font.content};
 	margin: 15px;
-	color: ${(props) =>
-		props.selected ? "#000" : props.theme.color.neutral[40]};
+	color: ${(props) => (props.level ? "#000" : props.theme.color.neutral[40])};
 `;
 
 const ArrowIcon = styled.img`
@@ -259,7 +258,6 @@ export default function Item({ item, blockId, dragHandleProps }) {
 	const [isClick, setIsClick] = useState(true);
 	const [isHover, setIsHover] = useState(false);
 	const [isSelect, setIsSelect] = useState(false);
-	const [selected, setSelected] = useState(null);
 	const MenuRef = useRef(null);
 	const dispatch = useDispatch();
 
@@ -286,7 +284,6 @@ export default function Item({ item, blockId, dragHandleProps }) {
 	const handleOptionClick = (e) => {
 		const selectedText =
 			e.target.innerText === "Select Level" ? null : e.target.innerText;
-		setSelected(selectedText);
 		dispatch(
 			updateItemData({
 				blockId,
@@ -362,9 +359,9 @@ export default function Item({ item, blockId, dragHandleProps }) {
 									setIsSelect(!isSelect);
 								}}
 								isSelect={isSelect}>
-								<DefaultText selected={selected}>
-									{!selected && "Select Level"}
-									{selected && selected}
+								<DefaultText level={level}>
+									{!level && "Select Level"}
+									{level && level}
 								</DefaultText>
 								<ArrowIcon
 									src={

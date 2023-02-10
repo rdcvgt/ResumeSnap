@@ -16,7 +16,7 @@ const Block = styled.div`
 	height: auto;
 	border-top: 1px solid #000;
 	padding-top: 15px;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 `;
 
 const TitleBlock = styled.div`
@@ -129,13 +129,13 @@ export default function PersonalDetails({ content }) {
 					<MorePersonalDetails>
 						{drivingLicense && (
 							<DrivingLicense>
-								<div>駕駛執照</div>
+								<div>Driving License</div>
 								<div>{drivingLicense}</div>
 							</DrivingLicense>
 						)}
 						{nationality && (
 							<Nationality>
-								<div>國籍</div>
+								<div>Nationality</div>
 								<div>{nationality}</div>
 							</Nationality>
 						)}

@@ -223,10 +223,8 @@ export default function Item({ item, blockId, dragHandleProps }) {
 		);
 	};
 
-	const functionTitle = item.content.functionTitle || "";
-	const employer = item.content.employer || "";
-	const city = item.content.city || "";
-	const description = item.content.description || "";
+	const course = item.content.course || "";
+	const institution = item.content.institution || "";
 	let startDate = item.content.startDate;
 	let endDate = item.content.endDate;
 	if (startDate) {
@@ -261,10 +259,10 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				}}>
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
-						{functionTitle}
-						{functionTitle && employer ? " - " : ""}
-						{employer}
-						{!functionTitle && !employer && "(Not Specified)"}
+						{course}
+						{course && institution ? " at " : ""}
+						{institution}
+						{!course && !institution && "(Not Specified)"}
 					</ItemTitle>
 					<ItemDuration>
 						{startDate}
@@ -284,19 +282,19 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				<form>
 					<BlockRow>
 						<LeftCol>
-							<InputTitle>Function Title</InputTitle>
+							<InputTitle>Course</InputTitle>
 							<ShortInput
 								type="text"
-								name="functionTitle"
-								value={functionTitle}
+								name="course"
+								value={course}
 								onChange={handleInputChange}></ShortInput>
 						</LeftCol>
 						<RightCol>
-							<InputTitle>Employer</InputTitle>
+							<InputTitle>Institution</InputTitle>
 							<ShortInput
 								type="text"
-								name="employer"
-								value={employer}
+								name="institution"
+								value={institution}
 								onChange={handleInputChange}></ShortInput>
 						</RightCol>
 					</BlockRow>

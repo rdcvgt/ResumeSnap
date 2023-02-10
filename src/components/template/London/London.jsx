@@ -12,6 +12,17 @@ import PersonalDetails from "./PersonalDetails";
 import ProfessionalSummary from "./ProfessionalSummary";
 import Education from "./Education";
 import EmploymentHistory from "./EmploymentHistory";
+import WebsiteLink from "./WebsiteLink";
+import ECActivities from "./ECActivities";
+import Internships from "./Internships";
+import CustomSection from "./CustomSection";
+import Courses from "./Courses";
+import Skills from "./Skills";
+import Languages from "./Languages";
+
+const TemplateRoot = styled.div`
+	font-family: serif;
+`;
 
 const Img = styled.img`
 	width: 100%;
@@ -37,6 +48,7 @@ const RenderRoot = styled.div`
 const Root = styled.div`
 	width: 210mm;
 	height: 297mm;
+	/* background-color: #fff; */
 `;
 
 const RenderContainer = styled.div`
@@ -56,6 +68,13 @@ const components = {
 	ProfessionalSummary: ProfessionalSummary,
 	Education: Education,
 	EmploymentHistory: EmploymentHistory,
+	WebsiteLink: WebsiteLink,
+	ECActivities: ECActivities,
+	Internships: Internships,
+	CustomSection: CustomSection,
+	Courses: Courses,
+	Skills: Skills,
+	Languages: Languages,
 };
 
 const RenderBlocks = ({ formBlocks }) => {
@@ -104,7 +123,7 @@ export default function London({
 	}, [blocks]);
 
 	return (
-		<>
+		<TemplateRoot>
 			{imgUrl && <Img src={imgUrl} alt="圖片" />}
 			<HidePages>
 				{blocks.map((pages, index) => {
@@ -135,6 +154,6 @@ export default function London({
 					</RenderContainer>
 				</RenderRoot>
 			</HideRender>
-		</>
+		</TemplateRoot>
 	);
 }

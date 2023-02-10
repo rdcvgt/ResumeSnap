@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -59,13 +59,10 @@ const Description = styled.div`
 	width: 80%;
 `;
 
-EmploymentHistory.propTypes = {
-	content: PropTypes.object,
-};
-
 const handleItemData = (item, index) => {
 	const jobTitle = item.content.jobTitle;
 	const employer = item.content.employer;
+
 	const city = item.content.city;
 	const startDate = item.content.startDate;
 	const endDate = item.content.endDate;
@@ -99,7 +96,6 @@ const handleItemData = (item, index) => {
 					{startDate && endDate && " - "}
 					{endDate}
 				</Date>
-
 				<Experience>
 					{jobTitle}
 					{jobTitle && employer && ", "}
@@ -120,7 +116,11 @@ const handleItemData = (item, index) => {
 	);
 };
 
-export default function EmploymentHistory({ content }) {
+ECActivities.propTypes = {
+	content: PropTypes.object,
+};
+
+export default function ECActivities({ content }) {
 	const dataLength = content.itemData.length;
 	if (dataLength === 0) return;
 	const blockTitle = content.blockTitle;

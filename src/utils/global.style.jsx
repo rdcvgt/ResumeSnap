@@ -2,12 +2,13 @@ import { createGlobalStyle, css } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
 	* {
-			font-family: 'Noto Sans TC';
+			
 			box-sizing: border-box;
 	}
   body {
     margin: 0;
     padding: 0;
+		font-family: "Noto Sans TC", sans-serif;
   }
 `;
 
