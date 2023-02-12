@@ -2,19 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const Sidebar = styled.div`
-	color: #fff;
-	font-family: "Open Sans", sans-serif;
-	overflow-wrap: break-word;
-	margin-bottom: 40px;
-`;
-
 const Title = styled.div`
 	font-family: "PT Sans Narrow", sans-serif;
 	font-size: 20px;
+	color: #fff;
+	overflow-wrap: break-word;
 `;
 
 const Item = styled.div`
+	font-family: "Open Sans", sans-serif;
+	color: #fff;
 	font-size: 9px;
 	font-weight: 300;
 	margin-top: 10px;
@@ -23,6 +20,7 @@ const Item = styled.div`
 
 const Skill = styled.div`
 	margin-bottom: 5px;
+	overflow-wrap: break-word;
 `;
 
 const LevelBar = styled.div`
@@ -39,6 +37,10 @@ const Level = styled.div`
 	width: ${(props) => props.percentage}%;
 	height: 5px;
 	background-color: rgb(256, 256, 256, 1);
+`;
+
+const MarginBottom = styled.div`
+	margin-bottom: 40px;
 `;
 
 const handleItemData = (item, index, length) => {
@@ -96,20 +98,13 @@ export default function ECActivities({ content }) {
 	return (
 		<>
 			{itemArr.length !== 0 && (
-				<>
-					<div>
-						<Sidebar>
-							<Title>{blockTitle}</Title>
-							{itemArr.map((item, index) => {
-								return handleItemData(
-									item,
-									index,
-									itemArr.length
-								);
-							})}
-						</Sidebar>
-					</div>
-				</>
+				<div>
+					<Title>{blockTitle}</Title>
+					{itemArr.map((item, index) => {
+						return handleItemData(item, index, itemArr.length);
+					})}
+					<MarginBottom />
+				</div>
 			)}
 		</>
 	);

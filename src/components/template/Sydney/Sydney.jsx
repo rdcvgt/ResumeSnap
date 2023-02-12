@@ -42,8 +42,8 @@ const TemplateRoot = styled.div`
 `;
 
 const Img = styled.img`
-	width: 101%;
-	height: 101%;
+	width: 100%;
+	height: 100%;
 	position: absolute;
 	opacity: 1;
 `;
@@ -55,6 +55,7 @@ const HideRender = styled.div`
 const HidePages = styled.div`
 	opacity: 0;
 	width: 100%;
+	/* border: 1px solid red; */
 `;
 
 const RenderRoot = styled.div`
@@ -76,6 +77,7 @@ const RenderContainer = styled.div`
 	position: absolute;
 	top: 0;
 	left: 0;
+	line-height: 1.5em;
 `;
 
 const RenderBackground = styled.div`
@@ -86,6 +88,7 @@ const RenderBackground = styled.div`
 	height: 100%;
 	width: 35%;
 	overflow-wrap: break-word;
+	line-height: 1.5em;
 `;
 
 const ResumeContainer = styled.div`
@@ -96,6 +99,7 @@ const ResumeContainer = styled.div`
 	position: absolute;
 	top: 0;
 	left: 0;
+	line-height: 1.5em;
 `;
 
 const ResumeBackground = styled.div`
@@ -106,6 +110,7 @@ const ResumeBackground = styled.div`
 	height: 100%;
 	width: 35%;
 	background-color: ${(props) => props.color};
+	line-height: 1.5em;
 `;
 
 const Block = styled.div`
