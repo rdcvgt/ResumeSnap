@@ -5,8 +5,8 @@ export const formDataSlice = createSlice({
 	name: "formData",
 	initialState: {
 		resumeName: "First Resume",
-		template: "London",
-		color: null,
+		template: "Sydney",
+		color: "#082A4D",
 		formBlocks: [
 			{
 				block: "PersonalDetails",

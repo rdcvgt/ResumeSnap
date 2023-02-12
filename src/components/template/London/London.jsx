@@ -8,17 +8,31 @@ import useDownloadPdf from "../utils/hooks/useDownloadPdf";
 import usePreview from "../utils/hooks/usePreview";
 import "../utils/htmlElement.css";
 
-import PersonalDetails from "./PersonalDetails";
-import ProfessionalSummary from "./ProfessionalSummary";
-import Education from "./Education";
-import EmploymentHistory from "./EmploymentHistory";
-import WebsiteLink from "./WebsiteLink";
-import ECActivities from "./ECActivities";
-import Internships from "./Internships";
-import CustomSection from "./CustomSection";
-import Courses from "./Courses";
-import Skills from "./Skills";
-import Languages from "./Languages";
+import PersonalDetails from "./resumeBlocks/PersonalDetails";
+import ProfessionalSummary from "./resumeBlocks/ProfessionalSummary";
+import Education from "./resumeBlocks/Education";
+import EmploymentHistory from "./resumeBlocks/EmploymentHistory";
+import WebsiteLink from "./resumeBlocks/WebsiteLink";
+import ECActivities from "./resumeBlocks/ECActivities";
+import Internships from "./resumeBlocks/Internships";
+import CustomSection from "./resumeBlocks/CustomSection";
+import Courses from "./resumeBlocks/Courses";
+import Skills from "./resumeBlocks/Skills";
+import Languages from "./resumeBlocks/Languages";
+
+const components = {
+	PersonalDetails: PersonalDetails,
+	ProfessionalSummary: ProfessionalSummary,
+	Education: Education,
+	EmploymentHistory: EmploymentHistory,
+	WebsiteLink: WebsiteLink,
+	ECActivities: ECActivities,
+	Internships: Internships,
+	CustomSection: CustomSection,
+	Courses: Courses,
+	Skills: Skills,
+	Languages: Languages,
+};
 
 const TemplateRoot = styled.div`
 	font-family: serif;
@@ -48,6 +62,7 @@ const RenderRoot = styled.div`
 const Root = styled.div`
 	width: 210mm;
 	height: 297mm;
+	position: relative;
 	/* background-color: #fff; */
 `;
 
@@ -61,21 +76,13 @@ const ResumeContainer = styled.div`
 	width: 100%;
 	height: 100%;
 	padding: 50px;
+	z-index: 1;
+	position: absolute;
+	top: 0;
+	left: 0;
 `;
 
-const components = {
-	PersonalDetails: PersonalDetails,
-	ProfessionalSummary: ProfessionalSummary,
-	Education: Education,
-	EmploymentHistory: EmploymentHistory,
-	WebsiteLink: WebsiteLink,
-	ECActivities: ECActivities,
-	Internships: Internships,
-	CustomSection: CustomSection,
-	Courses: Courses,
-	Skills: Skills,
-	Languages: Languages,
-};
+const ResumeBackground = styled.div``;
 
 const RenderBlocks = ({ formBlocks }) => {
 	return formBlocks.map((block) => {
@@ -88,14 +95,14 @@ const RenderBlocks = ({ formBlocks }) => {
 	});
 };
 
-London.propTypes = {
+RenderTemplate.propTypes = {
 	handleGetDownLoadPdfFunc: PropTypes.func,
 	getTotalPage: PropTypes.func,
 	currentPage: PropTypes.number,
 	setIsDownloading: PropTypes.func,
 };
 
-export default function London({
+export default function RenderTemplate({
 	handleGetDownLoadPdfFunc,
 	getTotalPage,
 	currentPage,
@@ -112,10 +119,10 @@ export default function London({
 	usePagination(renderContainerRef, setBlocks, formBlocks);
 
 	//將履歷內容轉換成 png 檔並儲存到 state
-	usePreview(pageRef, setImgUrl, blocks, currentPage);
+	usePreview(pageRef, setImgUrl, currentPage, blocks);
 
 	//下載 PDF，回傳給父層，偵測點擊事件
-	const downloadPdf = useDownloadPdf(blocks, pageRef, setIsDownloading);
+	const downloadPdf = useDownloadPdf(pageRef, setIsDownloading, blocks);
 	handleGetDownLoadPdfFunc(downloadPdf);
 
 	useEffect(() => {
@@ -142,6 +149,7 @@ export default function London({
 									);
 								})}
 							</ResumeContainer>
+							<ResumeBackground />
 						</Root>
 					);
 				})}

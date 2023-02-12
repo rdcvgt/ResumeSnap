@@ -60,17 +60,19 @@ const Description = styled.div`
 `;
 
 const handleItemData = (item, index) => {
-	const course = item.content.course;
-	const institution = item.content.institution;
+	const jobTitle = item.content.jobTitle;
+	const employer = item.content.employer;
 
+	const city = item.content.city;
 	const startDate = item.content.startDate;
 	const endDate = item.content.endDate;
 	const htmlText = item.content.description;
 	const noContent = "<p><br></p>";
 
 	if (
-		!course &&
-		!institution &&
+		!jobTitle &&
+		!employer &&
+		!city &&
 		!startDate &&
 		!endDate &&
 		(htmlText === noContent || !htmlText)
@@ -94,13 +96,12 @@ const handleItemData = (item, index) => {
 					{startDate && endDate && " - "}
 					{endDate}
 				</Date>
-
 				<Experience>
-					{course}
-					{course && institution && ", "}
-					{institution}
+					{jobTitle}
+					{jobTitle && employer && ", "}
+					{employer}
 				</Experience>
-				<City>{null}</City>
+				<City>{city}</City>
 			</TopRow>
 			<BottomRow>
 				<Space />
@@ -115,11 +116,11 @@ const handleItemData = (item, index) => {
 	);
 };
 
-ECActivities.propTypes = {
+Internships.propTypes = {
 	content: PropTypes.object,
 };
 
-export default function ECActivities({ content }) {
+export default function Internships({ content }) {
 	const dataLength = content.itemData.length;
 	if (dataLength === 0) return;
 	const blockTitle = content.blockTitle;

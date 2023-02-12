@@ -3,29 +3,25 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 const ResumeContainer = styled.div`
-	width: 100%;
 	height: auto;
 `;
 
-const Block = styled.div`
-	height: auto;
-	border-top: 1px solid #000;
-	padding-top: 20px;
+const Main = styled.div`
 	margin-bottom: 20px;
-	display: flex;
+	overflow-wrap: break-word;
 `;
 
 const Title = styled.div`
-	font-size: 14px;
-	font-weight: 500;
-	width: 20%;
+	font-family: "PT Sans Narrow", sans-serif;
+	font-size: 20px;
 `;
 
 const Content = styled.div`
+	font-family: "Open Sans", sans-serif;
 	font-size: 10px;
 	text-decoration: none;
-	width: 80%;
 	line-height: 1.5em;
+	margin-top: 10px;
 `;
 
 ProfessionalSummary.propTypes = {
@@ -50,13 +46,13 @@ export default function ProfessionalSummary({ content }) {
 	return (
 		<ResumeContainer>
 			{htmlText && htmlText !== noContent && (
-				<Block>
+				<Main>
 					<Title style={{ margin: 0 }}>{blockTitle}</Title>
 					<Content
 						dangerouslySetInnerHTML={{
 							__html: newHtmlText,
 						}}></Content>
-				</Block>
+				</Main>
 			)}
 		</ResumeContainer>
 	);

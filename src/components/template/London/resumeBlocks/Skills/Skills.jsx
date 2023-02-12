@@ -42,7 +42,8 @@ const ItemRow = styled.div`
 	grid-auto-flow: row;
 	grid-template-columns: 1fr 1fr;
 	grid-auto-rows: auto;
-	grid-gap: 30px;
+	column-gap: 30px;
+	row-gap: 10px;
 `;
 
 const Item = styled.div`
@@ -100,7 +101,6 @@ export default function ECActivities({ content }) {
 							<Block />
 						</div>
 					</div>
-
 					<div>
 						<ItemArea>
 							<LeftCol>

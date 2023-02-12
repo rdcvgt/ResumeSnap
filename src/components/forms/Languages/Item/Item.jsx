@@ -354,7 +354,6 @@ export default function Item({ item, blockId, dragHandleProps }) {
 							<InputTitle>Level</InputTitle>
 							<Menu
 								ref={MenuRef}
-								className="Menu"
 								onClick={() => {
 									setIsSelect(!isSelect);
 								}}

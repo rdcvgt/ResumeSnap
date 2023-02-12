@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import html2canvas from "html2canvas";
 import { useSelector } from "react-redux";
 
-export default function usePreview(pageRef, setImgUrl, blocks, currentPage) {
+export default function usePreview(
+	pageRef,
+	setImgUrl,
+	currentPage,
+	mainBlocks,
+	sideBlocks
+) {
 	const [timer, setTimer] = useState(null);
 	const currentTemplate = useSelector((state) => state.formData.template);
 	const currentColor = useSelector((state) => state.formData.color);
@@ -17,11 +23,12 @@ export default function usePreview(pageRef, setImgUrl, blocks, currentPage) {
 		}, 500);
 		setTimer(newTimer);
 	}, [
-		blocks,
-		currentPage,
-		pageRef,
-		setImgUrl,
 		currentTemplate,
 		currentColor,
+		pageRef,
+		setImgUrl,
+		currentPage,
+		mainBlocks,
+		sideBlocks,
 	]);
 }

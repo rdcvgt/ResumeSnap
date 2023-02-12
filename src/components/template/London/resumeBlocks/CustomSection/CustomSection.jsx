@@ -16,7 +16,7 @@ const Title = styled.div`
 	font-size: 14px;
 	font-weight: 500;
 	display: block;
-	margin-bottom: 15px;
+	margin-bottom: 10px;
 `;
 
 const Item = styled.div``;
@@ -60,8 +60,7 @@ const Description = styled.div`
 `;
 
 const handleItemData = (item, index) => {
-	const school = item.content.school;
-	const degree = item.content.degree;
+	const functionTitle = item.content.functionTitle;
 	const city = item.content.city;
 	const startDate = item.content.startDate;
 	const endDate = item.content.endDate;
@@ -69,8 +68,7 @@ const handleItemData = (item, index) => {
 	const noContent = "<p><br></p>";
 
 	if (
-		!school &&
-		!degree &&
+		!functionTitle &&
 		!city &&
 		!startDate &&
 		!endDate &&
@@ -95,12 +93,7 @@ const handleItemData = (item, index) => {
 					{startDate && endDate && " - "}
 					{endDate}
 				</Date>
-
-				<Experience>
-					{school}
-					{school && degree && " "}
-					{degree}
-				</Experience>
+				<Experience>{functionTitle}</Experience>
 				<City>{city}</City>
 			</TopRow>
 			<BottomRow>
@@ -116,11 +109,11 @@ const handleItemData = (item, index) => {
 	);
 };
 
-Education.propTypes = {
+CustomSection.propTypes = {
 	content: PropTypes.object,
 };
 
-export default function Education({ content }) {
+export default function CustomSection({ content }) {
 	const dataLength = content.itemData.length;
 	if (dataLength === 0) return;
 	const blockTitle = content.blockTitle;

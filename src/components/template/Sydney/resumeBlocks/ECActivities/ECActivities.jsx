@@ -1,68 +1,46 @@
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const Block = styled.div`
-	height: auto;
-	border-top: 1px solid #000;
-	padding-top: 10px;
-`;
-
 const MarginBottom = styled.div`
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 `;
 
 const Title = styled.div`
-	font-size: 14px;
-	font-weight: 500;
-	display: block;
+	font-family: "PT Sans Narrow", sans-serif;
+	font-size: 20px;
 	margin-bottom: 10px;
 `;
 
-const Item = styled.div``;
+const Item = styled.div`
+	overflow-wrap: break-word;
+`;
 
-const TopRow = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 10px;
-	font-size: 10px;
-	text-decoration: none;
-	line-height: 1.5em;
+const Experience = styled.div`
+	font-weight: 600;
+	font-family: "Open Sans", sans-serif;
+	font-size: 14px;
+	margin-bottom: 6px;
 `;
 
 const Date = styled.div`
-	width: 20%;
-`;
-const Experience = styled.div`
-	font-weight: 600;
-	width: 60%;
-`;
-const City = styled.div`
-	width: 20%;
-	text-align: right;
-`;
-
-const BottomRow = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 20px;
-	font-size: 10px;
-	text-decoration: none;
-	line-height: 1.5em;
-`;
-
-const Space = styled.div`
-	width: 20%;
+	font-family: "Open Sans", sans-serif;
+	font-size: 9px;
+	opacity: 0.4;
+	margin-bottom: 6px;
 `;
 
 const Description = styled.div`
-	width: 80%;
+	font-family: "Open Sans", sans-serif;
+	font-size: 10px;
+	text-decoration: none;
+	line-height: 1.5em;
+	margin-bottom: 20px;
 `;
 
 const handleItemData = (item, index) => {
-	const jobTitle = item.content.jobTitle;
+	const functionTitle = item.content.functionTitle;
 	const employer = item.content.employer;
-
 	const city = item.content.city;
 	const startDate = item.content.startDate;
 	const endDate = item.content.endDate;
@@ -70,7 +48,7 @@ const handleItemData = (item, index) => {
 	const noContent = "<p><br></p>";
 
 	if (
-		!jobTitle &&
+		!functionTitle &&
 		!employer &&
 		!city &&
 		!startDate &&
@@ -90,28 +68,26 @@ const handleItemData = (item, index) => {
 
 	return (
 		<Item key={index}>
-			<TopRow>
-				<Date>
-					{startDate}
-					{startDate && endDate && " - "}
-					{endDate}
-				</Date>
-				<Experience>
-					{jobTitle}
-					{jobTitle && employer && ", "}
-					{employer}
-				</Experience>
-				<City>{city}</City>
-			</TopRow>
-			<BottomRow>
-				<Space />
-				{htmlText && htmlText !== noContent && (
-					<Description
-						dangerouslySetInnerHTML={{
-							__html: description,
-						}}></Description>
-				)}
-			</BottomRow>
+			<Experience>
+				{functionTitle}
+				{employer && functionTitle && ", "}
+				{employer}
+				{((employer && city) || (functionTitle && city)) && ", "}
+				{city}
+			</Experience>
+
+			<Date>
+				{startDate}
+				{startDate && endDate && " - "}
+				{endDate}
+			</Date>
+
+			{htmlText && htmlText !== noContent && (
+				<Description
+					dangerouslySetInnerHTML={{
+						__html: description,
+					}}></Description>
+			)}
 		</Item>
 	);
 };
@@ -132,7 +108,6 @@ export default function ECActivities({ content }) {
 				<>
 					<div>
 						<div>
-							<Block />
 							<Title>{blockTitle}</Title>
 						</div>
 					</div>
@@ -140,7 +115,10 @@ export default function ECActivities({ content }) {
 					{itemArr.map((item, index) => {
 						return handleItemData(item, index);
 					})}
-					<MarginBottom />
+
+					<div>
+						<MarginBottom />
+					</div>
 				</>
 			)}
 		</>
