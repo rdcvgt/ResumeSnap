@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import usePagination from "../utils/hooks/usePagination";
 import useDownloadPdf from "../utils/hooks/useDownloadPdf";
 import usePreview from "../utils/hooks/usePreview";
+import useCropUserPhoto from "../utils/hooks/useCropUserPhoto";
 import "../utils/htmlElement.css";
 
 import PersonalDetails from "./resumeBlocks/PersonalDetails";
@@ -42,8 +43,8 @@ const TemplateRoot = styled.div`
 `;
 
 const Img = styled.img`
-	width: 100%;
-	height: 100%;
+	width: 101%;
+	height: 101%;
 	position: absolute;
 	opacity: 1;
 `;
@@ -55,7 +56,6 @@ const HideRender = styled.div`
 const HidePages = styled.div`
 	opacity: 0;
 	width: 100%;
-	/* border: 1px solid red; */
 `;
 
 const RenderRoot = styled.div`
@@ -114,27 +114,56 @@ const ResumeBackground = styled.div`
 `;
 
 const Block = styled.div`
-	display: inline;
+	margin: auto 0;
+	overflow-wrap: break-word;
 `;
 
 const Main = styled.div`
-	display: block;
 	width: 100%;
-	height: 55px;
+	/* height: 55px; */
 	margin-bottom: 30px;
 	overflow-wrap: break-word;
+	display: flex;
+	align-items: center;
+	/* align-items: center; */
+`;
+
+const UserPhotoArea = styled.div`
+	height: 55px;
+	width: 55px;
+	border-radius: 55px;
+	margin-right: 20px;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const PurePhoto = styled.img`
+	width: 100%;
+	height: 100%;
+`;
+
+const UserInfoArea = styled.div`
+	width: ${(props) => (props.photo ? "80%" : "100%")};
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
 `;
 
 const Name = styled.div`
 	font-family: "PT Sans Narrow", sans-serif;
+	/* height: 30px; */
 	font-size: 30px;
-	margin-bottom: 5px;
+	width: 100%;
 `;
 
 const Position = styled.div`
 	font-family: "Open Sans", sans-serif;
 	font-size: 9px;
 	text-transform: uppercase;
+	width: 100%;
+	margin-top: 5px;
 `;
 
 const MarginTop = styled.div`
@@ -169,20 +198,32 @@ export default function RenderTemplate({
 	const [leftAreaBlocks, setLeftAreaBlocks] = useState([]);
 	const [rightAreaBlocks, setRightAreaBlocks] = useState([]);
 	const [imgUrl, setImgUrl] = useState("");
+	const [croppedUserPhotoUrl, setCroppedUserPhotoUrl] = useState(null);
 	const pageRef = useRef([]);
 	const renderContainerRef = useRef();
 	const renderBackgroundRef = useRef();
+	const canvasRef = useRef();
 
 	const formBlocks = useSelector((state) => state.formData.formBlocks);
 	const color = useSelector((state) => state.formData.color);
 	const firstName = formBlocks[0].content.inputData?.firstName;
 	const lastName = formBlocks[0].content.inputData?.lastName;
 	const position = formBlocks[0].content.inputData?.position;
+	const photo = formBlocks[0].content.inputData?.photo;
 
 	//實現分頁邏輯
-	usePagination(renderContainerRef, setLeftAreaBlocks, formBlocks);
-	usePagination(renderBackgroundRef, setRightAreaBlocks, formBlocks);
-	console.log(rightAreaBlocks);
+	usePagination(
+		renderContainerRef,
+		setLeftAreaBlocks,
+		formBlocks,
+		croppedUserPhotoUrl
+	);
+	usePagination(
+		renderBackgroundRef,
+		setRightAreaBlocks,
+		formBlocks,
+		croppedUserPhotoUrl
+	);
 
 	//將履歷內容轉換成 png 檔並儲存到 state
 	usePreview(
@@ -193,6 +234,9 @@ export default function RenderTemplate({
 		rightAreaBlocks
 	);
 
+	//使用 canvas 裁切使用者照片再轉回圖片
+	useCropUserPhoto(photo, canvasRef, setCroppedUserPhotoUrl);
+
 	//下載 PDF，回傳給父層，偵測點擊事件
 	const downloadPdf = useDownloadPdf(
 		pageRef,
@@ -200,11 +244,9 @@ export default function RenderTemplate({
 		leftAreaBlocks,
 		rightAreaBlocks
 	);
-
-	console.log(rightAreaBlocks);
-
 	handleGetDownLoadPdfFunc(downloadPdf);
 
+	//回傳履歷頁數
 	useEffect(() => {
 		if (leftAreaBlocks.length >= rightAreaBlocks.length) {
 			getTotalPage(leftAreaBlocks.length);
@@ -290,22 +332,35 @@ export default function RenderTemplate({
 						);
 					})}
 			</HidePages>
-
 			<HideRender>
 				<RenderRoot>
 					<RenderContainer ref={renderContainerRef}>
 						<div>
-							{(firstName || lastName || position) && (
+							{(firstName || lastName || position || photo) && (
 								<Main>
-									<Name>
-										{firstName}
-										{firstName && lastName && " "}
-										{lastName}
-									</Name>
-									<Position>{position}</Position>
+									{photo && (
+										<UserPhotoArea>
+											<PurePhoto
+												src={croppedUserPhotoUrl}
+											/>
+										</UserPhotoArea>
+									)}
+									<UserInfoArea photo={photo}>
+										{(firstName || lastName) && (
+											<Name>
+												{firstName}
+												{firstName && lastName && " "}
+												{lastName}
+											</Name>
+										)}
+										{position && (
+											<Position>{position}</Position>
+										)}
+									</UserInfoArea>
 								</Main>
 							)}
 						</div>
+
 						<RenderBlocks
 							formBlocks={formBlocks}
 							components={leftAreaComponents}
@@ -322,6 +377,7 @@ export default function RenderTemplate({
 						/>
 					</RenderBackground>
 				</RenderRoot>
+				<canvas ref={canvasRef}></canvas>
 			</HideRender>
 		</TemplateRoot>
 	);

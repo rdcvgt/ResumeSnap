@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "../../pages/HomePage";
 import EditPage from "../../pages/EditPage";
+import LoginPage from "../../pages/LoginPage";
 
 const Root = styled.div``;
 
@@ -13,6 +14,7 @@ export default function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/edit" element={<EditPage />} />
+					<Route path="/login" element={<LoginPage />} />
 				</Routes>
 			</BrowserRouter>
 		</Root>

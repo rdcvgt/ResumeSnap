@@ -20,7 +20,7 @@ export default function usePreview(
 				const dataUri = canvas.toDataURL("image/png", 0.4);
 				setImgUrl(dataUri);
 			});
-		}, 500);
+		}, 700);
 		setTimer(newTimer);
 	}, [
 		currentTemplate,

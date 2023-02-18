@@ -3,7 +3,8 @@ import { useEffect } from "react";
 export default function usePagination(
 	renderContainerRef,
 	setBlocks,
-	formBlocks
+	formBlocks,
+	croppedUserPhotoUrl
 ) {
 	/*計算組件、頁面高度與換頁邏輯 */
 	useEffect(() => {
@@ -48,5 +49,5 @@ export default function usePagination(
 			});
 		});
 		setBlocks(newBlocks);
-	}, [renderContainerRef, setBlocks, formBlocks]);
+	}, [renderContainerRef, setBlocks, formBlocks, croppedUserPhotoUrl]);
 }

@@ -60,7 +60,6 @@ export default function PersonalDetails({ content }) {
 				drivingLicense ||
 				email ||
 				nationality ||
-				phone ||
 				postalCode) && (
 				<div>
 					<Title>Details</Title>

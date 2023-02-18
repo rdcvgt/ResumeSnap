@@ -42,6 +42,7 @@ export default function HomePage() {
 			<Banner>歡迎光臨我的頁面</Banner>
 			<ButtonArea>
 				<Button to="/edit">點此開始</Button>
+				<Button to="/login">點此登入</Button>
 			</ButtonArea>
 		</Root>
 	);

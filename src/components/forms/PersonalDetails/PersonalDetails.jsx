@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import { updateInputData } from "../../../redux/slices/formDataSlice";
 import TitleBlock from "../utils/TitleBlock";
+import UploadPhotoCard from "../../cards/UploadPhotoCard";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -55,13 +56,82 @@ const AdditionalButton = styled.div`
 	cursor: pointer;
 `;
 
+const UploadPhotoArea = styled.div`
+	display: flex;
+	align-items: center;
+	margin-top: 19px;
+`;
+
+const PhotoPreviewArea = styled.div`
+	height: 50px;
+	width: 50px;
+	border-radius: 5px;
+	background-color: ${(props) => props.theme.color.neutral[10]};
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 20px;
+	overflow: hidden;
+`;
+const PhotoDefault = styled.img`
+	width: 50px;
+	opacity: 0.3;
+	transition: all 0.3s;
+	cursor: pointer;
+`;
+
+const PhotoPreview = styled.img`
+	width: 50px;
+`;
+
+const PhotoButtonArea = styled.div``;
+
+const PhotoButton = styled.div`
+	${(props) => props.theme.input.title};
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	transition: all 0.3s;
+	&:nth-child(1) {
+		margin-bottom: 10px;
+	}
+`;
+
+const UploadInput = styled.input`
+	display: none;
+`;
+
+const EditButtonText = styled.div`
+	transition: all 0.3s;
+	&:hover {
+		color: ${(props) => props.theme.color.blue[50]};
+		transition: all 0.3s;
+	}
+`;
+
+const DeleteButtonText = styled.div`
+	transition: all 0.3s;
+	&:hover {
+		color: ${(props) => props.theme.color.red[60]};
+		transition: all 0.3s;
+	}
+`;
+
+const ButtonIcon = styled.img`
+	width: 18px;
+	margin-right: 10px;
+`;
+
 PersonalDetails.propTypes = {
 	blockId: PropTypes.string,
 };
 
 export default function PersonalDetails({ blockId }) {
 	const [isClick, setIsClick] = useState(false);
+	const [uploadedImg, setUploadedImg] = useState(null);
+	const [isClickEditButton, setIsClickEditButton] = useState(false); //true 時展開卡片
 	const dispatch = useDispatch();
+	const uploadInputRef = useRef(null);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -93,6 +163,53 @@ export default function PersonalDetails({ blockId }) {
 	const postalCode = inputData.postalCode || "";
 	const drivingLicense = inputData.drivingLicense || "";
 	const nationality = inputData.nationality || "";
+	const photo = inputData.photo || "";
+
+	const handleUploadClick = () => {
+		uploadInputRef.current.click();
+	};
+
+	const handleImgUpload = (e) => {
+		const file = e.target.files[0];
+		const reader = new FileReader();
+		reader.onload = () => {
+			dispatch(
+				updateInputData({
+					blockName: "PersonalDetails",
+					inputTitle: "photo",
+					inputValue: reader.result,
+				})
+			);
+		};
+		reader.readAsDataURL(file);
+	};
+
+	const handleDeleteClock = () => {
+		dispatch(
+			updateInputData({
+				blockName: "PersonalDetails",
+				inputTitle: "photo",
+				inputValue: null,
+			})
+		);
+	};
+
+	useEffect(() => {
+		const img = new Image();
+		img.onload = () => {
+			const imgRatio = img.width / img.height;
+			if (img.width < img.height) {
+				const newHeight = 50 / imgRatio;
+				setStyle({ width: "50px", height: `${newHeight}px` });
+			} else {
+				const newWidth = 50 * imgRatio;
+				setStyle({ width: `${newWidth}px`, height: "50px" });
+			}
+		};
+		img.src = photo;
+	}, [photo]);
+
+	const [style, setStyle] = useState({});
 
 	return (
 		<BlockContainer>
@@ -106,7 +223,6 @@ export default function PersonalDetails({ blockId }) {
 				<BlockRow>
 					<LeftCol>
 						<InputTitle>Wanted Job Title</InputTitle>
-
 						<ShortInput
 							type="text"
 							name="position"
@@ -114,8 +230,38 @@ export default function PersonalDetails({ blockId }) {
 							onChange={handleInputChange}></ShortInput>
 					</LeftCol>
 					<RightCol>
-						<InputTitle>照片</InputTitle>
-						<ShortInput type="text"></ShortInput>
+						{isClickEditButton && (
+							<UploadPhotoCard
+								setIsClickEditButton={setIsClickEditButton}
+								setUploadedImg={setUploadedImg}
+								uploadedImg={uploadedImg}
+							/>
+						)}
+						<UploadPhotoArea>
+							<PhotoPreviewArea>
+								{!photo && (
+									<PhotoDefault src="/images/icon/user.png" />
+								)}
+								{photo && (
+									<PhotoPreview src={photo} style={style} />
+								)}
+							</PhotoPreviewArea>
+							<PhotoButtonArea>
+								<PhotoButton onClick={handleUploadClick}>
+									<ButtonIcon src="/images/icon/edit.png" />
+									<EditButtonText>Edit photo</EditButtonText>
+									<UploadInput
+										type="file"
+										onChange={handleImgUpload}
+										ref={uploadInputRef}
+									/>
+								</PhotoButton>
+								<PhotoButton onClick={handleDeleteClock}>
+									<ButtonIcon src="/images/icon/delete.png" />
+									<DeleteButtonText>Delete</DeleteButtonText>
+								</PhotoButton>
+							</PhotoButtonArea>
+						</UploadPhotoArea>
 					</RightCol>
 				</BlockRow>
 				<BlockRow>
