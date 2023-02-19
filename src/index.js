@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDom from "react-dom/client";
 
-import "./utils/reset.css";
-import { GlobalStyle, theme } from "./utils/global.style.jsx";
+import "./utils/style/reset.css";
+import { GlobalStyle, theme } from "./utils/style/global.style.jsx";
 import App from "./components/App";
 import store from "./redux/store";
 

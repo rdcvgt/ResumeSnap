@@ -43,6 +43,7 @@ export default function HomePage() {
 			<ButtonArea>
 				<Button to="/edit">點此開始</Button>
 				<Button to="/login">點此登入</Button>
+				<Button to="/signup">點此註冊</Button>
 			</ButtonArea>
 		</Root>
 	);
