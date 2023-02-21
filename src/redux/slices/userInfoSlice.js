@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import uuid from "react-uuid";
+import { collection, doc, setDoc, addDoc } from "firebase/firestore";
+
+import { db } from "../../utils/firebase/firebase";
+import { createNewUserInfo } from "../../webAPI";
 
 export const userInfoSlice = createSlice({
 	name: "userInfo",
@@ -20,5 +24,11 @@ export const userInfoSlice = createSlice({
 });
 
 export const { updateUserInfo } = userInfoSlice.actions;
-
 export default userInfoSlice.reducer;
+
+export const addUserInfo = (uid, userInfo) => (dispatch) => {
+	dispatch(updateUserInfo({ userInfo }));
+	const userRef = doc(db, "users", uid);
+	const userInfoRef = collection(userRef, "userInfo");
+	createNewUserInfo(userInfoRef, userInfo);
+};

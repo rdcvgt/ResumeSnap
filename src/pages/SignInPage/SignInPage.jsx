@@ -12,7 +12,7 @@ import { createFirstResume } from "../../webAPI";
 
 const Root = styled.div``;
 
-export default function HomePage() {
+export default function SignInPage() {
 	const [direct, setDirect] = useState(false);
 	const [error, setError] = useState(null);
 	const [uid, setUid] = useState(null);

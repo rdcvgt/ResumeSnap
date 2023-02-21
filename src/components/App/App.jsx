@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "../../pages/HomePage";
 import SignUpPage from "../../pages/SignUpPage";
-import LoginPage from "../../pages/LoginPage";
+import SignInPage from "../../pages/SignInPage";
 import AppPage from "../../pages/AppPage";
 import EditPage from "../../pages/EditPage";
 
@@ -17,9 +17,9 @@ export default function App() {
 				<Routes>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/signup" element={<SignUpPage />} />
-					<Route path="/login" element={<LoginPage />} />
+					<Route path="/signin" element={<SignInPage />} />
 					<Route path="/app" element={<AppPage />} />
-					<Route path="/edit" element={<EditPage />} />
+					<Route path="/edit/:resumeId" element={<EditPage />} />
 				</Routes>
 			</BrowserRouter>
 		</Root>

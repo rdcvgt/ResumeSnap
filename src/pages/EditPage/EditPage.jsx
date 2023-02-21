@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 
 import ResumePreviewArea from "./ResumePreviewArea";
 import ResumeFormArea from "./ResumeFormArea";
 import ResumeTemplateArea from "./ResumeTemplateArea";
 import NavbarArea from "./NavbarArea";
+import { getResumeData } from "../../redux/slices/formDataSlice";
+import { auth, db } from "../../utils/firebase/firebase";
 
 // import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
@@ -39,6 +43,23 @@ export default function EditPage() {
 	const [isChoosingTemp, setIsChoosingTemp] = useState(false);
 	const [isDownloading, setIsDownloading] = useState(false);
 	const [tempColors, setTempColors] = useState([]);
+	const { resumeId } = useParams();
+	const dispatch = useDispatch();
+
+	//傳送 resumeId 到 redux 獲取 resume data
+	useEffect(() => {
+		const user = auth.currentUser;
+		console.log(user);
+		if (user !== null) {
+			const uid = user.uid;
+			console.log(uid);
+			const userRef = doc(db, "users", uid);
+			const resumesRef = collection(userRef, "resumes");
+			const resume = doc(resumesRef, resumeId);
+
+			dispatch(getResumeData(uid, resumeId));
+		}
+	}, [resumeId]);
 
 	const template = useSelector((state) => state.formData.template);
 	useEffect(() => {

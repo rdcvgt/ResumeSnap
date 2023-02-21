@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import uuid from "react-uuid";
+import { collection, doc } from "firebase/firestore";
+
+import { db } from "../../utils/firebase/firebase";
+import { getResume } from "../../webAPI";
 
 export const formDataSlice = createSlice({
 	name: "formData",
@@ -51,6 +55,10 @@ export const formDataSlice = createSlice({
 		],
 	},
 	reducers: {
+		addResumeData: (state, action) => {
+			const { resumeData } = action.payload;
+			return resumeData;
+		},
 		addBlock: (state, action) => {
 			const { blockData } = action.payload;
 			const { blockName, blockTitle } = blockData;
@@ -169,6 +177,7 @@ export const formDataSlice = createSlice({
 });
 
 export const {
+	addResumeData,
 	addBlock,
 	deleteBlock,
 	updateResumeName,
@@ -184,3 +193,13 @@ export const {
 } = formDataSlice.actions;
 
 export default formDataSlice.reducer;
+
+//透過 edit/:resumeId 向 firebase 索取 resume data
+export const getResumeData = (uid, resumeId) => (dispatch) => {
+	const userRef = doc(db, "users", uid);
+	const resumesRef = collection(userRef, "resumes");
+	const resumeData = getResume(resumesRef, resumeId);
+	resumeData.then((data) => {
+		dispatch(addResumeData({ resumeData: data }));
+	});
+};

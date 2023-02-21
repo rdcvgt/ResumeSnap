@@ -37,41 +37,6 @@ const ResumeData = styled.div`
 	padding: 20px;
 `;
 
-// const ResumeTitleBlock = styled.div`
-// 	display: flex;
-// 	justify-content: center;
-// 	align-items: center;
-// 	height: 25px;
-// 	&:hover {
-// 	}
-// `;
-
-// const ResumeTitle = styled.input`
-// 	width: 150px;
-// 	height: 25px;
-// 	min-width: 30ch;
-// 	max-width: 80%;
-// 	font-size: 20px;
-// 	margin: 20px 0;
-// 	text-align: center;
-// 	outline: none;
-// 	border: none;
-// 	min-width: 1px;
-// 	${(props) => props.theme.font.title};
-// 	color: ${(props) => props.theme.color.neutral[90]};
-// 	caret-color: ${(props) => props.theme.color.blue[50]};
-// `;
-
-// const ResumeTitleIcon = styled.img`
-// 	max-height: 15px;
-// 	opacity: 0;
-// 	transition: opacity 0.3s;
-// 	cursor: pointer;
-// 	&:hover {
-// 		opacity: 1;
-// 	}
-// `;
-
 const AddSection = styled.div`
 	width: 90%;
 	margin: 0 auto;
@@ -205,11 +170,6 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 	const [isUsingLanguages, setIsUsingLanguages] = useState(false);
 
 	const dispatch = useDispatch();
-	const resumeTitleRef = useRef(null);
-	const resumeName = useSelector((state) => state.formData.resumeName);
-	const handleResumeTitleChange = (e) => {
-		dispatch(updateResumeName({ resumeName: e.target.value }));
-	};
 
 	//block 調整順序後重新排序資料陣列
 	const formBlocks = useSelector((state) => state.formData.formBlocks);
@@ -223,11 +183,6 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 		},
 		[formBlocks, dispatch]
 	);
-
-	//點選編輯按鈕，標題全選
-	const handleResumeTitleIconClick = () => {
-		resumeTitleRef.current.select();
-	};
 
 	//點擊刪除 block 按鈕後，最下方各 block 狀態恢復可點選新增
 	const handleDeleteButtonClick = (blockId, blockName) => {

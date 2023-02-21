@@ -1,10 +1,11 @@
 import uuid from "react-uuid";
-import { serverTimestamp } from "firebase/firestore";
+import { Timestamp } from "firebase/firestore";
 
 function newResumeConfig(userInfo) {
+	const timestamp = Timestamp.now().toMillis();
 	const { email, firstName, lastName } = userInfo;
 	const defaultResume = {
-		updatedAt: serverTimestamp(),
+		updatedAt: timestamp,
 		resumeName: "First Resume",
 		template: "Sydney",
 		color: "#082A4D",

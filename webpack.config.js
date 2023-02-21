@@ -7,12 +7,14 @@ module.exports = {
 	output: {
 		filename: "main.js",
 		path: path.resolve(__dirname, "dist"),
+		publicPath: "/",
 	},
 	plugins: [new Dotenv()],
 	//DevServer 設定
 	devServer: {
 		static: "./dist",
 		historyApiFallback: true,
+		hot: true,
 	},
 	module: {
 		rules: [
