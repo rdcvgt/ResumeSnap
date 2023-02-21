@@ -140,6 +140,14 @@ export const theme = {
 			font-size: 14px;
 			font-weight: 700;
 		`,
+		lightButton: css`
+			font-size: 16px;
+			font-weight: 400;
+		`,
+		pageTitle: css`
+			font-size: 33px;
+			font-weight: 700;
+		`,
 	},
 
 	input: {

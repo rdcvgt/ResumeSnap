@@ -72,7 +72,6 @@ export const formDataSlice = createSlice({
 		},
 		deleteBlock: (state, action) => {
 			const { blockId } = action.payload;
-			console.log(blockId);
 			const newFormBlock = state.formBlocks.filter(
 				(block) => block.id !== blockId
 			);

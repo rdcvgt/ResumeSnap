@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { collection, doc, setDoc, addDoc } from "firebase/firestore";
@@ -33,25 +33,29 @@ export default function HomePage() {
 		await addDoc(resumesRef, resumeConfig);
 	}
 
-	if (uid) {
-		const email = emailRef.current.value;
-		const firstName = firstNameRef.current.value;
-		const lastName = lastNameRef.current.value;
-		const userInfo = { email, firstName, lastName };
-		const resumeConfig = newResumeConfig(userInfo);
+	useEffect(() => {
+		if (uid) {
+			const email = emailRef.current.value;
+			const firstName = firstNameRef.current.value;
+			const lastName = lastNameRef.current.value;
+			const userInfo = { email, firstName, lastName };
+			const resumeConfig = newResumeConfig(userInfo);
 
-		const userRef = doc(db, "users", uid);
-		const userInfoRef = collection(userRef, "userInfo");
-		const resumesRef = collection(userRef, "resumes");
+			const userRef = doc(db, "users", uid);
+			const userInfoRef = collection(userRef, "userInfo");
+			const resumesRef = collection(userRef, "resumes");
 
-		createNewUserInfo(userInfoRef, userInfo);
-		createFirstResume(resumesRef, resumeConfig);
-		setDirect(true);
-	}
+			createNewUserInfo(userInfoRef, userInfo);
+			createFirstResume(resumesRef, resumeConfig);
+			setDirect(true);
+		}
+	}, [uid]);
 
-	if (direct) {
-		navigate("/");
-	}
+	useEffect(() => {
+		if (direct) {
+			navigate("/app");
+		}
+	}, [direct]);
 
 	return (
 		<Root>

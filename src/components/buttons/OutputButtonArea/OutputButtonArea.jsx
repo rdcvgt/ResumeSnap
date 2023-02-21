@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import DefaultButton from "../DefaultButton";
 
 const OutputButtonContainer = styled.div`
 	display: flex;
@@ -19,7 +20,7 @@ const DownloadPdfButton = styled.div`
 	align-items: center;
 	color: #fff;
 	${(props) => props.theme.font.itemBold};
-	margin-left: 20px;
+	margin-right: 20px;
 	background-color: ${(props) =>
 		props.isDownloading === true
 			? props.theme.color.blue[60]
@@ -65,7 +66,7 @@ export default function OutputButtonArea({ handleDownloadPdf, isDownloading }) {
 				isDownloading={isDownloading}>
 				{isDownloading === false ? "Download PDF" : "Downloading..."}
 			</DownloadPdfButton>
-			<ShareLinkButton>Share Link</ShareLinkButton>
+			<DefaultButton>Share Link</DefaultButton>
 		</OutputButtonContainer>
 	);
 }

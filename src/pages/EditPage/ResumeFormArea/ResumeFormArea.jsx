@@ -10,6 +10,8 @@ import {
 	updateBlockOrder,
 	updateResumeName,
 } from "../../../redux/slices/formDataSlice";
+
+import ResumeTitleBlock from "../../../components/forms/utils/ResumeTitleBlock";
 import PersonalDetails from "../../../components/forms/PersonalDetails";
 import ProfessionalSummary from "../../../components/forms/ProfessionalSummary";
 import Education from "../../../components/forms/Education";
@@ -35,40 +37,40 @@ const ResumeData = styled.div`
 	padding: 20px;
 `;
 
-const TitleBlock = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 25px;
-	&:hover {
-	}
-`;
+// const ResumeTitleBlock = styled.div`
+// 	display: flex;
+// 	justify-content: center;
+// 	align-items: center;
+// 	height: 25px;
+// 	&:hover {
+// 	}
+// `;
 
-const ResumeTitle = styled.input`
-	width: 150px;
-	height: 25px;
-	min-width: 30ch;
-	max-width: 80%;
-	font-size: 20px;
-	margin: 20px 0;
-	text-align: center;
-	outline: none;
-	border: none;
-	min-width: 1px;
-	${(props) => props.theme.font.title};
-	color: ${(props) => props.theme.color.neutral[90]};
-	caret-color: ${(props) => props.theme.color.blue[50]};
-`;
+// const ResumeTitle = styled.input`
+// 	width: 150px;
+// 	height: 25px;
+// 	min-width: 30ch;
+// 	max-width: 80%;
+// 	font-size: 20px;
+// 	margin: 20px 0;
+// 	text-align: center;
+// 	outline: none;
+// 	border: none;
+// 	min-width: 1px;
+// 	${(props) => props.theme.font.title};
+// 	color: ${(props) => props.theme.color.neutral[90]};
+// 	caret-color: ${(props) => props.theme.color.blue[50]};
+// `;
 
-const ResumeTitleIcon = styled.img`
-	max-height: 15px;
-	opacity: 0;
-	transition: opacity 0.3s;
-	cursor: pointer;
-	&:hover {
-		opacity: 1;
-	}
-`;
+// const ResumeTitleIcon = styled.img`
+// 	max-height: 15px;
+// 	opacity: 0;
+// 	transition: opacity 0.3s;
+// 	cursor: pointer;
+// 	&:hover {
+// 		opacity: 1;
+// 	}
+// `;
 
 const AddSection = styled.div`
 	width: 90%;
@@ -261,18 +263,7 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 		<>
 			<ResumeFormBackground isChoosingTemp={isChoosingTemp}>
 				<ResumeData>
-					<TitleBlock>
-						<ResumeTitle
-							type="text"
-							value={resumeName}
-							onChange={handleResumeTitleChange}
-							ref={resumeTitleRef}
-						/>
-						<ResumeTitleIcon
-							src="/images/icon/edit.png"
-							onClick={handleResumeTitleIconClick}
-						/>
-					</TitleBlock>
+					<ResumeTitleBlock />
 					<PersonalDetails blockId={formBlocks[0].id} />
 					<ProfessionalSummary blockId={formBlocks[1].id} />
 					<DragDropContext onDragEnd={handleOnDragEndBlock}>
