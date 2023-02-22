@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import uuid from "react-uuid";
 import { collection, doc } from "firebase/firestore";
 
-import { db } from "../../utils/firebase/firebase";
-import { getResume } from "../../webAPI";
+import { db } from "../../utils/firebase/firebaseInit";
+import { getResume } from "../../utils/firebase/webAPI";
 
 export const formDataSlice = createSlice({
 	name: "formData",

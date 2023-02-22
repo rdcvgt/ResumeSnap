@@ -4,16 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
 
-import { db } from "../../utils/firebase/firebase";
-import useEmail from "../../utils/firebase/useEmail";
-import newResumeConfig from "../../utils/js/newResumeConfig";
+import { db } from "../../utils/firebase/firebaseInit";
+import useEmail from "./hooks/useEmail";
+import newResumeStructure from "../../utils/misc/newResumeStructure";
 import { addUserInfo } from "../../redux/slices/userInfoSlice";
-import { createFirstResume } from "../../webAPI";
+import { createFirstResume } from "../../utils/firebase/webAPI";
 
 const Root = styled.div``;
 
 export default function HomePage() {
-	const [direct, setDirect] = useState(false);
 	const [error, setError] = useState(null);
 	const [uid, setUid] = useState(null);
 	const [resumeId, setResumeId] = useState(null);
@@ -36,7 +35,7 @@ export default function HomePage() {
 			const firstName = firstNameRef.current.value;
 			const lastName = lastNameRef.current.value;
 			const userInfo = { email, firstName, lastName };
-			const resumeConfig = newResumeConfig(userInfo);
+			const resumeConfig = newResumeStructure(userInfo);
 
 			const userRef = doc(db, "users", uid);
 			const resumesRef = collection(userRef, "resumes");
@@ -46,7 +45,6 @@ export default function HomePage() {
 			newResumeId.then((id) => {
 				setResumeId(id);
 			});
-			setDirect(true);
 		}
 	}, [uid]);
 

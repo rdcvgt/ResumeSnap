@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { collection, doc, setDoc, addDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs } from "firebase/firestore";
 
-import { db } from "../../utils/firebase/firebase";
-import { auth } from "../../utils/firebase/firebase";
+import { db, auth } from "../../utils/firebase/firebaseInit";
 import DefaultButton from "../../components/buttons/DefaultButton";
 import ResumeTitleBlock from "../../components/forms/utils/ResumeTitleBlock";
 

@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import uuid from "react-uuid";
-import { collection, doc, setDoc, addDoc } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 
-import { db } from "../../utils/firebase/firebase";
-import { createNewUserInfo } from "../../webAPI";
+import { db } from "../../utils/firebase/firebaseInit";
+import { createNewUserInfo } from "../../utils/firebase/webAPI";
 
 export const userInfoSlice = createSlice({
 	name: "userInfo",

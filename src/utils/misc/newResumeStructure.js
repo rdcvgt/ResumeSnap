@@ -1,7 +1,7 @@
 import uuid from "react-uuid";
 import { Timestamp } from "firebase/firestore";
 
-function newResumeConfig(userInfo) {
+function newResumeStructure(userInfo) {
 	const timestamp = Timestamp.now().toMillis();
 	const { email, firstName, lastName } = userInfo;
 	const defaultResume = {
@@ -55,4 +55,4 @@ function newResumeConfig(userInfo) {
 	return defaultResume;
 }
 
-export default newResumeConfig;
+export default newResumeStructure;

@@ -1,4 +1,3 @@
-import { db, auth } from "../src/utils/firebase/firebase";
 import { collection, doc, setDoc, addDoc, getDocs } from "firebase/firestore";
 
 export function createNewUserInfo(userInfoRef, userInfo) {

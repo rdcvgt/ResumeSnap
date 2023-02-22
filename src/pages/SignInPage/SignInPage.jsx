@@ -4,11 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
 
-import { db } from "../../utils/firebase/firebase";
-import useEmail from "../../utils/firebase/useEmail";
-import newResumeConfig from "../../utils/js/newResumeConfig";
+import { auth, db } from "../../utils/firebase/firebaseInit";
+import useEmail from "../SignUpPage/hooks/useEmail";
+import newResumeConfig from "../../utils/misc/newResumeStructure";
 import { addUserInfo } from "../../redux/slices/userInfoSlice";
-import { createFirstResume } from "../../webAPI";
+import { createFirstResume } from "../../utils/firebase/webAPI";
 
 const Root = styled.div``;
 

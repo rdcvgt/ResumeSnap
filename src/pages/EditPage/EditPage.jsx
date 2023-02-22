@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 
 import ResumePreviewArea from "./ResumePreviewArea";
 import ResumeFormArea from "./ResumeFormArea";
 import ResumeTemplateArea from "./ResumeTemplateArea";
 import NavbarArea from "./NavbarArea";
 import { getResumeData } from "../../redux/slices/formDataSlice";
-import { auth, db } from "../../utils/firebase/firebase";
+import { auth, db } from "../../utils/firebase/firebaseInit";
 
 // import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
@@ -52,11 +51,6 @@ export default function EditPage() {
 		console.log(user);
 		if (user !== null) {
 			const uid = user.uid;
-			console.log(uid);
-			const userRef = doc(db, "users", uid);
-			const resumesRef = collection(userRef, "resumes");
-			const resume = doc(resumesRef, resumeId);
-
 			dispatch(getResumeData(uid, resumeId));
 		}
 	}, [resumeId]);
