@@ -5,10 +5,10 @@ import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { useSelector, useDispatch } from "react-redux";
 
 import { db } from "../../utils/firebase/firebaseInit";
-import useEmail from "./hooks/useEmail";
+import { useEmailSignUp, useGoogle } from "../../utils/firebase/auth";
 import newResumeStructure from "../../utils/misc/newResumeStructure";
 import { addUserInfo } from "../../redux/slices/userInfoSlice";
-import { createFirstResume } from "../../utils/firebase/webAPI";
+import { createFirstResume } from "../../utils/firebase/database";
 
 const Root = styled.div``;
 
@@ -16,27 +16,33 @@ export default function HomePage() {
 	const [error, setError] = useState(null);
 	const [uid, setUid] = useState(null);
 	const [resumeId, setResumeId] = useState(null);
+	const [userInfo, setUserInfo] = useState(null);
+
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const emailRef = useRef();
 	const passwordRef = useRef();
 	const firstNameRef = useRef();
 	const lastNameRef = useRef();
-	const navigate = useNavigate();
 
 	const HandleButtonClick = () => {
 		const email = emailRef.current.value;
 		const password = passwordRef.current.value;
-		useEmail(email, password, setUid, setError);
+		const firstName = firstNameRef.current.value;
+		const lastName = lastNameRef.current.value;
+		useEmailSignUp(email, password, setUid, setError);
+
+		const newUserInfo = { email, firstName, lastName };
+		setUserInfo(newUserInfo);
+	};
+
+	const HandleGoogleButtonClick = () => {
+		useGoogle(setUid, setUserInfo, setError);
 	};
 
 	useEffect(() => {
-		if (uid) {
-			const email = emailRef.current.value;
-			const firstName = firstNameRef.current.value;
-			const lastName = lastNameRef.current.value;
-			const userInfo = { email, firstName, lastName };
+		if (uid && userInfo) {
 			const resumeConfig = newResumeStructure(userInfo);
-
 			const userRef = doc(db, "users", uid);
 			const resumesRef = collection(userRef, "resumes");
 
@@ -46,7 +52,7 @@ export default function HomePage() {
 				setResumeId(id);
 			});
 		}
-	}, [uid]);
+	}, [uid, userInfo]);
 
 	useEffect(() => {
 		if (resumeId) {
@@ -64,6 +70,7 @@ export default function HomePage() {
 			password
 			<input type="text" name="password" ref={passwordRef}></input>
 			<button onClick={HandleButtonClick}>送出</button>
+			<button onClick={HandleGoogleButtonClick}>google 登入</button>
 			{error && <div>{error}</div>}
 		</Root>
 	);

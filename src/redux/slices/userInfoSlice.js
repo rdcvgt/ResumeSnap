@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { collection, doc } from "firebase/firestore";
 
 import { db } from "../../utils/firebase/firebaseInit";
-import { createNewUserInfo } from "../../utils/firebase/webAPI";
+import { createNewUserInfo } from "../../utils/firebase/database";
 
 export const userInfoSlice = createSlice({
 	name: "userInfo",

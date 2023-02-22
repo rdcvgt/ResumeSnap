@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { collection, doc, getDocs } from "firebase/firestore";
 
 import { db, auth } from "../../utils/firebase/firebaseInit";
+import { getUserAllResumes, deleteResume } from "../../utils/firebase/database";
 import DefaultButton from "../../components/buttons/DefaultButton";
-import ResumeTitleBlock from "../../components/forms/utils/ResumeTitleBlock";
+import AllResumes from "./AllResumes";
+import newResumeStructure from "../../utils/misc/newResumeStructure";
+import { createFirstResume } from "../../utils/firebase/database";
+import ConfirmCard from "../../components/cards/ConfirmCard";
 
 const Root = styled.div``;
 
@@ -35,58 +41,6 @@ const ResumesDisplayArea = styled.div`
 	flex-wrap: wrap;
 	margin-top: 50px;
 `;
-const Resume = styled.div`
-	width: 50%;
-	height: 268.7px;
-	display: flex;
-	align-items: center;
-`;
-const ResumePreview = styled.div`
-	width: 190px;
-	height: 268.7px;
-	border: 1px solid ${(props) => props.theme.color.neutral[20]};
-	border-radius: 5px;
-	margin-right: 30px;
-`;
-
-const ResumeFunctionArea = styled.div`
-	height: 100%;
-	position: relative;
-`;
-
-const MainInfoArea = styled.div`
-	height: 20%;
-	position: relative;
-	top: 0;
-	left: 0;
-`;
-
-const UpdatedAt = styled.div`
-	margin-top: 5px;
-	${(props) => props.theme.font.info};
-	color: ${(props) => props.theme.color.neutral[40]};
-`;
-
-const FunctionButtonArea = styled.div`
-	margin-top: 30px;
-	height: 80%;
-`;
-
-const FunctionIcon = styled.img`
-	width: 15px;
-	margin-right: 10px;
-`;
-
-const FunctionButton = styled.div`
-	margin-bottom: 15px;
-	cursor: pointer;
-	${(props) => props.theme.font.lightButton};
-	transition: all 0.3s;
-	&:hover {
-		color: ${(props) => props.theme.color.blue[50]};
-		transition: all 0.3s;
-	}
-`;
 
 const NewResumeArea = styled.div`
 	width: 50%;
@@ -94,6 +48,7 @@ const NewResumeArea = styled.div`
 	display: flex;
 	align-items: center;
 	cursor: pointer;
+	margin-bottom: 50px;
 `;
 
 const AddResumeButton = styled.div`
@@ -161,16 +116,14 @@ const AddResumeContent = styled.div`
 	${(props) => props.theme.font.info};
 `;
 
-async function getUserResumes(resumesRef) {
-	const snapshot = await getDocs(resumesRef);
-	snapshot.forEach((doc) => {
-		console.log(doc.id, "=>", doc.data());
-	});
-}
-
 export default function IsLogin() {
 	const [isHoverNewResume, setIsHoverNewResume] = useState(false);
+	const [isClickDelete, setIsClickDelete] = useState(false);
+	const [deleteResumeId, setDeleteResumeId] = useState(false);
 	const [uid, setUid] = useState(null);
+	const [resumesOrder, setResumesOrder] = useState(null);
+	const navigate = useNavigate();
+	const userInfo = useSelector((state) => state.userInfo);
 
 	useEffect(() => {
 		const user = auth.currentUser;
@@ -179,12 +132,37 @@ export default function IsLogin() {
 			setUid(userId);
 			const userRef = doc(db, "users", userId); //取得父文檔
 			const resumesRef = collection(userRef, "resumes"); //取得父文檔下的子集合 resumes
-			getUserResumes(resumesRef);
+			const resumesOrderPromise = getUserAllResumes(resumesRef);
+			resumesOrderPromise.then((data) => {
+				setResumesOrder(data);
+			});
 		}
 	}, []);
 
 	const handleNewResumeClick = () => {
-		const userRef = doc(db, "users", uid); //取得父文檔
+		const resumeConfig = newResumeStructure(userInfo);
+		const userRef = doc(db, "users", uid);
+		const resumesRef = collection(userRef, "resumes");
+		const newResumeId = createFirstResume(resumesRef, resumeConfig);
+		newResumeId.then((resumeId) => {
+			navigate(`/edit/${resumeId}`);
+		});
+	};
+
+	const handleDeleteButtonClick = () => {
+		const userRef = doc(db, "users", uid);
+		const resumesRef = collection(userRef, "resumes");
+		const resultPromise = deleteResume(resumesRef, deleteResumeId);
+		resultPromise.then((result) => {
+			if (result) {
+				const oldResumesOrder = resumesOrder;
+				const newResumesOrder = oldResumesOrder.filter(
+					(resume) => deleteResumeId !== resume.id
+				);
+				setResumesOrder(newResumesOrder);
+				setDeleteResumeId(null);
+			}
+		});
 	};
 
 	return (
@@ -192,47 +170,23 @@ export default function IsLogin() {
 			<ResumesArea>
 				<TitleBlock>
 					<Title>Resumes</Title>
-					<DefaultButton>Create New</DefaultButton>
+					<DefaultButton onClick={handleNewResumeClick}>
+						Create New
+					</DefaultButton>
 				</TitleBlock>
 				<ResumesDisplayArea>
-					<Resume>
-						<ResumePreview></ResumePreview>
-						<ResumeFunctionArea>
-							<MainInfoArea>
-								<ResumeTitleBlock />
-								<UpdatedAt>
-									Updated 20 February, 19:48
-								</UpdatedAt>
-							</MainInfoArea>
-
-							<FunctionButtonArea>
-								<FunctionButton>
-									<FunctionIcon src="/images/icon/edit.png" />
-									Edit
-								</FunctionButton>
-								<FunctionButton>
-									<FunctionIcon src="/images/icon/upload.png" />
-									Share Link
-								</FunctionButton>
-								<FunctionButton>
-									<FunctionIcon src="/images/icon/download.png" />
-									Download PDF
-								</FunctionButton>
-								<FunctionButton>
-									<FunctionIcon src="/images/icon/delete.png" />
-									Delete
-								</FunctionButton>
-							</FunctionButtonArea>
-						</ResumeFunctionArea>
-					</Resume>
+					<AllResumes
+						resumesOrder={resumesOrder}
+						setDeleteResumeId={setDeleteResumeId}
+					/>
 					<NewResumeArea
+						onClick={handleNewResumeClick}
 						onMouseEnter={() => {
 							setIsHoverNewResume(true);
 						}}
 						onMouseLeave={() => {
 							setIsHoverNewResume(false);
-						}}
-						onClick={handleNewResumeClick}>
+						}}>
 						<AddResumeButton>
 							<Round isHoverNewResume={isHoverNewResume}>
 								<AddResumeIcon
@@ -254,6 +208,19 @@ export default function IsLogin() {
 					</NewResumeArea>
 				</ResumesDisplayArea>
 			</ResumesArea>
+			{deleteResumeId && (
+				<ConfirmCard
+					text={{
+						title: "Delete Resume",
+						description:
+							"Are you sure you want to delete this resume? Once deleted this resume cannot be restored.",
+						leftButton: "Delete",
+						rightButton: "Cancel",
+					}}
+					setIsClickDelete={setDeleteResumeId}
+					handleDeleteButtonClick={handleDeleteButtonClick}
+				/>
+			)}
 		</Root>
 	);
 }

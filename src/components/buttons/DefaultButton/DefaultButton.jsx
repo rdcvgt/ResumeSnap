@@ -23,12 +23,13 @@ const Button = styled.div`
 
 DefaultButton.propTypes = {
 	children: PropTypes.string,
+	onClick: PropTypes.func,
 };
 
-export default function DefaultButton({ children }) {
+export default function DefaultButton({ children, onClick }) {
 	return (
 		<>
-			<Button>{children}</Button>
+			<Button onClick={onClick}>{children}</Button>
 		</>
 	);
 }

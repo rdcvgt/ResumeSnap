@@ -96,9 +96,9 @@ export default function PersonalDetails({ content }) {
 			<TopBlock>
 				<TitleBlock>
 					<Name>
-						{lastName}
-						{firstName && lastName ? space : ""}
 						{firstName}
+						{firstName && lastName ? space : ""}
+						{lastName}
 					</Name>
 					{(firstName || lastName) && position
 						? `${space}-${space}`
