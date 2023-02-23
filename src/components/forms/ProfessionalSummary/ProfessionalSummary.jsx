@@ -39,9 +39,7 @@ export default function ProfessionalSummary({ blockId }) {
 	};
 
 	const [blockData] = useSelector((state) =>
-		state.formData.formBlocks.filter(
-			(block) => block.block === "ProfessionalSummary"
-		)
+		state.formData.formBlocks.filter((block) => block.id === blockId)
 	);
 	const blockTitle = blockData.content.blockTitle || "";
 	const inputData = blockData.content.inputData;

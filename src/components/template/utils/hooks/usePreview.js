@@ -16,7 +16,10 @@ export default function usePreview(
 	useEffect(() => {
 		clearTimeout(timer);
 		const newTimer = setTimeout(() => {
-			html2canvas(pageRef.current[currentPage - 1]).then((canvas) => {
+			html2canvas(pageRef.current[currentPage - 1], {
+				useCORS: true,
+				allowTaint: true,
+			}).then((canvas) => {
 				const dataUri = canvas.toDataURL("image/png", 0.4);
 				setImgUrl(dataUri);
 			});

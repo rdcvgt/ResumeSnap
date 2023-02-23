@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { collection, doc, getDocs } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 import { db, auth } from "../../utils/firebase/firebaseInit";
 import { getUserAllResumes, deleteResume } from "../../utils/firebase/database";
@@ -126,17 +127,20 @@ export default function IsLogin() {
 	const userInfo = useSelector((state) => state.userInfo);
 
 	useEffect(() => {
-		const user = auth.currentUser;
-		if (user !== null) {
-			const userId = user.uid;
-			setUid(userId);
-			const userRef = doc(db, "users", userId); //取得父文檔
-			const resumesRef = collection(userRef, "resumes"); //取得父文檔下的子集合 resumes
-			const resumesOrderPromise = getUserAllResumes(resumesRef);
-			resumesOrderPromise.then((data) => {
-				setResumesOrder(data);
-			});
-		}
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				const userId = user.uid;
+				setUid(userId);
+				const userRef = doc(db, "users", userId); //取得父文檔
+				const resumesRef = collection(userRef, "resumes"); //取得父文檔下的子集合 resumes
+				const resumesOrderPromise = getUserAllResumes(resumesRef);
+				resumesOrderPromise.then((data) => {
+					setResumesOrder(data);
+				});
+			} else {
+				navigate("/");
+			}
+		});
 	}, []);
 
 	const handleNewResumeClick = () => {

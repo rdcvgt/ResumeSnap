@@ -7,6 +7,7 @@ import SignUpPage from "../../pages/SignUpPage";
 import SignInPage from "../../pages/SignInPage";
 import DashboardPage from "../../pages/DashboardPage";
 import EditPage from "../../pages/EditPage";
+import SharePage from "../../pages/SharePage";
 
 const Root = styled.div``;
 
@@ -20,6 +21,7 @@ export default function App() {
 					<Route path="/signin" element={<SignInPage />} />
 					<Route path="/dashboard" element={<DashboardPage />} />
 					<Route path="/edit/:resumeId" element={<EditPage />} />
+					<Route path="/share" element={<SharePage />} />
 				</Routes>
 			</BrowserRouter>
 		</Root>

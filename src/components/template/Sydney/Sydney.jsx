@@ -209,9 +209,9 @@ export default function RenderTemplate({
 	const firstName = formBlocks[0].content.inputData?.firstName;
 	const lastName = formBlocks[0].content.inputData?.lastName;
 	const position = formBlocks[0].content.inputData?.position;
-	const photo = formBlocks[0].content.inputData?.photo;
+	const photoUrl = formBlocks[0].content.inputData?.photo?.url;
 
-	//實現分頁邏輯
+	//實現分頁邏輯，分爲左右欄位來計算
 	usePagination(
 		renderContainerRef,
 		setLeftAreaBlocks,
@@ -235,7 +235,7 @@ export default function RenderTemplate({
 	);
 
 	//使用 canvas 裁切使用者照片再轉回圖片
-	useCropUserPhoto(photo, canvasRef, setCroppedUserPhotoUrl);
+	useCropUserPhoto(photoUrl, canvasRef, setCroppedUserPhotoUrl);
 
 	//下載 PDF，回傳給父層，偵測點擊事件
 	const downloadPdf = useDownloadPdf(
@@ -336,16 +336,19 @@ export default function RenderTemplate({
 				<RenderRoot>
 					<RenderContainer ref={renderContainerRef}>
 						<div>
-							{(firstName || lastName || position || photo) && (
+							{(firstName ||
+								lastName ||
+								position ||
+								photoUrl) && (
 								<Main>
-									{photo && (
+									{photoUrl && (
 										<UserPhotoArea>
 											<PurePhoto
 												src={croppedUserPhotoUrl}
 											/>
 										</UserPhotoArea>
 									)}
-									<UserInfoArea photo={photo}>
+									<UserInfoArea photo={photoUrl}>
 										{(firstName || lastName) && (
 											<Name>
 												{firstName}

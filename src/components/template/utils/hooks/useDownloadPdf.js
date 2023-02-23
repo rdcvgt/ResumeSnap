@@ -1,4 +1,6 @@
 import { useCallback } from "react";
+import { useSelector } from "react-redux";
+
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -8,6 +10,7 @@ export default function useDownloadPdf(
 	mainBlocks,
 	sideBlocks
 ) {
+	const formBlocks = useSelector((state) => state.formData.formBlocks);
 	return useCallback(() => {
 		const doc = new jsPDF();
 		const pageWidth = doc.internal.pageSize.getWidth();
@@ -42,5 +45,5 @@ export default function useDownloadPdf(
 			doc.save("fileName.pdf");
 			setIsDownloading(false);
 		});
-	}, [mainBlocks, pageRef]);
+	}, [pageRef, mainBlocks, sideBlocks, formBlocks]);
 }

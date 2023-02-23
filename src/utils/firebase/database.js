@@ -50,3 +50,7 @@ export async function deleteResume(resumesRef, deleteResumeId) {
 	await deleteDoc(resumeDocRef);
 	return true;
 }
+
+export function updateResumeData(resumesRef, resumeId, entireResumeData) {
+	setDoc(doc(resumesRef, resumeId), entireResumeData);
+}

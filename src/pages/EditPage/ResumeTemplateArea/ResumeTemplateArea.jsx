@@ -6,6 +6,7 @@ import {
 	updateTemplate,
 	updateTemplateColor,
 } from "../../../redux/slices/formDataSlice";
+import { templateOrder } from "../../../utils/misc/templatePreviewOrder";
 
 const ResumeTempBackground = styled.div`
 	width: 15%;
@@ -69,6 +70,10 @@ const Preview = styled.div`
 	}
 `;
 
+const PreviewImage = styled.img`
+	width: 100%;
+`;
+
 const CurrentTemp = styled.div`
 	position: absolute;
 	top: 50%;
@@ -94,11 +99,6 @@ const Name = styled.div`
 	color: #fff;
 `;
 
-const templateOrder = [
-	{ template: "Sydney", color: "#082A4D" },
-	{ template: "London", color: null },
-];
-
 const RenderTemplate = () => {
 	const currentTemplate = useSelector((state) => state.formData.template);
 	const dispatch = useDispatch();
@@ -118,6 +118,7 @@ const RenderTemplate = () => {
 							updateTemplateColor({ color: template.color })
 						);
 					}}>
+					<PreviewImage src={template.url} />
 					<CurrentTemp status={status}>
 						<CurrenTempIcon src="/images/icon/check.png" />
 					</CurrentTemp>

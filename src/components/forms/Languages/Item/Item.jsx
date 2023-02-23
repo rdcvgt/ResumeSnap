@@ -297,6 +297,7 @@ export default function Item({ item, blockId, dragHandleProps }) {
 	//若使用者點擊 level 選單以外區域則會關閉選單
 	useEffect(() => {
 		window.addEventListener("click", (e) => {
+			if (e.target === null) return;
 			if (!MenuRef.current.contains(e.target)) {
 				setIsSelect(false);
 			}

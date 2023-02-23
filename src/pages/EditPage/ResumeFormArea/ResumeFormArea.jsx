@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
@@ -214,6 +214,38 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 		}
 	};
 
+	//載入資料後檢查可刪除的 block 是否存在於 formData，以判斷最下方 block 狀態
+	useEffect(() => {
+		formBlocks.forEach((block) => {
+			const blockName = block.block;
+			switch (blockName) {
+				case "ECActivities": {
+					setIsUsingECActivities(true);
+					break;
+				}
+				case "Internships": {
+					setIsUsingInternships(true);
+					break;
+				}
+				case "Courses": {
+					setIsUsingCourses(true);
+					break;
+				}
+				case "Skills": {
+					setIsUsingSkills(true);
+					break;
+				}
+				case "Languages": {
+					setIsUsingLanguages(true);
+					break;
+				}
+				default: {
+					return;
+				}
+			}
+		});
+	}, [formBlocks]);
+
 	return (
 		<>
 			<ResumeFormBackground isChoosingTemp={isChoosingTemp}>
@@ -261,7 +293,6 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 												blockData: blockData.Courses,
 											})
 										);
-									setIsUsingCourses(true);
 								}}>
 								<Icon src="/images/icon/courses.png" />
 								<SectionName>Courses</SectionName>
@@ -278,7 +309,6 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 													blockData.ECActivities,
 											})
 										);
-									setIsUsingECActivities(true);
 								}}>
 								<Icon src="/images/icon/activity.png" />
 								<SectionName>
@@ -295,7 +325,6 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 													blockData.Internships,
 											})
 										);
-									setIsUsingInternships(true);
 								}}>
 								<Icon src="/images/icon/internship.png" />
 								<SectionName>Internships</SectionName>
@@ -311,7 +340,6 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 												blockData: blockData.Hobbies,
 											})
 										);
-									setIsUsingSkills(true);
 								}}>
 								<Icon src="/images/icon/hobby.png" />
 								<SectionName>Skills</SectionName>
@@ -325,7 +353,6 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 												blockData: blockData.Languages,
 											})
 										);
-									setIsUsingLanguages(true);
 								}}>
 								<Icon src="/images/icon/language.png" />
 								<SectionName>Languages</SectionName>

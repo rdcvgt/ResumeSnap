@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
 
 import ResumePreviewArea from "./ResumePreviewArea";
 import ResumeFormArea from "./ResumeFormArea";
 import ResumeTemplateArea from "./ResumeTemplateArea";
 import NavbarArea from "./NavbarArea";
+import useUpdateResumeData from "./hooks/useUpdateResumeData";
 import { getResumeData } from "../../redux/slices/formDataSlice";
 import { auth, db } from "../../utils/firebase/firebaseInit";
 
@@ -42,29 +44,40 @@ export default function EditPage() {
 	const [isChoosingTemp, setIsChoosingTemp] = useState(false);
 	const [isDownloading, setIsDownloading] = useState(false);
 	const [tempColors, setTempColors] = useState([]);
+	const [uid, setUid] = useState(null);
 	const { resumeId } = useParams();
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	//傳送 resumeId 到 redux 獲取 resume data
+	//傳送 resumeId 到 redux thunk 獲取 resume data
 	useEffect(() => {
-		const user = auth.currentUser;
-		console.log(user);
-		if (user !== null) {
-			const uid = user.uid;
-			dispatch(getResumeData(uid, resumeId));
-		}
-	}, [resumeId]);
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				const userId = user.uid;
+				setUid(userId);
+				dispatch(getResumeData(userId, resumeId));
+			} else {
+				navigate("/");
+			}
+		});
+	}, []);
 
+	//若履歷資料更動，更新到 database
+	useUpdateResumeData(uid, resumeId);
+
+	//根據履歷所選擇模板更換可選顏色
 	const template = useSelector((state) => state.formData.template);
 	useEffect(() => {
 		setTempColors(templatesColorOrder[template]);
 	}, [template]);
 
+	//取得 downloadPdfFunc
 	let downloadPdfFunc = null;
 	const handleGetDownLoadPdfFunc = (func) => {
 		downloadPdfFunc = func;
 	};
 
+	//執行下載 pdf
 	const handleDownloadPdf = () => {
 		if (isDownloading) return;
 		if (downloadPdfFunc) {

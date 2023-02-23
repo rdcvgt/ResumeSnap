@@ -72,7 +72,7 @@ function InputEditor({ handleEditorInput, inputHtml }) {
 				/>
 				<Editor
 					defaultConfig={editorConfig}
-					value={html}
+					value={inputHtml}
 					onCreated={setEditor}
 					onChange={(editor) => setHtml(editor.getHtml())}
 					mode="simple"

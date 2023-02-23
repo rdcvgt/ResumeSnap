@@ -1,27 +1,30 @@
 import { useEffect } from "react";
 
 export default function useCropUserPhoto(
-	photo,
+	photoUrl,
 	canvasRef,
 	setCroppedUserPhotoUrl
 ) {
 	//針對兩次渲染的圖片尺寸進行設定
 	useEffect(() => {
+		if (photoUrl === undefined) return;
 		const canvas = canvasRef.current;
 		const ctx = canvas.getContext("2d");
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 		const img = new Image();
+		let photoSize = 220;
 		let imgRatio;
+		img.crossOrigin = "Anonymous"; //讓照片不受同源限制
 		img.onload = () => {
 			//調整圖片尺寸，最短邊符合 55px爲比例計算
 			imgRatio = img.width / img.height;
-			let imageWidth = 55;
-			let imageHeight = 55;
+			let imageWidth = photoSize;
+			let imageHeight = photoSize;
 			if (img.width < img.height) {
-				imageHeight = 55 / imgRatio;
+				imageHeight = photoSize / imgRatio;
 			} else {
-				imageWidth = 55 * imgRatio;
+				imageWidth = photoSize * imgRatio;
 			}
 
 			//讓畫布尺寸跟圖片一樣大
@@ -48,10 +51,11 @@ export default function useCropUserPhoto(
 			canvas.height = size;
 			ctx.putImageData(imageData, 0, 0);
 
+			console.log(photoUrl);
 			//轉換成圖片
 			const dataURL = canvas.toDataURL();
 			setCroppedUserPhotoUrl(dataURL);
 		};
-		img.src = photo;
-	}, [photo, canvasRef, setCroppedUserPhotoUrl]);
+		img.src = photoUrl;
+	}, [photoUrl, canvasRef, setCroppedUserPhotoUrl]);
 }
