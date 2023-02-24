@@ -119,7 +119,6 @@ const AddResumeContent = styled.div`
 
 export default function IsLogin() {
 	const [isHoverNewResume, setIsHoverNewResume] = useState(false);
-	const [isClickDelete, setIsClickDelete] = useState(false);
 	const [deleteResumeId, setDeleteResumeId] = useState(false);
 	const [uid, setUid] = useState(null);
 	const [resumesOrder, setResumesOrder] = useState(null);

@@ -12,20 +12,6 @@ import useUpdateResumeData from "./hooks/useUpdateResumeData";
 import { getResumeData } from "../../redux/slices/formDataSlice";
 import { auth, db } from "../../utils/firebase/firebaseInit";
 
-// import PropTypes from "prop-types";
-// import { Link } from "react-router-dom";
-// import { db } from "../../index";
-// import {
-// 	collection,
-// 	addDoc,
-// 	query,
-// 	orderBy,
-// 	getDocs,
-// 	deleteDoc,
-// 	doc,
-// 	serverTimestamp,
-// } from "firebase/firestore";
-
 const Root = styled.div`
 	width: 100%;
 	height: 100%;

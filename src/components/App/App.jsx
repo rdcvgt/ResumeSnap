@@ -21,7 +21,7 @@ export default function App() {
 					<Route path="/signin" element={<SignInPage />} />
 					<Route path="/dashboard" element={<DashboardPage />} />
 					<Route path="/edit/:resumeId" element={<EditPage />} />
-					<Route path="/share" element={<SharePage />} />
+					<Route path="/share/:resumeId" element={<SharePage />} />
 				</Routes>
 			</BrowserRouter>
 		</Root>

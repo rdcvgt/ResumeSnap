@@ -47,23 +47,33 @@ const Img = styled.img`
 
 const HideRender = styled.div`
 	opacity: 0;
+	top: 0;
+	right: 0;
+	position: absolute;
+	scale: 0.1;
 `;
 
 const HidePages = styled.div`
-	opacity: 0;
+	opacity: ${(props) => (props.pageFrom === "share" ? "1" : "0")};
 	width: 100%;
-`;
-
-const RenderRoot = styled.div`
-	width: 210mm;
-	height: 297mm;
 `;
 
 const Root = styled.div`
 	width: 210mm;
 	height: 297mm;
 	position: relative;
-	/* background-color: #fff; */
+	margin-bottom: 50px;
+	background-color: ${(props) =>
+		props.pageFrom === "share" ? "#fff" : "none"};
+	box-shadow: ${(props) =>
+		props.pageFrom === "share"
+			? "5px 5px 20px rgba(43, 49, 108, 0.2);"
+			: "none"};
+`;
+
+const RenderRoot = styled.div`
+	width: 210mm;
+	height: 297mm;
 `;
 
 const RenderContainer = styled.div`
@@ -96,6 +106,7 @@ const RenderBlocks = ({ formBlocks }) => {
 };
 
 RenderTemplate.propTypes = {
+	pageFrom: PropTypes.string,
 	handleGetDownLoadPdfFunc: PropTypes.func,
 	getTotalPage: PropTypes.func,
 	currentPage: PropTypes.number,
@@ -103,6 +114,7 @@ RenderTemplate.propTypes = {
 };
 
 export default function RenderTemplate({
+	pageFrom,
 	handleGetDownLoadPdfFunc,
 	getTotalPage,
 	currentPage,
@@ -123,19 +135,23 @@ export default function RenderTemplate({
 
 	//下載 PDF，回傳給父層，偵測點擊事件
 	const downloadPdf = useDownloadPdf(pageRef, setIsDownloading, blocks);
-	handleGetDownLoadPdfFunc(downloadPdf);
+	if (handleGetDownLoadPdfFunc) {
+		handleGetDownLoadPdfFunc(downloadPdf);
+	}
 
 	useEffect(() => {
+		if (!getTotalPage) return;
 		getTotalPage(blocks.length);
 	}, [blocks]);
 
 	return (
 		<TemplateRoot>
-			{imgUrl && <Img src={imgUrl} alt="圖片" />}
-			<HidePages>
+			{imgUrl && pageFrom && <Img src={imgUrl} alt="圖片" />}
+			<HidePages pageFrom={pageFrom}>
 				{blocks.map((pages, index) => {
 					return (
 						<Root
+							pageFrom={pageFrom}
 							ref={(pages) => (pageRef.current[index] = pages)}
 							key={index}>
 							<ResumeContainer>

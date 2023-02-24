@@ -2,12 +2,6 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import { collection, doc, getDocs } from "firebase/firestore";
-import { db, auth } from "../../../utils/firebase/firebaseInit";
-import { getUserAllResumes } from "../../../utils/firebase/database";
-import DefaultButton from "../../../components/buttons/DefaultButton";
-import ResumeTitleBlock from "../../../components/forms/utils/ResumeTitleBlock";
-
 const Resume = styled.div`
 	width: 50%;
 	height: 268.7px;
@@ -80,7 +74,8 @@ export default function AllResumes({ resumesOrder, setDeleteResumeId }) {
 		const name = resume.name;
 		const timestamp = resume.updatedAt;
 		const date = new Date(timestamp);
-		const dateString = date.toLocaleTimeString();
+		const dateString = date.toLocaleDateString();
+		const timeString = date.toLocaleTimeString();
 
 		return (
 			<Resume key={id} resumeId={id}>
@@ -91,7 +86,9 @@ export default function AllResumes({ resumesOrder, setDeleteResumeId }) {
 				<ResumeFunctionArea>
 					<MainInfoArea>
 						<ResumeName>{name}</ResumeName>
-						<UpdatedAt>Updated {dateString}</UpdatedAt>
+						<UpdatedAt>
+							Updated {dateString} {timeString}
+						</UpdatedAt>
 					</MainInfoArea>
 
 					<FunctionButtonArea>

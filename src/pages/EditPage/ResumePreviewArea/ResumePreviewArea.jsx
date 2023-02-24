@@ -304,6 +304,7 @@ export default function ResumePreviewArea({
 						/>
 						<ResumePreview isChoosingTemp={isChoosingTemp}>
 							<Template
+								pageFrom="edit"
 								handleGetDownLoadPdfFunc={
 									handleGetDownLoadPdfFunc
 								}
