@@ -1,5 +1,4 @@
 import {
-	collection,
 	doc,
 	setDoc,
 	addDoc,
@@ -7,7 +6,9 @@ import {
 	getDocs,
 	query,
 	orderBy,
+	collectionGroup,
 } from "firebase/firestore";
+import { db } from "./firebaseInit";
 
 export function createNewUserInfo(userInfoRef, userInfo) {
 	setDoc(doc(userInfoRef, "info"), userInfo);
@@ -20,7 +21,7 @@ export async function createFirstResume(resumesRef, resumeConfig) {
 }
 
 export async function getResume(resumesRef, resumeId) {
-	let resumeData;
+	let resumeData = null;
 	const snapshot = await getDocs(resumesRef);
 	snapshot.forEach((doc) => {
 		if (doc.id === resumeId) {
@@ -53,4 +54,28 @@ export async function deleteResume(resumesRef, deleteResumeId) {
 
 export function updateResumeData(resumesRef, resumeId, entireResumeData) {
 	setDoc(doc(resumesRef, resumeId), entireResumeData);
+}
+
+export async function checkSharePageResumeId(resumeId) {
+	let resumeData = null;
+	const querySnapshot = await getDocs(collectionGroup(db, "resumes"));
+
+	querySnapshot.forEach((doc) => {
+		if (doc.id === resumeId) {
+			resumeData = doc.data();
+		}
+	});
+	return resumeData;
+}
+
+export async function checkResumeIdMatchUid(uid, resumeId) {
+	let resumeData = null;
+	const querySnapshot = await getDocs(collectionGroup(db, "resumes"));
+
+	querySnapshot.forEach((doc) => {
+		if (doc.id === resumeId) {
+			resumeData = doc.data();
+		}
+	});
+	return resumeData;
 }

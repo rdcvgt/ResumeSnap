@@ -12,6 +12,7 @@ import AllResumes from "./AllResumes";
 import newResumeStructure from "../../utils/misc/newResumeStructure";
 import { createFirstResume } from "../../utils/firebase/database";
 import ConfirmCard from "../../components/cards/ConfirmCard";
+import ShareLinkCard from "../../components/cards/ShareLinkCard";
 
 const Root = styled.div``;
 
@@ -119,29 +120,34 @@ const AddResumeContent = styled.div`
 
 export default function IsLogin() {
 	const [isHoverNewResume, setIsHoverNewResume] = useState(false);
-	const [deleteResumeId, setDeleteResumeId] = useState(false);
+	const [deleteResumeId, setDeleteResumeId] = useState(null);
+	const [shareResumeId, setShareResumeId] = useState(null);
 	const [uid, setUid] = useState(null);
 	const [resumesOrder, setResumesOrder] = useState(null);
 	const navigate = useNavigate();
 	const userInfo = useSelector((state) => state.userInfo);
 
+	//驗證使用者身份，未登入導回首頁
+	//登入後取得該使用者所有履歷資料
 	useEffect(() => {
 		onAuthStateChanged(auth, (user) => {
-			if (user) {
-				const userId = user.uid;
-				setUid(userId);
-				const userRef = doc(db, "users", userId); //取得父文檔
-				const resumesRef = collection(userRef, "resumes"); //取得父文檔下的子集合 resumes
-				const resumesOrderPromise = getUserAllResumes(resumesRef);
-				resumesOrderPromise.then((data) => {
-					setResumesOrder(data);
-				});
-			} else {
+			if (!user) {
 				navigate("/");
+				return;
 			}
-		});
-	}, []);
 
+			const userId = user.uid;
+			setUid(userId);
+			const userRef = doc(db, "users", userId); //取得父文檔
+			const resumesRef = collection(userRef, "resumes"); //取得父文檔下的子集合 resumes
+			const resumesOrderPromise = getUserAllResumes(resumesRef);
+			resumesOrderPromise.then((data) => {
+				setResumesOrder(data);
+			});
+		});
+	}, [navigate]);
+
+	//使用者點擊新增履歷按鈕，導向新履歷的 /edit 頁面
 	const handleNewResumeClick = () => {
 		const resumeConfig = newResumeStructure(userInfo);
 		const userRef = doc(db, "users", uid);
@@ -152,6 +158,7 @@ export default function IsLogin() {
 		});
 	};
 
+	//使用者點擊刪除履歷按鈕，刪除資料庫資料並重新排序
 	const handleDeleteButtonClick = () => {
 		const userRef = doc(db, "users", uid);
 		const resumesRef = collection(userRef, "resumes");
@@ -181,6 +188,7 @@ export default function IsLogin() {
 					<AllResumes
 						resumesOrder={resumesOrder}
 						setDeleteResumeId={setDeleteResumeId}
+						setShareResumeId={setShareResumeId}
 					/>
 					<NewResumeArea
 						onClick={handleNewResumeClick}
@@ -222,6 +230,12 @@ export default function IsLogin() {
 					}}
 					setIsClickDelete={setDeleteResumeId}
 					handleDeleteButtonClick={handleDeleteButtonClick}
+				/>
+			)}
+			{shareResumeId && (
+				<ShareLinkCard
+					shareResumeId={shareResumeId}
+					setShareResumeId={setShareResumeId}
 				/>
 			)}
 		</Root>

@@ -61,7 +61,11 @@ const FunctionButton = styled.div`
 	}
 `;
 
-export default function AllResumes({ resumesOrder, setDeleteResumeId }) {
+export default function AllResumes({
+	resumesOrder,
+	setDeleteResumeId,
+	setShareResumeId,
+}) {
 	const navigate = useNavigate();
 
 	const handleEditButtonClick = (resumeId) => {
@@ -99,7 +103,10 @@ export default function AllResumes({ resumesOrder, setDeleteResumeId }) {
 							<FunctionIcon src="/images/icon/edit.png" />
 							Edit
 						</FunctionButton>
-						<FunctionButton>
+						<FunctionButton
+							onClick={() => {
+								setShareResumeId(id);
+							}}>
 							<FunctionIcon src="/images/icon/upload.png" />
 							Share Link
 						</FunctionButton>

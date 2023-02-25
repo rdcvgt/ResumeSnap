@@ -51,7 +51,6 @@ export default function useCropUserPhoto(
 			canvas.height = size;
 			ctx.putImageData(imageData, 0, 0);
 
-			console.log(photoUrl);
 			//轉換成圖片
 			const dataURL = canvas.toDataURL();
 			setCroppedUserPhotoUrl(dataURL);

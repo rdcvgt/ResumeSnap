@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import DefaultButton from "../DefaultButton";
+import ShareLinkCard from "../../cards/ShareLinkCard";
 
 const OutputButtonContainer = styled.div`
 	display: flex;
@@ -59,6 +61,9 @@ OutputButtonArea.propTypes = {
 };
 
 export default function OutputButtonArea({ handleDownloadPdf, isDownloading }) {
+	const [isClickShareLink, setIsClickShareLink] = useState(false);
+	const { resumeId } = useParams();
+
 	return (
 		<OutputButtonContainer>
 			<DownloadPdfButton
@@ -66,7 +71,18 @@ export default function OutputButtonArea({ handleDownloadPdf, isDownloading }) {
 				isDownloading={isDownloading}>
 				{isDownloading === false ? "Download PDF" : "Downloading..."}
 			</DownloadPdfButton>
-			<DefaultButton>Share Link</DefaultButton>
+			<DefaultButton
+				onClick={() => {
+					setIsClickShareLink(true);
+				}}>
+				Share Link
+			</DefaultButton>
+			{isClickShareLink && (
+				<ShareLinkCard
+					shareResumeId={resumeId}
+					setIsClickShareLink={setIsClickShareLink}
+				/>
+			)}
 		</OutputButtonContainer>
 	);
 }

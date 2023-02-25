@@ -3,14 +3,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
+import { collection, doc } from "firebase/firestore";
 
 import ResumePreviewArea from "./ResumePreviewArea";
 import ResumeFormArea from "./ResumeFormArea";
 import ResumeTemplateArea from "./ResumeTemplateArea";
 import NavbarArea from "./NavbarArea";
 import useUpdateResumeData from "./hooks/useUpdateResumeData";
-import { getResumeData } from "../../redux/slices/formDataSlice";
 import { auth, db } from "../../utils/firebase/firebaseInit";
+import { getResume } from "../../utils/firebase/database";
+import { addResumeData } from "../../redux/slices/formDataSlice";
 
 const Root = styled.div`
 	width: 100%;
@@ -35,18 +37,28 @@ export default function EditPage() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	//傳送 resumeId 到 redux thunk 獲取 resume data
+	//驗證使用者身份，未登入導回首頁
+	//若 resumeId 不屬於該使用者，則導回 /dashboard
 	useEffect(() => {
 		onAuthStateChanged(auth, (user) => {
-			if (user) {
-				const userId = user.uid;
-				setUid(userId);
-				dispatch(getResumeData(userId, resumeId));
-			} else {
+			if (!user) {
 				navigate("/");
+				return;
 			}
+			const userId = user.uid;
+			setUid(userId);
+			const userRef = doc(db, "users", userId);
+			const resumesRef = collection(userRef, "resumes");
+			const resumeData = getResume(resumesRef, resumeId);
+			resumeData.then((data) => {
+				if (!data) {
+					navigate("/dashboard");
+					return;
+				}
+				dispatch(addResumeData({ resumeData: data }));
+			});
 		});
-	}, []);
+	}, [dispatch, navigate, resumeId]);
 
 	//若履歷資料更動，更新到 database
 	useUpdateResumeData(uid, resumeId);
