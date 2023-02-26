@@ -16,7 +16,7 @@ export default function useSaveResumePreview(
 	const currentColor = useSelector((state) => state.formData.color);
 
 	useEffect(() => {
-		if ((pageFrom !== "edit" && uid) || pageRef.current) return;
+		if ((pageFrom !== "edit" && uid) || !pageRef.current) return;
 		clearTimeout(timer);
 		const newTimer = setTimeout(() => {
 			html2canvas(pageRef.current[0], {

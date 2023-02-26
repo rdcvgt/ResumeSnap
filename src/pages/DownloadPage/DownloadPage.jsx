@@ -10,6 +10,7 @@ import Sydney from "../../components/template/Sydney";
 import { auth, db } from "../../utils/firebase/firebaseInit";
 import { getResume } from "../../utils/firebase/database";
 import { addResumeData } from "../../redux/reducers/formDataReducer";
+import LoadingCard from "../../components/cards/LoadingCard";
 
 const Root = styled.div`
 	width: 100%;
@@ -21,48 +22,6 @@ const Hide = styled.div`
 	opacity: 0;
 	position: absolute;
 	left: -200%;
-`;
-
-const fadeIn = keyframes` 
-  0% { 
-		opacity: 0;
-	}
-  100% { 		opacity: 1;
-}
-`;
-
-const LoadingArea = styled.div`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	animation: ${fadeIn} 0.5s both;
-`;
-
-const LoadingRingArea = styled.div`
-	display: flex;
-	justify-content: center;
-`;
-
-const spin = keyframes` 
-  0% { 
-		transform: rotate(0deg); 
-	}
-  100% { transform: rotate(360deg); }
-`;
-
-const LoadingRing = styled.div`
-	border: 4px solid ${(props) => props.theme.color.blue[10]};
-	border-top: 4px solid ${(props) => props.theme.color.blue[50]}; /* Blue */
-	border-radius: 50%;
-	width: 50px;
-	height: 50px;
-	animation: ${spin} 0.4s linear infinite;
-`;
-
-const LoadingText = styled.div`
-	${(props) => props.theme.font.title};
-	margin-top: 30px;
 `;
 
 const templates = {
@@ -125,14 +84,10 @@ export default function DownloadPage() {
 
 	return (
 		<Root>
-			<LoadingArea>
-				<LoadingRingArea>
-					<LoadingRing />
-				</LoadingRingArea>
-				<LoadingText>
-					Hang tight, we are downloading your resume PDF
-				</LoadingText>
-			</LoadingArea>
+			<LoadingCard
+				text={"Hang tight, we are downloading your resume PDF"}
+			/>
+
 			<Hide>
 				<Template
 					pageFrom="download"

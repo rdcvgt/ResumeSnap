@@ -59,8 +59,6 @@ export default function useDownloadPdf(
 					willReadFrequently: true,
 				})
 					.then((canvas) => {
-						console.log(pageRef.current);
-						console.log(canvas);
 						doc.addImage(
 							canvas,
 							"PNG",

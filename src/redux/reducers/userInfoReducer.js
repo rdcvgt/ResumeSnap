@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 
 import { collection, doc } from "firebase/firestore";
 import { db } from "../../utils/firebase/firebaseInit";
