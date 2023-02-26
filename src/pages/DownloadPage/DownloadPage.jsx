@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, doc } from "firebase/firestore";
@@ -17,11 +17,52 @@ const Root = styled.div`
 	background-color: ${(props) => props.theme.color.neutral[10]};
 `;
 
-const Body = styled.div`
+const Hide = styled.div`
+	opacity: 0;
+	position: absolute;
+	left: -200%;
+`;
+
+const fadeIn = keyframes` 
+  0% { 
+		opacity: 0;
+	}
+  100% { 		opacity: 1;
+}
+`;
+
+const LoadingArea = styled.div`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	animation: ${fadeIn} 0.5s both;
+`;
+
+const LoadingRingArea = styled.div`
 	display: flex;
-	height: auto;
 	justify-content: center;
-	padding: 80px;
+`;
+
+const spin = keyframes` 
+  0% { 
+		transform: rotate(0deg); 
+	}
+  100% { transform: rotate(360deg); }
+`;
+
+const LoadingRing = styled.div`
+	border: 4px solid ${(props) => props.theme.color.blue[10]};
+	border-top: 4px solid ${(props) => props.theme.color.blue[50]}; /* Blue */
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	animation: ${spin} 0.4s linear infinite;
+`;
+
+const LoadingText = styled.div`
+	${(props) => props.theme.font.title};
+	margin-top: 30px;
 `;
 
 const templates = {
@@ -30,6 +71,7 @@ const templates = {
 };
 
 export default function DownloadPage() {
+	const [isDownloading, setIsDownloading] = useState(true);
 	const { resumeId } = useParams();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -75,16 +117,29 @@ export default function DownloadPage() {
 		}, 1000);
 	}, [downloadPdfFunc]);
 
-	//執行下載 pdf
+	useEffect(() => {
+		if (!isDownloading) {
+			navigate("/dashboard");
+		}
+	}, [isDownloading]);
 
 	return (
 		<Root>
-			<Body>
+			<LoadingArea>
+				<LoadingRingArea>
+					<LoadingRing />
+				</LoadingRingArea>
+				<LoadingText>
+					Hang tight, we are downloading your resume PDF
+				</LoadingText>
+			</LoadingArea>
+			<Hide>
 				<Template
 					pageFrom="download"
 					handleGetDownLoadPdfFunc={handleGetDownLoadPdfFunc}
+					setIsDownloading={setIsDownloading}
 				/>
-			</Body>
+			</Hide>
 		</Root>
 	);
 }

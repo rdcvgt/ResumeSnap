@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDom from "react-dom/client";
+import { ThemeProvider } from "styled-components";
+import { Helmet } from "react-helmet";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import "./utils/style/reset.css";
 import { GlobalStyle, theme } from "./utils/style/global.style.jsx";
 import App from "./components/App";
-import store from "./redux/store";
-
-import { ThemeProvider } from "styled-components";
-import { Helmet } from "react-helmet";
-import { Provider } from "react-redux";
+import { store } from "./redux/store";
 
 const root = ReactDom.createRoot(document.getElementById("root"));
 

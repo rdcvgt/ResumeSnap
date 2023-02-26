@@ -14,7 +14,7 @@ export default function usePreview(
 	const currentColor = useSelector((state) => state.formData.color);
 
 	useEffect(() => {
-		if (!currentPage) return;
+		if (!currentPage || !pageRef.current) return;
 		clearTimeout(timer);
 		const newTimer = setTimeout(() => {
 			html2canvas(pageRef.current[currentPage - 1], {

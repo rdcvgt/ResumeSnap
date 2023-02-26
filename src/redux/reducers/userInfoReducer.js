@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { collection, doc } from "firebase/firestore";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
+import { collection, doc } from "firebase/firestore";
 import { db } from "../../utils/firebase/firebaseInit";
 import {
 	createNewUserInfo,
@@ -39,6 +41,5 @@ export const getUserInfo = (uid) => (dispatch) => {
 	const userRef = doc(db, "users", uid);
 	const userInfoRef = collection(userRef, "userInfo");
 	getCurrentUserInfo(userInfoRef);
-
 	// dispatch(updateUserInfo({ userInfo }));
 };
