@@ -16,6 +16,13 @@ const ResumePreview = styled.div`
 	border-radius: 5px;
 	margin-right: 30px;
 	cursor: pointer;
+	overflow: hidden;
+	transition: all 0.3s;
+`;
+
+const PreviewImg = styled.img`
+	width: 100%;
+	height: 100%;
 `;
 
 const ResumeFunctionArea = styled.div`
@@ -63,13 +70,17 @@ const FunctionButton = styled.div`
 
 export default function AllResumes({
 	resumesOrder,
+	resumePreviewList,
 	setDeleteResumeId,
 	setShareResumeId,
 }) {
 	const navigate = useNavigate();
-
 	const handleEditButtonClick = (resumeId) => {
 		navigate(`/edit/${resumeId}`);
+	};
+
+	const handleDownloadClick = (resumeId) => {
+		navigate(`/download/${resumeId}`);
 	};
 
 	if (!resumesOrder) return;
@@ -86,7 +97,11 @@ export default function AllResumes({
 				<ResumePreview
 					onClick={() => {
 						handleEditButtonClick(id);
-					}}></ResumePreview>
+					}}>
+					<PreviewImg
+						src={resumePreviewList ? resumePreviewList[id] : null}
+					/>
+				</ResumePreview>
 				<ResumeFunctionArea>
 					<MainInfoArea>
 						<ResumeName>{name}</ResumeName>
@@ -110,7 +125,10 @@ export default function AllResumes({
 							<FunctionIcon src="/images/icon/upload.png" />
 							Share Link
 						</FunctionButton>
-						<FunctionButton>
+						<FunctionButton
+							onClick={() => {
+								handleDownloadClick(id);
+							}}>
 							<FunctionIcon src="/images/icon/download.png" />
 							Download PDF
 						</FunctionButton>

@@ -54,7 +54,6 @@ const Label = styled.a`
 const handleItemData = (item, index, length) => {
 	const label = item.content.label;
 	const link = item.content.link;
-	console.log(length, index);
 
 	if (!label && !link) {
 		return;

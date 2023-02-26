@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import html2canvas from "html2canvas";
 import { useSelector } from "react-redux";
+import { uploadResumePreview } from "../../../../utils/firebase/storage";
 
-export default function usePreview(
+export default function useSaveResumePreview(
+	uid,
+	resumeId,
+	pageFrom,
 	pageRef,
-	setImgUrl,
-	currentPage,
 	mainBlocks,
 	sideBlocks
 ) {
@@ -14,26 +16,22 @@ export default function usePreview(
 	const currentColor = useSelector((state) => state.formData.color);
 
 	useEffect(() => {
-		if (!currentPage) return;
+		if (pageFrom !== "edit" && uid) return;
 		clearTimeout(timer);
 		const newTimer = setTimeout(() => {
-			html2canvas(pageRef.current[currentPage - 1], {
+			html2canvas(pageRef.current[0], {
 				useCORS: true,
 				allowTaint: true,
-				willReadFrequently: true,
-			}).then((canvas) => {
-				const dataUrl = canvas.toDataURL("image/png", 0.4);
-				setImgUrl(dataUrl);
-			});
-		}, 700);
+			}).then(
+				(canvas) => {
+					canvas.toBlob((blob) => {
+						uploadResumePreview(uid, resumeId, blob);
+					});
+				},
+				"image/png",
+				0.1
+			);
+		}, 3000);
 		setTimer(newTimer);
-	}, [
-		currentTemplate,
-		currentColor,
-		pageRef,
-		setImgUrl,
-		currentPage,
-		mainBlocks,
-		sideBlocks,
-	]);
+	}, [currentTemplate, currentColor, pageRef, mainBlocks, sideBlocks]);
 }

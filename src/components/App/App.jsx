@@ -8,6 +8,7 @@ import SignInPage from "../../pages/SignInPage";
 import DashboardPage from "../../pages/DashboardPage";
 import EditPage from "../../pages/EditPage";
 import SharePage from "../../pages/SharePage";
+import DownloadPage from "../../pages/DownloadPage";
 
 const Root = styled.div``;
 
@@ -22,6 +23,10 @@ export default function App() {
 					<Route path="/dashboard" element={<DashboardPage />} />
 					<Route path="/edit/:resumeId" element={<EditPage />} />
 					<Route path="/share/:resumeId" element={<SharePage />} />
+					<Route
+						path="/download/:resumeId"
+						element={<DownloadPage />}
+					/>
 				</Routes>
 			</BrowserRouter>
 		</Root>

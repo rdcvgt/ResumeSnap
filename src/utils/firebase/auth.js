@@ -41,7 +41,6 @@ export function useGoogle(setUid, setUserInfo, setError) {
 			const lastName = userNameList[1];
 
 			const newUserInfo = { email, firstName, lastName };
-			console.log(newUserInfo);
 			setUserInfo(newUserInfo);
 			setUid(uid);
 		})

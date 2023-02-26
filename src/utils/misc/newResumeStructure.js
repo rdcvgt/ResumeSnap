@@ -4,7 +4,8 @@ import { Timestamp } from "firebase/firestore";
 function newResumeStructure(userInfo) {
 	const timestamp = Timestamp.now().toMillis();
 	const { email, firstName, lastName } = userInfo;
-	const defaultResume = {
+	const newResume = {
+		isDefaultData: false,
 		updatedAt: timestamp,
 		resumeName: "First Resume",
 		template: "Sydney",
@@ -52,7 +53,7 @@ function newResumeStructure(userInfo) {
 			},
 		],
 	};
-	return defaultResume;
+	return newResume;
 }
 
 export default newResumeStructure;

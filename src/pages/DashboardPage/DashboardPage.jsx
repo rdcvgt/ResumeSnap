@@ -7,6 +7,7 @@ import { onAuthStateChanged } from "firebase/auth";
 
 import { db, auth } from "../../utils/firebase/firebaseInit";
 import { getUserAllResumes, deleteResume } from "../../utils/firebase/database";
+import { getResumePreview } from "../../utils/firebase/storage";
 import DefaultButton from "../../components/buttons/DefaultButton";
 import AllResumes from "./AllResumes";
 import newResumeStructure from "../../utils/misc/newResumeStructure";
@@ -124,6 +125,7 @@ export default function IsLogin() {
 	const [shareResumeId, setShareResumeId] = useState(null);
 	const [uid, setUid] = useState(null);
 	const [resumesOrder, setResumesOrder] = useState(null);
+	const [resumePreviewList, setResumePreviewList] = useState(null);
 	const navigate = useNavigate();
 	const userInfo = useSelector((state) => state.userInfo);
 
@@ -135,14 +137,21 @@ export default function IsLogin() {
 				navigate("/");
 				return;
 			}
-
 			const userId = user.uid;
 			setUid(userId);
+
+			//取得履歷基本資訊
 			const userRef = doc(db, "users", userId); //取得父文檔
 			const resumesRef = collection(userRef, "resumes"); //取得父文檔下的子集合 resumes
 			const resumesOrderPromise = getUserAllResumes(resumesRef);
 			resumesOrderPromise.then((data) => {
 				setResumesOrder(data);
+			});
+
+			//取得履歷預覽圖
+			const resumePreviewList = getResumePreview(userId);
+			resumePreviewList.then((data) => {
+				setResumePreviewList(data);
 			});
 		});
 	}, [navigate]);
@@ -187,6 +196,7 @@ export default function IsLogin() {
 				<ResumesDisplayArea>
 					<AllResumes
 						resumesOrder={resumesOrder}
+						resumePreviewList={resumePreviewList}
 						setDeleteResumeId={setDeleteResumeId}
 						setShareResumeId={setShareResumeId}
 					/>

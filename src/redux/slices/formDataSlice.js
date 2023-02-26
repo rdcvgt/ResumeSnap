@@ -8,6 +8,7 @@ import { getResume } from "../../utils/firebase/database";
 export const formDataSlice = createSlice({
 	name: "formData",
 	initialState: {
+		isDefaultData: true,
 		resumeName: "First Resume",
 		template: "Sydney",
 		color: "#082A4D",

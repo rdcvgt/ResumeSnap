@@ -8,7 +8,6 @@ import {
 	addBlock,
 	deleteBlock,
 	updateBlockOrder,
-	updateResumeName,
 } from "../../../redux/slices/formDataSlice";
 
 import ResumeTitleBlock from "../../../components/forms/utils/ResumeTitleBlock";

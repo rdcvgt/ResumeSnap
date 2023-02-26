@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
 
 import usePagination from "../utils/hooks/usePagination";
 import useDownloadPdf from "../utils/hooks/useDownloadPdf";
 import usePreview from "../utils/hooks/usePreview";
+import useSaveResumePreview from "../utils/hooks/useSaveResumePreview";
 import useCropUserPhoto from "../utils/hooks/useCropUserPhoto";
 import "../utils/htmlElement.css";
+import { auth } from "../../../utils/firebase/firebaseInit";
 
 import PersonalDetails from "./resumeBlocks/PersonalDetails";
 import ProfessionalSummary from "./resumeBlocks/ProfessionalSummary";
@@ -73,6 +77,10 @@ const Root = styled.div`
 		props.pageFrom === "share"
 			? "5px 5px 20px rgba(43, 49, 108, 0.2);"
 			: "none"};
+
+	& a {
+		color: #fff;
+	}
 `;
 
 const RenderRoot = styled.div`
@@ -212,11 +220,13 @@ export default function RenderTemplate({
 	const [rightAreaBlocks, setRightAreaBlocks] = useState([]);
 	const [imgUrl, setImgUrl] = useState("");
 	const [croppedUserPhotoUrl, setCroppedUserPhotoUrl] = useState(null);
+	const [uid, setUid] = useState(null);
 	const pageRef = useRef([]);
 	const renderContainerRef = useRef();
 	const renderBackgroundRef = useRef();
 	const canvasRef = useRef();
 
+	const { resumeId } = useParams();
 	const formBlocks = useSelector((state) => state.formData.formBlocks);
 	const color = useSelector((state) => state.formData.color);
 	const firstName = formBlocks[0].content.inputData?.firstName;
@@ -238,11 +248,30 @@ export default function RenderTemplate({
 		croppedUserPhotoUrl
 	);
 
+	//獲取使用者登入 uid
+	useEffect(() => {
+		onAuthStateChanged(auth, (user) => {
+			if (!user) return;
+			const userId = user.uid;
+			setUid(userId);
+		});
+	}, []);
+
 	//將履歷內容轉換成 png 檔並儲存到 state
 	usePreview(
 		pageRef,
 		setImgUrl,
 		currentPage,
+		leftAreaBlocks,
+		rightAreaBlocks
+	);
+
+	//將履歷的首頁預覽圖存入資料庫
+	useSaveResumePreview(
+		uid,
+		resumeId,
+		pageFrom,
+		pageRef,
 		leftAreaBlocks,
 		rightAreaBlocks
 	);
@@ -257,6 +286,7 @@ export default function RenderTemplate({
 		leftAreaBlocks,
 		rightAreaBlocks
 	);
+
 	if (handleGetDownLoadPdfFunc) {
 		handleGetDownLoadPdfFunc(downloadPdf);
 	}

@@ -3,6 +3,7 @@ import {
 	getDownloadURL,
 	uploadBytes,
 	deleteObject,
+	listAll,
 } from "firebase/storage";
 import { storage } from "./firebaseInit";
 import "firebase/storage";
@@ -33,4 +34,40 @@ export function deleteUserPhoto(photoName) {
 		});
 
 	return result;
+}
+
+export function uploadResumePreview(uid, resumeId, blob) {
+	if (!uid) return;
+	const storageRef = ref(storage, `/resumesPreview/${uid}/${resumeId}`);
+	uploadBytes(storageRef, blob);
+}
+
+//傳遞履歷預覽的照片連結
+export function getResumePreview(uid) {
+	const userResumesRef = ref(storage, `/resumesPreview/${uid}`);
+
+	//listAll 爲 promise
+	return listAll(userResumesRef).then((list) => {
+		//使用 map 來製作 promises 陣列，蒐集 getDownloadURL API promise
+		const promises = list.items.map((itemRef) => {
+			// getDownloadURL 爲 promise
+			return getDownloadURL(itemRef).then((url) => {
+				//回傳一個物件
+				return { name: itemRef.name, url: url };
+			});
+		});
+
+		//將 promises 全部一起 resolve
+		return Promise.all(promises).then((results) => {
+			//定義 resumePreviewList 空物件
+			const resumePreviewList = {};
+
+			//results 爲 promise(來自 getDownloadURL)
+			results.forEach((result) => {
+				resumePreviewList[result.name] = result.url;
+			});
+			//回傳 resumePreviewList 物件
+			return resumePreviewList;
+		});
+	});
 }
