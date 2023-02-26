@@ -7,7 +7,10 @@ import { onAuthStateChanged } from "firebase/auth";
 
 import { db, auth } from "../../utils/firebase/firebaseInit";
 import { getUserAllResumes, deleteResume } from "../../utils/firebase/database";
-import { getResumePreview } from "../../utils/firebase/storage";
+import {
+	getResumePreview,
+	deleteResumePreview,
+} from "../../utils/firebase/storage";
 import DefaultButton from "../../components/buttons/DefaultButton";
 import AllResumes from "./AllResumes";
 import newResumeStructure from "../../utils/misc/newResumeStructure";
@@ -169,6 +172,7 @@ export default function IsLogin() {
 
 	//使用者點擊刪除履歷按鈕，刪除資料庫資料並重新排序
 	const handleDeleteButtonClick = () => {
+		//刪除履歷
 		const userRef = doc(db, "users", uid);
 		const resumesRef = collection(userRef, "resumes");
 		const resultPromise = deleteResume(resumesRef, deleteResumeId);
@@ -182,6 +186,9 @@ export default function IsLogin() {
 				setDeleteResumeId(null);
 			}
 		});
+
+		//刪除履歷預覽圖
+		deleteResumePreview(uid, deleteResumeId);
 	};
 
 	return (

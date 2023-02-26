@@ -2,7 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import { collection, doc } from "firebase/firestore";
 
 import { db } from "../../utils/firebase/firebaseInit";
-import { createNewUserInfo } from "../../utils/firebase/database";
+import {
+	createNewUserInfo,
+	getCurrentUserInfo,
+} from "../../utils/firebase/database";
 
 export const userInfoSlice = createSlice({
 	name: "userInfo",
@@ -30,4 +33,12 @@ export const addUserInfo = (uid, userInfo) => (dispatch) => {
 	const userRef = doc(db, "users", uid);
 	const userInfoRef = collection(userRef, "userInfo");
 	createNewUserInfo(userInfoRef, userInfo);
+};
+
+export const getUserInfo = (uid) => (dispatch) => {
+	const userRef = doc(db, "users", uid);
+	const userInfoRef = collection(userRef, "userInfo");
+	getCurrentUserInfo(userInfoRef);
+
+	// dispatch(updateUserInfo({ userInfo }));
 };

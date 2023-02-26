@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import styled from "styled-components";
 
 import { useSelector, useDispatch } from "react-redux";
-import { updateResumeName } from "../../../../redux/slices/formDataSlice";
+import { updateResumeName } from "../../../../redux/reducers/formDataReducer";
 
 const Block = styled.div`
 	display: flex;

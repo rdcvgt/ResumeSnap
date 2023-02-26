@@ -14,6 +14,14 @@ export function createNewUserInfo(userInfoRef, userInfo) {
 	setDoc(doc(userInfoRef, "info"), userInfo);
 }
 
+export async function getCurrentUserInfo(userInfoRef) {
+	let userInfo = null;
+	const infoRef = await getDocs(userInfoRef);
+	infoRef.then((data) => {
+		console.log(data);
+	});
+}
+
 export async function createFirstResume(resumesRef, resumeConfig) {
 	const newResumeRef = await addDoc(resumesRef, resumeConfig);
 	const newResumeId = newResumeRef.id;

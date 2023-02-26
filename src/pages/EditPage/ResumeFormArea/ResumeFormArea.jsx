@@ -8,7 +8,7 @@ import {
 	addBlock,
 	deleteBlock,
 	updateBlockOrder,
-} from "../../../redux/slices/formDataSlice";
+} from "../../../redux/reducers/formDataReducer";
 
 import ResumeTitleBlock from "../../../components/forms/utils/ResumeTitleBlock";
 import PersonalDetails from "../../../components/forms/PersonalDetails";

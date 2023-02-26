@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import UploadPhotoArea from "./UploadPhotoArea";
-import { updateInputData } from "../../../redux/slices/formDataSlice";
+import { updateInputData } from "../../../redux/reducers/formDataReducer";
 import TitleBlock from "../utils/TitleBlock";
 
 const BlockContainer = styled.div`

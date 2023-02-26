@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateTemplateColor } from "../../../redux/slices/formDataSlice";
+import { updateTemplateColor } from "../../../redux/reducers/formDataReducer";
 import OutputButtonArea from "../../../components/buttons/OutputButtonArea";
 
 const NavBar = styled.div`

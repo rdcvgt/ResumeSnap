@@ -9,7 +9,7 @@ import London from "../../components/template/London";
 import Sydney from "../../components/template/Sydney";
 import { auth, db } from "../../utils/firebase/firebaseInit";
 import { getResume } from "../../utils/firebase/database";
-import { addResumeData } from "../../redux/slices/formDataSlice";
+import { addResumeData } from "../../redux/reducers/formDataReducer";
 
 const Root = styled.div`
 	width: 100%;

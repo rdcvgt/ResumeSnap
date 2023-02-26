@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import {
 	deleteItem,
 	updateItemData,
-} from "../../../../redux/slices/formDataSlice";
+} from "../../../../redux/reducers/formDataReducer";
 
 const Root = styled.div`
 	border-radius: 5px;

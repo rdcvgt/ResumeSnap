@@ -1,13 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { collection, doc, setDoc, addDoc } from "firebase/firestore";
-import { useSelector, useDispatch } from "react-redux";
+import { collection, doc } from "firebase/firestore";
+import { useDispatch } from "react-redux";
 
 import { db } from "../../utils/firebase/firebaseInit";
 import { useEmailSignUp, useGoogle } from "../../utils/firebase/auth";
 import newResumeStructure from "../../utils/misc/newResumeStructure";
-import { addUserInfo } from "../../redux/slices/userInfoSlice";
+import { addUserInfo } from "../../redux/reducers/userInfoReducer";
 import { createFirstResume } from "../../utils/firebase/database";
 
 const Root = styled.div``;

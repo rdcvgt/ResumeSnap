@@ -71,3 +71,19 @@ export function getResumePreview(uid) {
 		});
 	});
 }
+
+export function deleteResumePreview(uid, resumeId) {
+	const deleteRef = ref(storage, `/resumesPreview/${uid}/${resumeId}`);
+
+	//將上傳的照片取得照片網址，並回傳 promise
+	const result = deleteObject(deleteRef)
+		.then(() => {
+			return true;
+		})
+		.catch((error) => {
+			console.log(error);
+			return false;
+		});
+
+	return result;
+}

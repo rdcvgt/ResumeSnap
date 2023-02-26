@@ -11,8 +11,14 @@ export default function useDownloadPdf(
 	sideBlocks
 ) {
 	const isDefaultData = useSelector((state) => state.formData.isDefaultData);
-	const firstName = useSelector((state) => state.userInfo.firstName);
-	const lastName = useSelector((state) => state.userInfo.lastName);
+	const resumeNameData = useSelector((state) => state.formData.resumeName);
+	const firstNameData = useSelector((state) => state.userInfo.firstName);
+	const lastNameData = useSelector((state) => state.userInfo.lastName);
+	const firstName = firstNameData ? firstNameData : "";
+	const lastName = lastNameData ? lastNameData : "";
+	const space = firstName && lastName ? " " : "";
+	const resumeName = resumeNameData ? resumeNameData : "resume";
+	const underline = firstName || lastName ? "_" : "";
 
 	const mainLength = mainBlocks.length;
 	const sideLength = sideBlocks ? sideBlocks.length : 0;
@@ -74,7 +80,9 @@ export default function useDownloadPdf(
 		}
 		//等待前面程序完成才下載
 		Promise.all(promises).then(() => {
-			doc.save(`${firstName} ${lastName}_resume.pdf`);
+			doc.save(
+				`${firstName}${space}${lastName}${underline}${resumeName}.pdf`
+			);
 			if (setIsDownloading) {
 				setIsDownloading(false);
 			}

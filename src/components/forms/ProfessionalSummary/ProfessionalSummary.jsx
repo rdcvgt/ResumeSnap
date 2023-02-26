@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
-import { updateInputData } from "../../../redux/slices/formDataSlice";
+import { updateInputData } from "../../../redux/reducers/formDataReducer";
 import InputEditor from "../utils/Editor";
 import TitleBlock from "../utils/TitleBlock";
 

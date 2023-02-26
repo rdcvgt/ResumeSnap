@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
-import formDataReducer from "./slices/formDataSlice";
-import userInfoReducer from "./slices/userInfoSlice";
+import formDataReducer from "./reducers/formDataReducer";
+import userInfoReducer from "./reducers/userInfoReducer";
 
 export default configureStore({
 	reducer: {

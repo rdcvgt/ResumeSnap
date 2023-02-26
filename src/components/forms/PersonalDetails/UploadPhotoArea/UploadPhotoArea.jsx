@@ -4,7 +4,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 
-import { updateInputData } from "../../../../redux/slices/formDataSlice";
+import { updateInputData } from "../../../../redux/reducers/formDataReducer";
 import {
 	uploadUserPhoto,
 	deleteUserPhoto,

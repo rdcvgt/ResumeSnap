@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { useDispatch } from "react-redux";
-import { updateBlockTitle } from "../../../../redux/slices/formDataSlice";
+import { updateBlockTitle } from "../../../../redux/reducers/formDataReducer";
 import ConfirmCard from "../../../cards/ConfirmCard";
 
 const Block = styled.div`

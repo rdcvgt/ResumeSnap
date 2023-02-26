@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	addItem,
 	updateItemOrder,
-} from "../../../../redux/slices/formDataSlice";
+} from "../../../../redux/reducers/formDataReducer";
 import TitleBlock from "../TitleBlock";
 
 const BlockContainer = styled.div`

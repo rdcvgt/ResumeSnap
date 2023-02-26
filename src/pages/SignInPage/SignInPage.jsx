@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { useEmailSignIn, useGoogle } from "../../utils/firebase/auth";
-import { addUserInfo } from "../../redux/slices/userInfoSlice";
+import { addUserInfo } from "../../redux/reducers/userInfoReducer";
 
 const Root = styled.div``;
 

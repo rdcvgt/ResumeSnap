@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
 
 import London from "../../components/template/London";
 import Sydney from "../../components/template/Sydney";
-import { getResumeData } from "../../redux/slices/formDataSlice";
-import { auth } from "../../utils/firebase/firebaseInit";
 import { checkSharePageResumeId } from "../../utils/firebase/database";
-import { addResumeData } from "../../redux/slices/formDataSlice";
+import { addResumeData } from "../../redux/reducers/formDataReducer";
 
 const Root = styled.div`
 	width: 100%;

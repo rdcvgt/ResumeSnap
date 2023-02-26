@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	updateTemplate,
 	updateTemplateColor,
-} from "../../../redux/slices/formDataSlice";
+} from "../../../redux/reducers/formDataReducer";
 import { templateOrder } from "../../../utils/misc/templatePreviewOrder";
 
 const ResumeTempBackground = styled.div`
