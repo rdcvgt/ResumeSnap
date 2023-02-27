@@ -3,6 +3,12 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
+import {
+	DefaultButtonStyle,
+	SecondaryButtonStyle,
+	darkerWhenHover,
+} from "../../buttons/button.style";
+
 const fadeIn = keyframes`
 	0% { opacity: 0; }
 	100% { opacity: 1; }
@@ -71,57 +77,30 @@ const Buttons = styled.div`
 `;
 
 const LeftButton = styled.div`
-	${(props) => props.theme.font.blockTitle};
+	${SecondaryButtonStyle}
 	width: 120px;
 	height: 50px;
-	background-color: #fff;
-	color: ${(props) => props.theme.color.blue[50]};
-	cursor: pointer;
 	margin-right: 20px;
-	border-radius: 5px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: all 0.3s;
+	color: ${(props) => props.theme.color.blue[50]};
+	border: none;
 
 	&:hover {
-		transition: all 0.3s;
-		color: ${(props) => props.theme.color.blue[70]};
+		color: ${(props) => props.theme.color.blue[60]};
 	}
 `;
 
 const RightButton = styled.div`
-	${(props) => props.theme.font.blockTitle};
+	${DefaultButtonStyle}
 	width: 120px;
 	height: 50px;
-	background-color: ${(props) => props.theme.color.blue[50]};
-	color: #fff;
-	cursor: pointer;
-	border-radius: 5px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: all 0.3s;
-
-	&:hover {
-		transition: all 0.3s;
-		background-color: ${(props) => props.theme.color.blue[60]};
-	}
 `;
 
 const CloseIcon = styled.img`
+	${darkerWhenHover}
 	width: 15px;
 	position: absolute;
 	top: 30px;
 	right: 30px;
-	cursor: pointer;
-	opacity: 0.5;
-	transition: all 0.3s;
-
-	&:hover {
-		transition: all 0.3s;
-		opacity: 1;
-	}
 `;
 
 ShareLinkCard.propTypes = {

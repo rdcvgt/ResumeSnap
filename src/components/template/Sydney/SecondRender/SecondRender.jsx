@@ -13,6 +13,8 @@ const HidePages = styled.div`
 	${HidePagesStyle}
 `;
 
+const Test = styled.div``;
+
 const PageRoot = styled.div`
 	${PageRootStyle}
 
@@ -59,29 +61,20 @@ export default function RenderTemplate({
 	const color = useSelector((state) => state.formData.color);
 
 	return (
-		<HidePages pageFrom={pageFrom}>
-			{leftAreaBlocks.length >= rightAreaBlocks.length &&
-				leftAreaBlocks.map((pages, index) => {
-					return (
-						<PageRoot
-							pageFrom={pageFrom}
-							ref={(pages) => (pageRef.current[index] = pages)}
-							key={index}>
-							<ResumeMainContainer>
-								{pages.map((block, index) => {
-									return (
-										<Block
-											key={index}
-											dangerouslySetInnerHTML={{
-												__html: block,
-											}}></Block>
-									);
-								})}
-							</ResumeMainContainer>
-							<ResumeSideContainer color={color}>
-								{rightAreaBlocks[index] &&
-									rightAreaBlocks[index].map(
-										(block, index) => {
+		<>
+			<HidePages pageFrom={pageFrom}>
+				<Test>
+					{leftAreaBlocks.length >= rightAreaBlocks.length &&
+						leftAreaBlocks.map((pages, index) => {
+							return (
+								<PageRoot
+									pageFrom={pageFrom}
+									ref={(pages) =>
+										(pageRef.current[index] = pages)
+									}
+									key={index}>
+									<ResumeMainContainer>
+										{pages.map((block, index) => {
 											return (
 												<Block
 													key={index}
@@ -89,22 +82,49 @@ export default function RenderTemplate({
 														__html: block,
 													}}></Block>
 											);
-										}
-									)}
-							</ResumeSideContainer>
-						</PageRoot>
-					);
-				})}
-			{leftAreaBlocks.length < rightAreaBlocks.length &&
-				rightAreaBlocks.map((pages, index) => {
-					return (
-						<PageRoot
-							ref={(pages) => (pageRef.current[index] = pages)}
-							key={index}>
-							<ResumeMainContainer>
-								{leftAreaBlocks[index] &&
-									leftAreaBlocks[index].map(
-										(block, index) => {
+										})}
+									</ResumeMainContainer>
+									<ResumeSideContainer color={color}>
+										{rightAreaBlocks[index] &&
+											rightAreaBlocks[index].map(
+												(block, index) => {
+													return (
+														<Block
+															key={index}
+															dangerouslySetInnerHTML={{
+																__html: block,
+															}}></Block>
+													);
+												}
+											)}
+									</ResumeSideContainer>
+								</PageRoot>
+							);
+						})}
+					{leftAreaBlocks.length < rightAreaBlocks.length &&
+						rightAreaBlocks.map((pages, index) => {
+							return (
+								<PageRoot
+									ref={(pages) =>
+										(pageRef.current[index] = pages)
+									}
+									key={index}>
+									<ResumeMainContainer>
+										{leftAreaBlocks[index] &&
+											leftAreaBlocks[index].map(
+												(block, index) => {
+													return (
+														<Block
+															key={index}
+															dangerouslySetInnerHTML={{
+																__html: block,
+															}}></Block>
+													);
+												}
+											)}
+									</ResumeMainContainer>
+									<ResumeSideContainer color={color}>
+										{pages.map((block, index) => {
 											return (
 												<Block
 													key={index}
@@ -112,23 +132,13 @@ export default function RenderTemplate({
 														__html: block,
 													}}></Block>
 											);
-										}
-									)}
-							</ResumeMainContainer>
-							<ResumeSideContainer color={color}>
-								{pages.map((block, index) => {
-									return (
-										<Block
-											key={index}
-											dangerouslySetInnerHTML={{
-												__html: block,
-											}}></Block>
-									);
-								})}
-							</ResumeSideContainer>
-						</PageRoot>
-					);
-				})}
-		</HidePages>
+										})}
+									</ResumeSideContainer>
+								</PageRoot>
+							);
+						})}
+				</Test>
+			</HidePages>
+		</>
 	);
 }

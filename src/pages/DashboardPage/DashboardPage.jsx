@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import { useSelector } from "react-redux";
-import { collection, doc, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import { collection, doc } from "firebase/firestore";
 
-import { db, auth } from "../../utils/firebase/firebaseInit";
-import { getUserAllResumes, deleteResume } from "../../utils/firebase/database";
+import AllResumes from "./AllResumes";
+import NewResume from "./NewResume";
+
 import {
 	getResumePreview,
 	deleteResumePreview,
 } from "../../utils/firebase/storage";
-import DefaultButton from "../../components/buttons/DefaultButton";
-import AllResumes from "./AllResumes";
-import newResumeStructure from "../../utils/misc/newResumeStructure";
+import { db, auth } from "../../utils/firebase/firebaseInit";
 import { createFirstResume } from "../../utils/firebase/database";
+import { getUserAllResumes, deleteResume } from "../../utils/firebase/database";
+import { MEDIA_QUERY_LG } from "../../utils/style/breakpotins";
+import newResumeStructure from "../../utils/misc/newResumeStructure";
+
 import ConfirmCard from "../../components/cards/ConfirmCard";
 import ShareLinkCard from "../../components/cards/ShareLinkCard";
+import { DefaultButtonStyle } from "../../components/buttons/button.style";
 
 const Root = styled.div``;
 
@@ -24,6 +28,10 @@ const ResumesArea = styled.div`
 	width: 1120px;
 	margin: 80px auto 0px auto;
 	padding: 48px 0 120px 0;
+
+	${MEDIA_QUERY_LG} {
+		width: 90%;
+	}
 `;
 
 const TitleBlock = styled.div`
@@ -39,6 +47,16 @@ const Title = styled.div`
 	${(props) => props.theme.font.pageTitle};
 `;
 
+const CreateNewButton = styled.div`
+	${DefaultButtonStyle}
+`;
+
+const NewResumeAButton = styled.div`
+	${DefaultButtonStyle}
+	width: 100%;
+	margin-top: 40px;
+`;
+
 const ResumesDisplayArea = styled.div`
 	width: 100%;
 	display: flex;
@@ -48,89 +66,35 @@ const ResumesDisplayArea = styled.div`
 	margin-top: 50px;
 `;
 
-const NewResumeArea = styled.div`
-	width: 50%;
-	height: 268.7px;
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-	margin-bottom: 50px;
+const MediaQuery = styled.div`
+	display: none;
+
+	@media (min-width: ${({ minWidth }) => minWidth}px) {
+		display: initial;
+	}
+
+	@media (max-width: ${({ maxWidth }) => maxWidth}px) {
+		display: initial;
+	}
 `;
 
-const AddResumeButton = styled.div`
-	width: 190px;
-	height: 268.7px;
-	border: 1px solid ${(props) => props.theme.color.neutral[20]};
-	border-radius: 5px;
-	margin-right: 30px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
+const confirmCardText = {
+	title: "Delete Resume",
+	description:
+		"Are you sure you want to delete this resume? Once deleted this resume cannot be restored.",
+	leftButton: "Delete",
+	rightButton: "Cancel",
+};
 
-const Round = styled.div`
-	width: 70px;
-	height: 70px;
-	border-radius: 70px;
-	background-color: ${(props) => props.theme.color.neutral[10]};
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: all 0.3s;
-
-	${(props) =>
-		props.isHoverNewResume &&
-		`
-		background-color: #1a91f0;
-		transition: all 0.3s;
-		`}
-`;
-
-const AddResumeIcon = styled.img`
-	width: 30px;
-	filter: brightness(1.3);
-	transition: all 0.3s;
-
-	${(props) =>
-		props.isHoverNewResume &&
-		`
-		filter: brightness(2);
-		transition: all 0.3s;
-		`}
-`;
-
-const AddResumeText = styled.div`
-	height: 100%;
-	width: 50%;
-	color: ${(props) => props.theme.color.neutral[40]};
-`;
-
-const AddResumeTitle = styled.div`
-	${(props) => props.theme.font.title};
-	transition: all 0.3s;
-	margin-bottom: 5px;
-
-	${(props) =>
-		props.isHoverNewResume &&
-		`
-		color: #1a91f0;
-		transition: all 0.3s;
-		`}
-`;
-
-const AddResumeContent = styled.div`
-	${(props) => props.theme.font.info};
-`;
-
-export default function IsLogin() {
-	const [isHoverNewResume, setIsHoverNewResume] = useState(false);
-	const [deleteResumeId, setDeleteResumeId] = useState(null);
-	const [shareResumeId, setShareResumeId] = useState(null);
-	const [uid, setUid] = useState(null);
-	const [resumesOrder, setResumesOrder] = useState(null);
-	const [resumePreviewList, setResumePreviewList] = useState(null);
+export default function DashboardPage() {
 	const navigate = useNavigate();
 	const userInfo = useSelector((state) => state.userInfo);
+
+	const [uid, setUid] = useState(null);
+	const [resumesOrder, setResumesOrder] = useState(null);
+	const [shareResumeId, setShareResumeId] = useState(null);
+	const [deleteResumeId, setDeleteResumeId] = useState(null);
+	const [resumePreviewList, setResumePreviewList] = useState(null);
 
 	//驗證使用者身份，未登入導回首頁
 	//登入後取得該使用者所有履歷資料
@@ -142,7 +106,6 @@ export default function IsLogin() {
 			}
 			const userId = user.uid;
 			setUid(userId);
-
 			//取得履歷基本資訊
 			const userRef = doc(db, "users", userId); //取得父文檔
 			const resumesRef = collection(userRef, "resumes"); //取得父文檔下的子集合 resumes
@@ -196,10 +159,17 @@ export default function IsLogin() {
 			<ResumesArea>
 				<TitleBlock>
 					<Title>Resumes</Title>
-					<DefaultButton onClick={handleNewResumeClick}>
-						Create New
-					</DefaultButton>
+					<MediaQuery minWidth={768}>
+						<CreateNewButton onClick={handleNewResumeClick}>
+							Create New
+						</CreateNewButton>
+					</MediaQuery>
 				</TitleBlock>
+				<MediaQuery maxWidth={767}>
+					<NewResumeAButton onClick={handleNewResumeClick}>
+						Create New Resume
+					</NewResumeAButton>
+				</MediaQuery>
 				<ResumesDisplayArea>
 					<AllResumes
 						resumesOrder={resumesOrder}
@@ -207,44 +177,12 @@ export default function IsLogin() {
 						setDeleteResumeId={setDeleteResumeId}
 						setShareResumeId={setShareResumeId}
 					/>
-					<NewResumeArea
-						onClick={handleNewResumeClick}
-						onMouseEnter={() => {
-							setIsHoverNewResume(true);
-						}}
-						onMouseLeave={() => {
-							setIsHoverNewResume(false);
-						}}>
-						<AddResumeButton>
-							<Round isHoverNewResume={isHoverNewResume}>
-								<AddResumeIcon
-									isHoverNewResume={isHoverNewResume}
-									src="/images/icon/plus_thin.png"
-								/>
-							</Round>
-						</AddResumeButton>
-						<AddResumeText>
-							<AddResumeTitle isHoverNewResume={isHoverNewResume}>
-								New Resume
-							</AddResumeTitle>
-							<AddResumeContent>
-								Create a tailored resume for each job
-								application. Double your chances of getting
-								hired!
-							</AddResumeContent>
-						</AddResumeText>
-					</NewResumeArea>
+					<NewResume handleNewResumeClick={handleNewResumeClick} />
 				</ResumesDisplayArea>
 			</ResumesArea>
 			{deleteResumeId && (
 				<ConfirmCard
-					text={{
-						title: "Delete Resume",
-						description:
-							"Are you sure you want to delete this resume? Once deleted this resume cannot be restored.",
-						leftButton: "Delete",
-						rightButton: "Cancel",
-					}}
+					text={confirmCardText}
 					setIsClickDelete={setDeleteResumeId}
 					handleDeleteButtonClick={handleDeleteButtonClick}
 				/>

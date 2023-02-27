@@ -2,6 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled, { keyframes } from "styled-components";
 
+import {
+	DefaultButtonStyle,
+	SecondaryButtonStyle,
+} from "../../buttons/button.style";
+
 const fadeIn = keyframes`
 	0% { opacity: 0; }
 	100% { opacity: 1; }
@@ -55,43 +60,17 @@ const Buttons = styled.div`
 `;
 
 const LeftButton = styled.div`
-	${(props) => props.theme.font.blockTitle};
+	${SecondaryButtonStyle}
+	margin-right: 20px;
 	width: 120px;
 	height: 50px;
-	background-color: #fff;
-	border: 1px solid #ccc;
-	cursor: pointer;
-	margin-right: 20px;
-	border-radius: 5px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: all 0.3s;
-
-	&:hover {
-		transition: all 0.3s;
-		border: 1px solid ${(props) => props.theme.color.blue[50]};
-		color: ${(props) => props.theme.color.blue[50]};
-	}
 `;
 
 const RightButton = styled.div`
-	${(props) => props.theme.font.blockTitle};
+	${DefaultButtonStyle}
+
 	width: 120px;
 	height: 50px;
-	background-color: ${(props) => props.theme.color.blue[50]};
-	color: #fff;
-	cursor: pointer;
-	border-radius: 5px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: all 0.3s;
-
-	&:hover {
-		transition: all 0.3s;
-		background-color: ${(props) => props.theme.color.blue[60]};
-	}
 `;
 
 const CloseIcon = styled.img`

@@ -72,14 +72,16 @@ export default function RenderTemplate({
 	}, [blocks]);
 
 	return (
-		<TemplateRoot>
+		<>
 			{imgUrl && pageFrom && <Img src={imgUrl} alt="圖片" />}
-			<FirstRender setBlocks={setBlocks} />
-			<SecondRender
-				pageRef={pageRef}
-				blocks={blocks}
-				pageFrom={pageFrom}
-			/>
-		</TemplateRoot>
+			<TemplateRoot>
+				<FirstRender setBlocks={setBlocks} />
+				<SecondRender
+					pageRef={pageRef}
+					blocks={blocks}
+					pageFrom={pageFrom}
+				/>
+			</TemplateRoot>
+		</>
 	);
 }

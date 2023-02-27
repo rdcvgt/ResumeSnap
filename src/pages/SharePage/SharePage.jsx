@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams, useNavigate } from "react-router-dom";
 
 import London from "../../components/template/London";
 import Sydney from "../../components/template/Sydney";
@@ -11,6 +11,7 @@ import { addResumeData } from "../../redux/reducers/formDataReducer";
 const Root = styled.div`
 	width: 100%;
 	height: auto;
+	overflow: hidden;
 	background-color: ${(props) => props.theme.color.neutral[10]};
 `;
 
@@ -18,7 +19,6 @@ const Body = styled.div`
 	display: flex;
 	height: auto;
 	justify-content: center;
-	padding: 80px;
 `;
 
 const templates = {
@@ -26,7 +26,7 @@ const templates = {
 	Sydney,
 };
 
-export default function EditPage() {
+export default function SharePage() {
 	const { resumeId } = useParams();
 	const dispatch = useDispatch();
 	const navigate = useNavigate();

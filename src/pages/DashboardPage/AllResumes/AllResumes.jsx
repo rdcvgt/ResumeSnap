@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG,
+} from "../../../utils/style/breakpotins";
 
 const Resume = styled.div`
 	width: 50%;
@@ -8,6 +13,15 @@ const Resume = styled.div`
 	display: flex;
 	align-items: center;
 	margin-bottom: 50px;
+
+	${MEDIA_QUERY_LG} {
+		width: 100%;
+	}
+
+	${MEDIA_QUERY_MD} {
+		align-items: flex-start;
+		height: auto;
+	}
 `;
 const ResumePreview = styled.div`
 	width: 190px;
@@ -18,6 +32,11 @@ const ResumePreview = styled.div`
 	cursor: pointer;
 	overflow: hidden;
 	transition: all 0.3s;
+
+	${MEDIA_QUERY_MD} {
+		width: 125px;
+		height: 176.7px;
+	}
 `;
 
 const PreviewImg = styled.img`

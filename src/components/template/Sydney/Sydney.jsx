@@ -112,22 +112,24 @@ export default function RenderTemplate({
 	}, [leftAreaBlocks, rightAreaBlocks]);
 
 	return (
-		<TemplateRoot>
+		<>
 			{imgUrl && pageFrom === "edit" && <Img src={imgUrl} alt="圖片" />}
-			<SecondRender
-				pageFrom={pageFrom}
-				pageRef={pageRef}
-				leftAreaBlocks={leftAreaBlocks}
-				rightAreaBlocks={rightAreaBlocks}
-			/>
-			<FirstRender
-				setLeftAreaBlocks={setLeftAreaBlocks}
-				setRightAreaBlocks={setRightAreaBlocks}
-				croppedUserPhotoUrl={croppedUserPhotoUrl}
-			/>
-			<Hide>
-				<canvas ref={canvasRef}></canvas>
-			</Hide>
-		</TemplateRoot>
+			<TemplateRoot>
+				<SecondRender
+					pageFrom={pageFrom}
+					pageRef={pageRef}
+					leftAreaBlocks={leftAreaBlocks}
+					rightAreaBlocks={rightAreaBlocks}
+				/>
+				<FirstRender
+					setLeftAreaBlocks={setLeftAreaBlocks}
+					setRightAreaBlocks={setRightAreaBlocks}
+					croppedUserPhotoUrl={croppedUserPhotoUrl}
+				/>
+				<Hide>
+					<canvas ref={canvasRef}></canvas>
+				</Hide>
+			</TemplateRoot>
+		</>
 	);
 }
