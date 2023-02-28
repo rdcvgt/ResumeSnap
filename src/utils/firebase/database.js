@@ -17,9 +17,10 @@ export function createNewUserInfo(userInfoRef, userInfo) {
 export async function getCurrentUserInfo(userInfoRef) {
 	let userInfo = null;
 	const infoRef = await getDocs(userInfoRef);
-	infoRef.then((data) => {
-		console.log(data);
+	infoRef.forEach((data) => {
+		userInfo = data.data();
 	});
+	return userInfo;
 }
 
 export async function createFirstResume(resumesRef, resumeConfig) {

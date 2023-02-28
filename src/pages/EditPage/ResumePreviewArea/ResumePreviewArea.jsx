@@ -96,12 +96,12 @@ const PrePage = styled.div`
 	width: 25px;
 	height: 25px;
 	border-radius: 30px;
-	cursor: ${(props) => (props.currentPage === 1 ? "default" : "pointer")};
-	opacity: ${(props) => (props.currentPage === 1 ? "0.3" : "1")};
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	transition: background-color 0.3s;
+	opacity: ${(props) => (props.currentPage === 1 ? "0.3" : "1")};
+	cursor: ${(props) => (props.currentPage === 1 ? "default" : "pointer")};
 	&:hover {
 		background-color: ${(props) =>
 			props.currentPage === 1 ? "none" : props.theme.color.neutral[70]};

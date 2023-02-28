@@ -39,6 +39,7 @@ export const HidePagesStyle = css`
 export const PageRootStyle = css`
 	width: 210mm;
 	height: 297mm;
+	scale: 1;
 	margin-bottom: 50px;
 	background-color: ${(props) =>
 		props.pageFrom === "share" ? "#fff" : "none"};
@@ -47,7 +48,10 @@ export const PageRootStyle = css`
 			? "5px 5px 20px rgba(43, 49, 108, 0.2);"
 			: "none"};
 
-	@media screen and (max-width: 359px) {
+	${(props) =>
+		props.pageFrom === "share" &&
+		`
+		@media screen and (max-width: 359px) {
 		scale: 0.3;
 		margin-top: -300px;
 
@@ -105,6 +109,8 @@ export const PageRootStyle = css`
 		margin-bottom: 300px;
 		margin-top: 250px;
 	}
+		
+	`};
 `;
 
 export const ResumeMainContainerStyle = css`

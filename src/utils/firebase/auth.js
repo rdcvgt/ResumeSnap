@@ -6,8 +6,46 @@ import {
 	getRedirectResult,
 } from "firebase/auth";
 import { auth, provider } from "./firebaseInit";
+import { db } from "../../utils/firebase/firebaseInit";
+import { collection, doc } from "firebase/firestore";
+import { getCurrentUserInfo } from "../firebase/database";
 
-export function useEmailSignUp(email, password, setUid, setError) {
+export function useEmailValidation(email, setEmailError) {
+	const empty = "This field is required";
+	const emailRegexError = "Invalid email";
+	const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+	if (!email) {
+		setEmailError(empty);
+		return false;
+	}
+
+	if (!emailRegex.test(email)) {
+		setEmailError(emailRegexError);
+		return false;
+	}
+
+	return true;
+}
+
+export function usePasswordValidation(password, setPasswordError) {
+	const empty = "This field is required";
+	const passwordLengthError = "At least 6 characters";
+
+	if (!password) {
+		setPasswordError(empty);
+		return false;
+	}
+
+	if (password.length < 6) {
+		setPasswordError(passwordLengthError);
+		return false;
+	}
+
+	return true;
+}
+
+export function useEmailSignUp(email, password, setUid, setError, setIsLogin) {
 	createUserWithEmailAndPassword(auth, email, password)
 		.then((userCredential) => {
 			setUid(userCredential.user.uid);
@@ -18,18 +56,36 @@ export function useEmailSignUp(email, password, setUid, setError) {
 		});
 }
 
-export function useEmailSignIn(email, password, setUid, setError) {
+export function useEmailSignIn(
+	email,
+	password,
+	setUid,
+	setUserInfo,
+	setError,
+	setIsLogin
+) {
 	signInWithEmailAndPassword(auth, email, password)
 		.then((userCredential) => {
-			setUid(userCredential.user.uid);
+			setIsLogin(true);
+			const userId = userCredential.user.uid;
+			setUid(userId);
+
+			//從資料庫獲取使用者資訊
+			const userRef = doc(db, "users", userId);
+			const userInfoRef = collection(userRef, "userInfo");
+			const userInfoPromise = getCurrentUserInfo(userInfoRef);
+			userInfoPromise.then((userInfo) => {
+				setUserInfo(userInfo);
+			});
 		})
 		.catch((error) => {
-			const errorMessage = error.message;
+			const errorMessage = error.message.split(":")[1];
 			setError(errorMessage);
 		});
 }
 
-export function useGoogle(setUid, setUserInfo, setError) {
+export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
+	setIsLogin(true);
 	signInWithPopup(auth, provider)
 		.then((result) => {
 			// The signed-in user info.

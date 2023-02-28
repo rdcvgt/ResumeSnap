@@ -45,7 +45,7 @@ const LoadingText = styled.div`
 `;
 
 ConfirmCard.propTypes = {
-	text: PropTypes.object,
+	text: PropTypes.string,
 	setIsClickDelete: PropTypes.func,
 	handleDeleteButtonClick: PropTypes.func,
 };
