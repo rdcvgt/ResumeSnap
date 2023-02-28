@@ -148,6 +148,10 @@ export const theme = {
 			font-size: 33px;
 			font-weight: 700;
 		`,
+		signUpPageTitle: css`
+			font-size: 40px;
+			font-weight: 700;
+		`,
 	},
 
 	input: {

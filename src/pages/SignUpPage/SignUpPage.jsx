@@ -1,43 +1,50 @@
-import React, { useRef, useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { collection, doc } from "firebase/firestore";
+import styled from "styled-components";
 import { useDispatch } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
+import { collection, doc } from "firebase/firestore";
 
-import { db } from "../../utils/firebase/firebaseInit";
-import { useEmailSignUp, useGoogle } from "../../utils/firebase/auth";
-import newResumeStructure from "../../utils/misc/newResumeStructure";
-import { addUserInfo } from "../../redux/reducers/userInfoReducer";
+import UserInfoArea from "./UserInfoArea";
+import ThirdPartyArea from "./ThirdPartyArea";
+import RegistrationArea from "./RegistrationArea";
+
+import { db, auth } from "../../utils/firebase/firebaseInit";
 import { createFirstResume } from "../../utils/firebase/database";
+import { useEmailSignUp, useGoogle } from "../../utils/firebase/auth";
+
+import LoadingCard from "../../components/cards/LoadingCard";
+import { addUserInfo } from "../../redux/reducers/userInfoReducer";
+import newResumeStructure from "../../utils/misc/newResumeStructure";
+import NavForEntry from "../../components/navbar/NavForEntry";
 
 const Root = styled.div``;
 
 export default function HomePage() {
-	const [error, setError] = useState(null);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [lastName, setLastName] = useState("");
+
 	const [uid, setUid] = useState(null);
 	const [resumeId, setResumeId] = useState(null);
 	const [userInfo, setUserInfo] = useState(null);
-
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
-	const emailRef = useRef();
-	const passwordRef = useRef();
-	const firstNameRef = useRef();
-	const lastNameRef = useRef();
-
-	const HandleButtonClick = () => {
-		const email = emailRef.current.value;
-		const password = passwordRef.current.value;
-		const firstName = firstNameRef.current.value;
-		const lastName = lastNameRef.current.value;
-		useEmailSignUp(email, password, setUid, setError);
-
-		const newUserInfo = { email, firstName, lastName };
-		setUserInfo(newUserInfo);
-	};
+	const [isLogin, setIsLogin] = useState(false);
+	const [error, setError] = useState(null);
+	const [isClickSkip, setIsClickSkip] = useState(false);
+	const [isClickContinue, setIsClickContinue] = useState(false);
 
 	const HandleGoogleButtonClick = () => {
-		useGoogle(setUid, setUserInfo, setError);
+		useGoogle(setUid, setUserInfo, setError, setIsLogin);
+	};
+
+	const HandleLogin = () => {
+		useEmailSignUp(email, password, setUid, setError, setIsLogin);
+		const newUserInfo = { email, firstName, lastName };
+		setUserInfo(newUserInfo);
 	};
 
 	useEffect(() => {
@@ -60,18 +67,51 @@ export default function HomePage() {
 		}
 	}, [resumeId]);
 
+	// useEffect(() => {
+	// 	onAuthStateChanged(auth, (user) => {
+	// 		if (user) {
+	// 			navigate("/dashboard");
+	// 		}
+	// 	});
+	// }, [dispatch, navigate]);
+
 	return (
 		<Root>
-			firstName
-			<input type="text" name="firstName" ref={firstNameRef}></input>
-			lastName
-			<input type="text" name="lastName" ref={lastNameRef}></input>
-			email<input type="text" name="email" ref={emailRef}></input>
-			password
-			<input type="text" name="password" ref={passwordRef}></input>
-			<button onClick={HandleButtonClick}>送出</button>
-			<button onClick={HandleGoogleButtonClick}>google 登入</button>
-			{error && <div>{error}</div>}
+			<NavForEntry />
+			{!isLogin && (
+				<>
+					{!isClickSkip && (
+						<ThirdPartyArea
+							errorState={{ error, setError }}
+							setIsClickSkip={setIsClickSkip}
+							HandleGoogleButtonClick={HandleGoogleButtonClick}
+						/>
+					)}
+
+					{isClickSkip && !isClickContinue && (
+						<UserInfoArea
+							setError={setError}
+							setIsClickSkip={setIsClickSkip}
+							setIsClickContinue={setIsClickContinue}
+							firstNameState={{ firstName, setFirstName }}
+							lastNameState={{ lastName, setLastName }}
+						/>
+					)}
+
+					{isClickSkip && isClickContinue && (
+						<RegistrationArea
+							errorState={{ error, setError }}
+							emailState={{ email, setEmail }}
+							passwordState={{ password, setPassword }}
+							HandleLogin={HandleLogin}
+							setIsClickContinue={setIsClickContinue}
+						/>
+					)}
+				</>
+			)}
+			{isLogin && (
+				<LoadingCard text="Hang tight, we are redirecting you to another page" />
+			)}
 		</Root>
 	);
 }

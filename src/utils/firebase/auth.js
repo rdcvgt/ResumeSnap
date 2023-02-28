@@ -10,6 +10,24 @@ import { db } from "../../utils/firebase/firebaseInit";
 import { collection, doc } from "firebase/firestore";
 import { getCurrentUserInfo } from "../firebase/database";
 
+export function useFirstNameValidation(firstName, firstNameError) {
+	const empty = "This field is required";
+	if (!firstName) {
+		firstNameError(empty);
+		return false;
+	}
+	return true;
+}
+
+export function useLastNameValidation(lastName, setLastName) {
+	const empty = "This field is required";
+	if (!lastName) {
+		setLastName(empty);
+		return false;
+	}
+	return true;
+}
+
 export function useEmailValidation(email, setEmailError) {
 	const empty = "This field is required";
 	const emailRegexError = "Invalid email";
@@ -19,7 +37,6 @@ export function useEmailValidation(email, setEmailError) {
 		setEmailError(empty);
 		return false;
 	}
-
 	if (!emailRegex.test(email)) {
 		setEmailError(emailRegexError);
 		return false;
@@ -36,7 +53,6 @@ export function usePasswordValidation(password, setPasswordError) {
 		setPasswordError(empty);
 		return false;
 	}
-
 	if (password.length < 6) {
 		setPasswordError(passwordLengthError);
 		return false;
@@ -46,13 +62,15 @@ export function usePasswordValidation(password, setPasswordError) {
 }
 
 export function useEmailSignUp(email, password, setUid, setError, setIsLogin) {
+	setIsLogin(true);
 	createUserWithEmailAndPassword(auth, email, password)
 		.then((userCredential) => {
 			setUid(userCredential.user.uid);
 		})
 		.catch((error) => {
-			const errorMessage = error.message;
+			const errorMessage = error.message.split(":")[1];
 			setError(errorMessage);
+			setIsLogin(false);
 		});
 }
 
@@ -64,9 +82,9 @@ export function useEmailSignIn(
 	setError,
 	setIsLogin
 ) {
+	setIsLogin(true);
 	signInWithEmailAndPassword(auth, email, password)
 		.then((userCredential) => {
-			setIsLogin(true);
 			const userId = userCredential.user.uid;
 			setUid(userId);
 
@@ -81,6 +99,7 @@ export function useEmailSignIn(
 		.catch((error) => {
 			const errorMessage = error.message.split(":")[1];
 			setError(errorMessage);
+			setIsLogin(false);
 		});
 }
 
@@ -101,7 +120,8 @@ export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
 			setUid(uid);
 		})
 		.catch((error) => {
-			const errorMessage = error.message;
+			const errorMessage = error.message.split(":")[1];
 			setError(errorMessage);
+			setIsLogin(false);
 		});
 }

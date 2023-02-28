@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 
 import EmailInputArea from "./EmailInputArea";
-import { auth, db } from "../../utils/firebase/firebaseInit";
+import { auth } from "../../utils/firebase/firebaseInit";
 
 import { useGoogle } from "../../utils/firebase/auth";
 import { addUserInfo } from "../../redux/reducers/userInfoReducer";
@@ -15,6 +15,7 @@ import {
 	SecondaryButtonStyle,
 } from "../../components/buttons/button.style";
 import LoadingCard from "../../components/cards/LoadingCard";
+import NavForEntry from "../../components/navbar/NavForEntry";
 
 const Root = styled.div`
 	width: 100%;
@@ -90,16 +91,17 @@ export default function SignInPage() {
 		}
 	}, [uid, userInfo, dispatch, navigate]);
 
-	// useEffect(() => {
-	// 	onAuthStateChanged(auth, (user) => {
-	// 		if (user) {
-	// 			navigate("/dashboard");
-	// 		}
-	// 	});
-	// }, [dispatch, navigate]);
+	useEffect(() => {
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				navigate("/dashboard");
+			}
+		});
+	}, [dispatch, navigate]);
 
 	return (
 		<Root>
+			<NavForEntry />
 			{!isLogin && (
 				<LoginArea>
 					<LoginTitle>Log In</LoginTitle>

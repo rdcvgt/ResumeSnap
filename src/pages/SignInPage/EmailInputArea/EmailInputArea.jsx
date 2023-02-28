@@ -26,21 +26,11 @@ const InputTitle = styled.div`
 	${(props) => props.theme.input.title};
 `;
 
-const EmailInput = styled.input`
+const Input = styled.input`
 	${(props) => props.theme.input.shortInput};
 
 	${(props) =>
-		props.emailError &&
-		`
-		border: 1px solid #fb4458;
-	`};
-`;
-
-const PasswordInput = styled.input`
-	${(props) => props.theme.input.shortInput};
-
-	${(props) =>
-		props.passwordError &&
+		(props.emailError || props.passwordError) &&
 		`
 		border: 1px solid #fb4458;
 	`};
@@ -140,7 +130,7 @@ export default function EmailInputArea({
 		<Root>
 			<InputContainer>
 				<InputTitle emailError={emailError}>Email</InputTitle>
-				<EmailInput
+				<Input
 					emailError={emailError}
 					onChange={() => {
 						setEmailError(null);
@@ -154,7 +144,7 @@ export default function EmailInputArea({
 			</InputContainer>
 			<InputContainer>
 				<InputTitle passwordError={passwordError}>Password</InputTitle>
-				<PasswordInput
+				<Input
 					passwordError={passwordError}
 					onChange={() => {
 						setPasswordError(null);
