@@ -2,9 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { updateInputData } from "../../../../redux/reducers/formDataReducer";
+import { updateUserPhoto } from "../../../../redux/reducers/userInfoReducer";
 import {
 	uploadUserPhoto,
 	deleteUserPhoto,
@@ -85,6 +86,8 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 	const { resumeId } = useParams();
 	const dispatch = useDispatch();
 	const uploadInputRef = useRef(null);
+	const photoResumeId = useSelector((state) => state.userInfo.photoResumeId);
+	const [style, setStyle] = useState({});
 
 	const handleUploadButtonClick = () => {
 		uploadInputRef.current.click();
@@ -92,6 +95,7 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 
 	const handleDeletePhotoButtonClick = () => {
 		const deletePhotoResultPromise = deleteUserPhoto(photoName);
+
 		deletePhotoResultPromise.then((result) => {
 			if (result) {
 				dispatch(
@@ -102,15 +106,25 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 					})
 				);
 			}
+			if (photoUrl && photoResumeId === resumeId) {
+				dispatch(
+					updateUserPhoto({
+						photoUrl: null,
+						photoResumeId: null,
+					})
+				);
+			}
 		});
 	};
 
 	const handleUploadPhoto = (e) => {
+		//重新命名檔案爲 resumeId
 		const file = e.target.files[0];
 		const fileType = file.name.split(".")[1];
 		const newFileName = resumeId + "." + fileType;
 		const newFile = new File([file], newFileName, { type: file.type });
 
+		//上傳檔案到資料庫並更新 formData
 		const photoUrlPromise = uploadUserPhoto(newFile, resumeId);
 		photoUrlPromise.then((url) => {
 			dispatch(
@@ -118,6 +132,12 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 					blockName: "PersonalDetails",
 					inputTitle: "photo",
 					inputValue: { name: newFileName, url },
+				})
+			);
+			dispatch(
+				updateUserPhoto({
+					photoUrl: url,
+					photoResumeId: resumeId,
 				})
 			);
 		});
@@ -139,8 +159,6 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 		img.src = photoUrl;
 	}, [photoUrl]);
 
-	const [style, setStyle] = useState({});
-
 	return (
 		<>
 			<UploadPhoto>
@@ -150,8 +168,8 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 				</PhotoPreviewArea>
 				<PhotoButtonArea>
 					<PhotoButton onClick={handleUploadButtonClick}>
-						<ButtonIcon src="/images/icon/edit.png" />
-						<EditButtonText>Edit photo</EditButtonText>
+						<ButtonIcon src="/images/icon/upload.png" />
+						<EditButtonText>Upload photo</EditButtonText>
 						<UploadInput
 							type="file"
 							onChange={handleUploadPhoto}

@@ -115,7 +115,7 @@ export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
 			const firstName = userNameList[0];
 			const lastName = userNameList[1];
 
-			const newUserInfo = { email, firstName, lastName };
+			const newUserInfo = { email, firstName, lastName, photo: null };
 			setUserInfo(newUserInfo);
 			setUid(uid);
 		})

@@ -41,9 +41,9 @@ export default function HomePage() {
 		useGoogle(setUid, setUserInfo, setError, setIsLogin);
 	};
 
-	const HandleLogin = () => {
+	const HandleEmailSignUp = () => {
 		useEmailSignUp(email, password, setUid, setError, setIsLogin);
-		const newUserInfo = { email, firstName, lastName };
+		const newUserInfo = { email, firstName, lastName, photo: null };
 		setUserInfo(newUserInfo);
 	};
 
@@ -67,13 +67,13 @@ export default function HomePage() {
 		}
 	}, [resumeId]);
 
-	// useEffect(() => {
-	// 	onAuthStateChanged(auth, (user) => {
-	// 		if (user) {
-	// 			navigate("/dashboard");
-	// 		}
-	// 	});
-	// }, [dispatch, navigate]);
+	useEffect(() => {
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				navigate("/dashboard");
+			}
+		});
+	}, [dispatch, navigate]);
 
 	return (
 		<Root>
@@ -103,7 +103,7 @@ export default function HomePage() {
 							errorState={{ error, setError }}
 							emailState={{ email, setEmail }}
 							passwordState={{ password, setPassword }}
-							HandleLogin={HandleLogin}
+							HandleEmailSignUp={HandleEmailSignUp}
 							setIsClickContinue={setIsClickContinue}
 						/>
 					)}

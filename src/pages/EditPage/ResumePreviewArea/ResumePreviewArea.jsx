@@ -7,6 +7,8 @@ import London from "../../../components/template/London";
 import Sydney from "../../../components/template/Sydney";
 import OutputButtonArea from "../../../components/buttons/OutputButtonArea";
 
+import UserMenu from "../../../components/navbar/UserMenu";
+
 const ResumePreviewBackground = styled.div`
 	position: fixed;
 	top: 0px;
@@ -33,6 +35,15 @@ const ResumePreviewBackground = styled.div`
 		background-color: rgba(0, 0, 0, 0.3);
 		border-radius: 10px;
 	}
+`;
+
+const NavArea = styled.div`
+	position: fixed;
+	top: 0;
+	right: 0;
+	padding-top: 22px;
+	padding-right: 32px;
+	z-index: 10;
 `;
 
 const ResumePreviewInfo = styled.div`
@@ -295,6 +306,11 @@ export default function ResumePreviewArea({
 		<>
 			<TempStatusContext.Provider value={isChoosingTemp}>
 				<ResumePreviewBackground isChoosingTemp={isChoosingTemp}>
+					{!isChoosingTemp && (
+						<NavArea>
+							<UserMenu pageFrom="edit" />
+						</NavArea>
+					)}
 					<ResumePreviewInfo isChoosingTemp={isChoosingTemp}>
 						<ResumePreviewTopFunc
 							handleNextPageClick={handleNextPageClick}

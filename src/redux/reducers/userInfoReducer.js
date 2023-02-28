@@ -13,6 +13,8 @@ export const userInfoSlice = createSlice({
 		email: null,
 		firstName: null,
 		lastName: null,
+		photo: null,
+		photoResumeId: null,
 	},
 	reducers: {
 		updateUserInfo: (state, action) => {
@@ -22,10 +24,15 @@ export const userInfoSlice = createSlice({
 			state.firstName = firstName;
 			state.lastName = lastName;
 		},
+		updateUserPhoto: (state, action) => {
+			const { photoUrl, photoResumeId } = action.payload;
+			state.photo = photoUrl;
+			state.photoResumeId = photoResumeId;
+		},
 	},
 });
 
-export const { updateUserInfo } = userInfoSlice.actions;
+export const { updateUserInfo, updateUserPhoto } = userInfoSlice.actions;
 export default userInfoSlice.reducer;
 
 export const addUserInfo = (uid, userInfo) => (dispatch) => {

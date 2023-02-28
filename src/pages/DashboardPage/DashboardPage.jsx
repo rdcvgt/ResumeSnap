@@ -18,6 +18,7 @@ import { getUserAllResumes, deleteResume } from "../../utils/firebase/database";
 import { MEDIA_QUERY_LG } from "../../utils/style/breakpotins";
 import newResumeStructure from "../../utils/misc/newResumeStructure";
 
+import NavForDashboard from "../../components/navbar/NavForDashboard";
 import ConfirmCard from "../../components/cards/ConfirmCard";
 import ShareLinkCard from "../../components/cards/ShareLinkCard";
 import { DefaultButtonStyle } from "../../components/buttons/button.style";
@@ -156,6 +157,7 @@ export default function DashboardPage() {
 
 	return (
 		<Root>
+			<NavForDashboard />
 			<ResumesArea>
 				<TitleBlock>
 					<Title>Resumes</Title>

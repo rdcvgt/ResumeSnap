@@ -62,7 +62,7 @@ export const PageRootStyle = css`
 
 	@media screen and (min-width: 360px) {
 		scale: 0.4;
-		margin-top: -300px;
+		margin-top: -250px;
 
 		&:nth-child(2) {
 			margin-top: -700px;

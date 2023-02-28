@@ -69,7 +69,7 @@ RegistrationArea.propTypes = {
 	errorState: PropTypes.object,
 	emailState: PropTypes.object,
 	passwordState: PropTypes.object,
-	HandleLogin: PropTypes.func,
+	HandleEmailSignUp: PropTypes.func,
 	setIsClickContinue: PropTypes.func,
 };
 
@@ -77,7 +77,7 @@ export default function RegistrationArea({
 	errorState,
 	emailState,
 	passwordState,
-	HandleLogin,
+	HandleEmailSignUp,
 	setIsClickContinue,
 }) {
 	const { error, setError } = errorState;
@@ -95,7 +95,7 @@ export default function RegistrationArea({
 		);
 
 		if (!emailResult || !passwordResult) return;
-		HandleLogin();
+		HandleEmailSignUp();
 	};
 
 	return (

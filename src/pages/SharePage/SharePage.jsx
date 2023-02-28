@@ -21,6 +21,13 @@ const Body = styled.div`
 	justify-content: center;
 `;
 
+const Logo = styled.img`
+	position: absolute;
+	top: 30px;
+	left: 50%;
+	transform: translate(-50%, 0);
+`;
+
 const templates = {
 	London,
 	Sydney,
@@ -53,6 +60,7 @@ export default function SharePage() {
 	return (
 		<Root>
 			<Body>
+				<Logo src="/images/logo/logo.png" />
 				<Template pageFrom="share" />
 			</Body>
 		</Root>
