@@ -8,6 +8,11 @@ import {
 } from "../../../redux/reducers/formDataReducer";
 import { templateOrder } from "../../../utils/misc/templatePreviewOrder";
 
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG,
+} from "../../../utils/style/breakpotins";
+
 const ResumeTempBackground = styled.div`
 	width: 15%;
 	height: 100%;
@@ -31,6 +36,10 @@ const ResumeTempBackground = styled.div`
 	&::-webkit-scrollbar-thumb {
 		background-color: rgba(0, 0, 0, 0.3);
 		border-radius: 10px;
+	}
+
+	${MEDIA_QUERY_LG} {
+		width: 20%;
 	}
 `;
 

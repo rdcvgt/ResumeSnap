@@ -154,15 +154,19 @@ export default function UserMenu({ pageFrom }) {
 	};
 
 	useEffect(() => {
-		if (UserRef.current === null) {
-			return;
-		}
-		window.addEventListener("click", (e) => {
+		const handleUserClick = (e) => {
 			if (e.target === null) return;
+			if (!UserRef.current) return;
 			if (!UserRef.current.contains(e.target)) {
 				setIsClickUser(false);
 			}
-		});
+		};
+		window.addEventListener("click", handleUserClick);
+
+		//刪除註冊監聽器
+		return () => {
+			window.removeEventListener("click", handleUserClick);
+		};
 	}, [UserRef]);
 
 	return (

@@ -4,8 +4,21 @@ import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 
 import UploadPhotoArea from "./UploadPhotoArea";
-import { updateInputData } from "../../../redux/reducers/formDataReducer";
 import TitleBlock from "../utils/TitleBlock";
+import { updateInputData } from "../../../redux/reducers/formDataReducer";
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG,
+} from "../../../utils/style/breakpotins";
+
+import {
+	BlockRowStyle,
+	InputTitleStyle,
+	ShortInputStyle,
+	MoreInputStyle,
+	LeftColStyle,
+	RightColStyle,
+} from "../utils/form.style";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -14,39 +27,31 @@ const BlockContainer = styled.div`
 `;
 
 const BlockRow = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 30px;
+	${BlockRowStyle}
 `;
 
 const LeftCol = styled.div`
-	margin-right: 30px;
-	width: 50%;
+	/* margin-right: 30px;
+	width: 50%; */
+	${LeftColStyle}
 `;
 
 const RightCol = styled.div`
-	width: 50%;
+	/* width: 50%; */
+	${RightColStyle}
 `;
 
 const InputTitle = styled.div`
-	${(props) => props.theme.input.title};
+	${InputTitleStyle}
 `;
 
 const ShortInput = styled.input`
-	${(props) => props.theme.input.shortInput};
+	${ShortInputStyle};
 `;
 
 const MoreInput = styled.div`
-	overflow: hidden;
-	max-height: 0;
-	opacity: 0;
-	transition: max-height 0.6s, opacity 0.6s;
-	${(props) =>
-		props.isClick &&
-		`
-	max-height: 600px; overflow: visible; opacity: 1;
-	`}
+	${MoreInputStyle}
+	padding: 0;
 `;
 
 const AdditionalButton = styled.div`

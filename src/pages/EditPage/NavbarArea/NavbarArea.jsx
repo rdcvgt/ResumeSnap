@@ -171,6 +171,7 @@ export default function NavbarArea({
 			<OutputButtonArea
 				handleDownloadPdf={handleDownloadPdf}
 				isDownloading={isDownloading}
+				isChoosingTemp={true}
 			/>
 		</NavBar>
 	);

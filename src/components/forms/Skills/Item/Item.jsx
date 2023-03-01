@@ -8,244 +8,112 @@ import {
 	updateItemData,
 } from "../../../../redux/reducers/formDataReducer";
 
+import {
+	RootStyle,
+	DragBlockStyle,
+	DragIconStyle,
+	DeleteBlockStyle,
+	DeleteIconStyle,
+	ItemDescriptionStyle,
+	ItemInfoStyle,
+	ItemTitleStyle,
+	ItemDurationStyle,
+	ItemArrowIconStyle,
+	BlockRowStyle,
+	LeftColStyle,
+	RightColStyle,
+	InputTitleStyle,
+	ShortInputStyle,
+	MoreInputStyle,
+	MenuStyle,
+	DefaultTextStyle,
+	ArrowIconStyle,
+	OptionsStyle,
+	OptionStyle,
+} from "../../utils/form.style";
+
 const Root = styled.div`
-	border-radius: 5px;
-	border: 1px solid ${(props) => props.theme.color.neutral[10]};
-	position: relative;
-	margin-bottom: 15px;
-	background-color: #fff;
+	${RootStyle}
 `;
 
 const DragBlock = styled.div`
-	height: 20px;
-	width: 30px;
-	position: absolute;
-	top: 23px;
-	left: -30px;
-	display: flex;
-	align-items: center;
-	opacity: 0;
-	transition: filter 0.3s, opacity 0.3s;
-
-	${(props) =>
-		props.isHover &&
-		`
-		filter: brightness(1.4);
-		opacity: 1;
-		transition: filter 0.3s, opacity 0.3s;
-		`}
-
-	&:hover {
-		filter: brightness(1);
-		opacity: 1;
-		transition: filter 0.3s, opacity 0.3s;
-	}
+	${DragBlockStyle}
 `;
 
 const DragIcon = styled.img`
-	height: 100%;
+	${DragIconStyle}
 `;
 
 const DeleteBlock = styled.div`
-	height: 20px;
-	width: 30px;
-	position: absolute;
-	top: 23px;
-	right: -30px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	opacity: 0;
-	transition: filter 0.3s, opacity 0.3s;
-
-	${(props) =>
-		props.isHover &&
-		`
-		filter: brightness(1.4);
-		opacity: 1;
-		transition: filter 0.3s, opacity 0.3s;
-		`}
-
-	&:hover {
-		filter: brightness(1);
-		opacity: 1;
-		transition: filter 0.3s, opacity 0.3s;
-	}
+	${DeleteBlockStyle}
 `;
 
 const DeleteIcon = styled.img`
-	height: 100%;
+	${DeleteIconStyle}
 `;
 
 const ItemDescription = styled.div`
-	width: 100%;
-	height: 65px;
-	cursor: pointer;
-	padding: 20px;
-	display: flex;
-	align-items: center;
-	overflow: hidden;
+	${ItemDescriptionStyle}
 `;
 
 const ItemInfo = styled.div`
-	width: 90%;
+	${ItemInfoStyle}
 `;
 
 const ItemTitle = styled.div`
-	${(props) => props.theme.font.itemBold};
-	width: 100%;
-	margin-bottom: 5px;
-	color: ${(props) => props.theme.color.neutral[90]};
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	transition: color 0.3s;
-	height: 18px;
-
-	${(props) =>
-		props.isHover &&
-		`
-		color: #1a91f0;
-		`}
+	${ItemTitleStyle}
 `;
 
 const ItemDuration = styled.div`
-	${(props) => props.theme.input.title};
-	width: 100%;
-	margin: 0;
+	${ItemDurationStyle}
 `;
 
 const ItemArrowIcon = styled.img`
-	width: 15px;
-	position: absolute;
-	top: 25px;
-	right: 20px;
+	${ItemArrowIconStyle}
 `;
 
 const BlockRow = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 30px;
+	${BlockRowStyle}
 `;
 
 const LeftCol = styled.div`
-	width: 50%;
-	padding-right: 15px;
+	${LeftColStyle}
 `;
 
 const RightCol = styled.div`
-	padding-left: 15px;
-	width: 50%;
+	${RightColStyle}
 `;
 
 const InputTitle = styled.div`
-	${(props) => props.theme.input.title};
+	${InputTitleStyle}
 `;
 
 const ShortInput = styled.input`
-	${(props) => props.theme.input.shortInput};
+	${ShortInputStyle}
 `;
 
 const MoreInput = styled.div`
-	padding: 0px 20px;
-	overflow: hidden;
-	max-height: 0;
-	opacity: 0;
-	transition: max-height 0.8s, opacity 0.8s;
-	cursor: default;
-	${(props) =>
-		props.isClick &&
-		`
-	max-height: 600px; overflow: visible; opacity: 1;
-	`}
+	${MoreInputStyle}
 `;
 
 const Menu = styled.div`
-	width: 100%;
-	height: 50px;
-	border-radius: 5px;
-	background-color: ${(props) => props.theme.color.neutral[10]};
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	cursor: pointer;
-	position: relative;
-	user-select: none;
-
-	${(props) =>
-		props.isSelect &&
-		`
-		border-radius: 5px 5px 0px 0px;
-	`}
+	${MenuStyle}
 `;
 
 const DefaultText = styled.div`
-	${(props) => props.theme.font.content};
-	margin: 15px;
-	color: ${(props) => (props.level ? "#000" : props.theme.color.neutral[40])};
+	${DefaultTextStyle}
 `;
 
 const ArrowIcon = styled.img`
-	width: 15px;
-	margin: 15px;
-`;
-
-const fadeIn = keyframes`
-	0% { opacity: 0; }
-	100% { opacity: 1;}
+	${ArrowIconStyle}
 `;
 
 const Options = styled.ul`
-	list-style: none;
-	position: absolute;
-	top: 50px;
-	list-style-type: none;
-	width: 100%;
-	border-radius: 0px 0px 5px 5px;
-	background-color: ${(props) => props.theme.color.neutral[10]};
-	height: 120px;
-	overflow-y: scroll;
-	scrollbar-gutter: stable;
-	box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-	animation: ${fadeIn} 0.3s forwards;
-	z-index: 10;
-
-	&::-webkit-scrollbar {
-		width: 5px;
-	}
-
-	&::-webkit-scrollbar-track {
-		background: none;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background-color: rgba(0, 0, 0, 0.3);
-		border-radius: 10px;
-	}
+	${OptionsStyle}
 `;
 
 const Option = styled.li`
-	${(props) => props.theme.font.content};
-	height: 40px;
-	display: flex;
-	align-items: center;
-	padding: 0px 15px;
-
-	&:before {
-		content: "";
-		display: none;
-	}
-
-	&:first-child {
-		color: ${(props) => props.theme.color.neutral[40]};
-	}
-
-	&:hover {
-		background-color: ${(props) => props.theme.color.blue[20]};
-		color: ${(props) => props.theme.color.blue[50]};
-	}
+	${OptionStyle}
 `;
 
 Item.propTypes = {
@@ -255,7 +123,7 @@ Item.propTypes = {
 };
 
 export default function Item({ item, blockId, dragHandleProps }) {
-	const [isClick, setIsClick] = useState(true);
+	const [isClick, setIsClick] = useState(false);
 	const [isHover, setIsHover] = useState(false);
 	const [isSelect, setIsSelect] = useState(false);
 	const MenuRef = useRef(null);
@@ -296,11 +164,18 @@ export default function Item({ item, blockId, dragHandleProps }) {
 
 	//若使用者點擊 level 選單以外區域則會關閉選單
 	useEffect(() => {
-		window.addEventListener("click", (e) => {
+		const handleMenuClick = (e) => {
+			if (e.target === null) return;
+			if (!MenuRef.current) return;
 			if (!MenuRef.current.contains(e.target)) {
 				setIsSelect(false);
 			}
-		});
+		};
+		window.addEventListener("click", handleMenuClick);
+		//刪除註冊監聽器
+		return () => {
+			window.removeEventListener("click", handleMenuClick);
+		};
 	}, [MenuRef]);
 
 	const skill = item.content.skill || "";
@@ -308,12 +183,6 @@ export default function Item({ item, blockId, dragHandleProps }) {
 
 	return (
 		<Root>
-			<DragBlock isHover={isHover} {...dragHandleProps}>
-				<DragIcon src="/images/icon/drag.png" />
-			</DragBlock>
-			<DeleteBlock isHover={isHover} onClick={handleDeleteIconClick}>
-				<DeleteIcon src="/images/icon/delete.png" />
-			</DeleteBlock>
 			<ItemDescription
 				onClick={() => {
 					setIsClick(!isClick);
@@ -324,6 +193,12 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				onMouseLeave={() => {
 					setIsHover(false);
 				}}>
+				<DragBlock isHover={isHover} {...dragHandleProps}>
+					<DragIcon src="/images/icon/drag.png" />
+				</DragBlock>
+				<DeleteBlock isHover={isHover} onClick={handleDeleteIconClick}>
+					<DeleteIcon src="/images/icon/delete.png" />
+				</DeleteBlock>
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
 						{skill}

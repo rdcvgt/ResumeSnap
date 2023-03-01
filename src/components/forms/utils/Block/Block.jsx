@@ -9,6 +9,7 @@ import {
 	updateItemOrder,
 } from "../../../../redux/reducers/formDataReducer";
 import TitleBlock from "../TitleBlock";
+import Item from "../Item";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -60,7 +61,9 @@ Block.propTypes = {
 	handleDeleteButtonClick: PropTypes.func,
 	hideDeleteIcon: PropTypes.bool,
 	hideDraggableIcon: PropTypes.bool,
-	Item: PropTypes.func,
+	ItemInputLayout: PropTypes.func,
+	ItemMainInfo: PropTypes.func,
+	// Item: PropTypes.func,
 };
 
 export default function Block({
@@ -70,7 +73,9 @@ export default function Block({
 	handleDeleteButtonClick,
 	hideDraggableIcon,
 	hideDeleteIcon,
-	Item,
+	ItemInputLayout,
+	ItemMainInfo,
+	// Item,
 }) {
 	const dispatch = useDispatch();
 	const [blockData] = useSelector((state) =>
@@ -142,6 +147,10 @@ export default function Block({
 													dragHandleProps={{
 														...provided.dragHandleProps,
 													}}
+													ItemInputLayout={
+														ItemInputLayout
+													}
+													ItemMainInfo={ItemMainInfo}
 												/>
 											</div>
 										)}

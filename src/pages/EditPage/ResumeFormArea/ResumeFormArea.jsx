@@ -23,6 +23,11 @@ import Courses from "../../../components/forms/Courses";
 import Skills from "../../../components/forms/Skills";
 import Languages from "../../../components/forms/Languages";
 
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG,
+} from "../../../utils/style/breakpotins";
+
 const ResumeFormBackground = styled.div`
 	width: ${(props) => (props.isChoosingTemp === true ? "0%" : "100%")};
 	height: 100%;
@@ -33,7 +38,17 @@ const ResumeFormBackground = styled.div`
 const ResumeData = styled.div`
 	max-width: 50%;
 	height: 100%;
-	padding: 20px;
+	padding: 40px 20px 60px 20px;
+
+	${MEDIA_QUERY_LG} {
+		max-width: 100%;
+	}
+`;
+
+const TitleArea = styled.div`
+	display: flex;
+	justify-content: center;
+	margin-top: 40px;
 `;
 
 const AddSection = styled.div`
@@ -48,8 +63,14 @@ const SectionRow = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	flex-wrap: wrap;
 	margin-bottom: 30px;
+
+	${MEDIA_QUERY_MD} {
+		margin-bottom: 0;
+	}
 `;
+
 const Section = styled.div`
 	width: 50%;
 	display: flex;
@@ -74,6 +95,11 @@ const Section = styled.div`
 		cursor: default;
 		&:hover {color: #000}
 		`}
+
+	${MEDIA_QUERY_MD} {
+		width: 100%;
+		margin-bottom: 30px;
+	}
 `;
 
 const Icon = styled.img`
@@ -249,7 +275,10 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 		<>
 			<ResumeFormBackground isChoosingTemp={isChoosingTemp}>
 				<ResumeData>
-					<ResumeTitleBlock />
+					<TitleArea>
+						<ResumeTitleBlock />
+					</TitleArea>
+
 					<PersonalDetails blockId={formBlocks[0].id} />
 					<ProfessionalSummary blockId={formBlocks[1].id} />
 					<DragDropContext onDragEnd={handleOnDragEndBlock}>

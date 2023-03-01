@@ -1,11 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Block from "../utils/Block";
-// import Item from "./Item";
-import ItemInputLayout from "./ItemInputLayout";
-import ItemMainInfo from "./ItemMainInfo";
+import Item from "./Item";
 
-WebsiteLink.propTypes = {
+Courses.propTypes = {
 	dragHandleProps: PropTypes.object,
 	blockId: PropTypes.string,
 	handleDeleteButtonClick: PropTypes.func,
@@ -18,7 +16,7 @@ const blockInfo = {
 	addItemText: "link",
 };
 
-export default function WebsiteLink({
+export default function Courses({
 	dragHandleProps,
 	blockId,
 	handleDeleteButtonClick,
@@ -30,9 +28,7 @@ export default function WebsiteLink({
 			dragHandleProps={dragHandleProps}
 			handleDeleteButtonClick={handleDeleteButtonClick}
 			hideDeleteIcon={true}
-			// Item={Item}
-			ItemInputLayout={ItemInputLayout}
-			ItemMainInfo={ItemMainInfo}
+			Item={Item}
 		/>
 	);
 }

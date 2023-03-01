@@ -7,7 +7,10 @@ import London from "../../../components/template/London";
 import Sydney from "../../../components/template/Sydney";
 import OutputButtonArea from "../../../components/buttons/OutputButtonArea";
 
-import UserMenu from "../../../components/navbar/UserMenu";
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG,
+} from "../../../utils/style/breakpotins";
 
 const ResumePreviewBackground = styled.div`
 	position: fixed;
@@ -20,6 +23,7 @@ const ResumePreviewBackground = styled.div`
 			? props.theme.color.neutral[70]
 			: props.theme.color.neutral[60]};
 	padding-top: ${(props) => (props.isChoosingTemp === true ? "60px" : "0")};
+	padding-bottom: 20px;
 	overflow-y: auto;
 	scrollbar-gutter: stable;
 
@@ -35,38 +39,43 @@ const ResumePreviewBackground = styled.div`
 		background-color: rgba(0, 0, 0, 0.3);
 		border-radius: 10px;
 	}
-`;
 
-const NavArea = styled.div`
-	position: fixed;
-	top: 0;
-	right: 0;
-	padding-top: 22px;
-	padding-right: 32px;
-	z-index: 10;
+	${MEDIA_QUERY_LG} {
+		width: ${(props) => (props.isChoosingTemp === true ? "80%" : "0%")};
+	}
 `;
 
 const ResumePreviewInfo = styled.div`
-	width: 80%;
+	width: 100%;
 	height: 100%;
 	margin: 0 auto;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
+
+	@media screen and (min-width: 1440px) {
+		width: 80%;
+	}
 `;
 
 const ResumePreview = styled.div`
 	height: 0;
-	width: ${(props) => (props.isChoosingTemp === true ? "60%" : "80%")};
+	width: ${(props) => (props.isChoosingTemp === true ? "928px" : "80%")};
 	padding-bottom: ${(props) =>
-		props.isChoosingTemp === true
-			? "calc(60% / 0.707)"
-			: "calc(80% / 0.707)"};
+		props.isChoosingTemp === true ? "1312px" : "calc(80% / 0.707)"};
 	background-color: #fff;
 	border-radius: 10px;
 	overflow: hidden;
 	margin: 20px auto;
 	position: relative;
+
+	@media screen and (max-width: 1440px) {
+		width: ${(props) => (props.isChoosingTemp === true ? "80%" : "80%")};
+		padding-bottom: ${(props) =>
+			props.isChoosingTemp === true
+				? "calc(80% / 0.707)"
+				: "calc(80% / 0.707)"};
+	}
 `;
 
 const BottomSpace = styled.div`
@@ -234,6 +243,7 @@ function ResumePreviewTopFunc({
 ResumePreviewBottomFunc.propTypes = {
 	handleDownloadPdf: PropTypes.func,
 	isDownloading: PropTypes.bool,
+	isChoosingTemp: PropTypes.bool,
 	setIsChoosingTemp: PropTypes.func,
 };
 
@@ -256,6 +266,7 @@ function ResumePreviewBottomFunc({
 			<OutputButtonArea
 				handleDownloadPdf={handleDownloadPdf}
 				isDownloading={isDownloading}
+				isChoosingTemp={false}
 			/>
 		</ResumePreviewBottomArea>
 	);
@@ -306,11 +317,6 @@ export default function ResumePreviewArea({
 		<>
 			<TempStatusContext.Provider value={isChoosingTemp}>
 				<ResumePreviewBackground isChoosingTemp={isChoosingTemp}>
-					{!isChoosingTemp && (
-						<NavArea>
-							<UserMenu pageFrom="edit" />
-						</NavArea>
-					)}
 					<ResumePreviewInfo isChoosingTemp={isChoosingTemp}>
 						<ResumePreviewTopFunc
 							handleNextPageClick={handleNextPageClick}

@@ -9,173 +9,102 @@ import {
 } from "../../../../redux/reducers/formDataReducer";
 import InputEditor from "../../utils/Editor";
 
+import {
+	RootStyle,
+	DragBlockStyle,
+	DragIconStyle,
+	DeleteBlockStyle,
+	DeleteIconStyle,
+	ItemDescriptionStyle,
+	ItemInfoStyle,
+	ItemTitleStyle,
+	ItemDurationStyle,
+	ItemArrowIconStyle,
+	BlockRowStyle,
+	LeftColStyle,
+	RightColStyle,
+	DateBlockStyle,
+	DateInputStyle,
+	InputTitleStyle,
+	ShortInputStyle,
+	LongInputBoxStyle,
+	MoreInputStyle,
+} from "../../utils/form.style";
+
 const Root = styled.div`
-	border-radius: 5px;
-	border: 1px solid ${(props) => props.theme.color.neutral[10]};
-	position: relative;
-	margin-bottom: 15px;
-	background-color: #fff;
+	${RootStyle}
 `;
 
 const DragBlock = styled.div`
-	height: 20px;
-	width: 30px;
-	position: absolute;
-	top: 23px;
-	left: -30px;
-	display: flex;
-	align-items: center;
-	opacity: 0;
-	transition: filter 0.3s, opacity 0.3s;
-
-	${(props) =>
-		props.isHover &&
-		`
-		filter: brightness(1.4);
-		opacity: 1;
-		transition: filter 0.3s, opacity 0.3s;
-		`}
-
-	&:hover {
-		filter: brightness(1);
-		opacity: 1;
-		transition: filter 0.3s, opacity 0.3s;
-	}
+	${DragBlockStyle}
 `;
 
 const DragIcon = styled.img`
-	height: 100%;
+	${DragIconStyle}
 `;
 
 const DeleteBlock = styled.div`
-	height: 20px;
-	width: 30px;
-	position: absolute;
-	top: 23px;
-	right: -30px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	opacity: 0;
-	transition: filter 0.3s, opacity 0.3s;
-
-	${(props) =>
-		props.isHover &&
-		`
-		filter: brightness(1.4);
-		opacity: 1;
-		transition: filter 0.3s, opacity 0.3s;
-		`}
-
-	&:hover {
-		filter: brightness(1);
-		opacity: 1;
-		transition: filter 0.3s, opacity 0.3s;
-	}
+	${DeleteBlockStyle}
 `;
 
 const DeleteIcon = styled.img`
-	height: 100%;
+	${DeleteIconStyle}
 `;
 
 const ItemDescription = styled.div`
-	width: 100%;
-	height: 65px;
-	cursor: pointer;
-	padding: 20px;
-	display: flex;
-	align-items: center;
-	overflow: hidden;
+	${ItemDescriptionStyle}
 `;
 
 const ItemInfo = styled.div`
-	width: 90%;
+	${ItemInfoStyle}
 `;
 
 const ItemTitle = styled.div`
-	${(props) => props.theme.font.itemBold};
-	width: 100%;
-	margin-bottom: 5px;
-	color: ${(props) => props.theme.color.neutral[90]};
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	transition: color 0.3s;
-	height: 18px;
-
-	${(props) =>
-		props.isHover &&
-		`
-		color: #1a91f0;
-		`}
+	${ItemTitleStyle}
 `;
 
 const ItemDuration = styled.div`
-	${(props) => props.theme.input.title};
-	width: 100%;
-	margin: 0;
+	${ItemDurationStyle}
 `;
 
 const ItemArrowIcon = styled.img`
-	width: 15px;
-	position: absolute;
-	top: 25px;
-	right: 20px;
+	${ItemArrowIconStyle}
 `;
 
 const BlockRow = styled.div`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 30px;
+	${BlockRowStyle}
 `;
 
 const LeftCol = styled.div`
-	width: 50%;
-	padding-right: 15px;
+	${LeftColStyle}
 `;
 
 const RightCol = styled.div`
-	padding-left: 15px;
-	width: 50%;
+	${RightColStyle}
 `;
 
 const DateBlock = styled.div`
-	display: flex;
-	justify-content: space-between;
-	width: 100%;
+	${DateBlockStyle}
 `;
 
 const DateInput = styled.input`
-	${(props) => props.theme.input.shortInput};
-	width: 45%;
+	${DateInputStyle}
 `;
 
 const InputTitle = styled.div`
-	${(props) => props.theme.input.title};
+	${InputTitleStyle}
 `;
 
 const ShortInput = styled.input`
-	${(props) => props.theme.input.shortInput};
+	${ShortInputStyle}
 `;
 
 const LongInputBox = styled.div`
-	margin-bottom: 20px;
+	${LongInputBoxStyle}
 `;
 
 const MoreInput = styled.div`
-	padding: 0px 20px;
-	overflow: hidden;
-	max-height: 0;
-	opacity: 0;
-	transition: max-height 0.8s, opacity 0.8s;
-	cursor: default;
-	${(props) =>
-		props.isClick &&
-		`
-	max-height: 600px; overflow: visible; opacity: 1;
-	`}
+	${MoreInputStyle}
 `;
 
 Item.propTypes = {
@@ -185,7 +114,7 @@ Item.propTypes = {
 };
 
 export default function Item({ item, blockId, dragHandleProps }) {
-	const [isClick, setIsClick] = useState(true);
+	const [isClick, setIsClick] = useState(false);
 	const [isHover, setIsHover] = useState(false);
 	const dispatch = useDispatch();
 
@@ -242,12 +171,6 @@ export default function Item({ item, blockId, dragHandleProps }) {
 
 	return (
 		<Root>
-			<DragBlock isHover={isHover} {...dragHandleProps}>
-				<DragIcon src="/images/icon/drag.png" />
-			</DragBlock>
-			<DeleteBlock isHover={isHover} onClick={handleDeleteIconClick}>
-				<DeleteIcon src="/images/icon/delete.png" />
-			</DeleteBlock>
 			<ItemDescription
 				onClick={() => {
 					setIsClick(!isClick);
@@ -258,6 +181,12 @@ export default function Item({ item, blockId, dragHandleProps }) {
 				onMouseLeave={() => {
 					setIsHover(false);
 				}}>
+				<DragBlock isHover={isHover} {...dragHandleProps}>
+					<DragIcon src="/images/icon/drag.png" />
+				</DragBlock>
+				<DeleteBlock isHover={isHover} onClick={handleDeleteIconClick}>
+					<DeleteIcon src="/images/icon/delete.png" />
+				</DeleteBlock>
 				<ItemInfo>
 					<ItemTitle isHover={isHover}>
 						{functionTitle}

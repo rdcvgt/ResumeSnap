@@ -11,10 +11,16 @@ import {
 	deleteUserPhoto,
 } from "../../../../utils/firebase/storage";
 
+import { MEDIA_QUERY_MD } from "../../../../utils/style/breakpotins";
+
 const UploadPhoto = styled.div`
 	display: flex;
 	align-items: center;
 	margin-top: 19px;
+
+	${MEDIA_QUERY_MD} {
+		margin: 20px 0px;
+	}
 `;
 
 const PhotoPreviewArea = styled.div`
