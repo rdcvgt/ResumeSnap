@@ -13,12 +13,39 @@ const EditorBlock = styled.div`
 	cursor: text;
 `;
 
+//編輯器配置
+i18nChangeLanguage("en");
+const toolbarConfig = {};
+toolbarConfig.toolbarKeys = [
+	"bold",
+	"italic",
+	"underline",
+	"through",
+	"|",
+	"bulletedList",
+	"numberedList",
+	"|",
+	"insertLink",
+];
+
+const editorConfig = {
+	placeholder: "",
+	scroll: true,
+	autoFocus: true,
+	customPaste: (editor, event) => {
+		event.preventDefault();
+		const text = event.clipboardData.getData("text/plain");
+		editor.insertText(text);
+	},
+};
+
 InputEditor.propTypes = {
 	handleEditorInput: PropTypes.func,
 	inputHtml: PropTypes.string,
+	From: PropTypes.string,
 };
 
-function InputEditor({ handleEditorInput, inputHtml }) {
+function InputEditor({ handleEditorInput, inputHtml, From = null }) {
 	const [editor, setEditor] = useState(null); // 存储 editor
 	const [html, setHtml] = useState(inputHtml);
 
@@ -36,32 +63,6 @@ function InputEditor({ handleEditorInput, inputHtml }) {
 		handleEditorInput(html);
 	}, [html]);
 
-	//編輯器配置
-	i18nChangeLanguage("en");
-	const toolbarConfig = {};
-	toolbarConfig.toolbarKeys = [
-		"bold",
-		"italic",
-		"underline",
-		"through",
-		"|",
-		"bulletedList",
-		"numberedList",
-		"|",
-		"insertLink",
-	];
-
-	const editorConfig = {
-		placeholder: "",
-		scroll: true,
-		autoFocus: true,
-		customPaste: (editor, event) => {
-			event.preventDefault();
-			const text = event.clipboardData.getData("text/plain");
-			editor.insertText(text);
-		},
-	};
-
 	return (
 		<>
 			<EditorBlock>
@@ -72,7 +73,7 @@ function InputEditor({ handleEditorInput, inputHtml }) {
 				/>
 				<Editor
 					defaultConfig={editorConfig}
-					value={inputHtml}
+					value={From === "profile" ? inputHtml : html}
 					onCreated={setEditor}
 					onChange={(editor) => setHtml(editor.getHtml())}
 					mode="simple"

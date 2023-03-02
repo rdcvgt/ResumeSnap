@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Block from "../utils/Block";
-// import Item from "./Item";
+import Item from "../utils/Item";
 import ItemInputLayout from "./ItemInputLayout";
 import ItemMainInfo from "./ItemMainInfo";
 
@@ -30,7 +30,7 @@ export default function WebsiteLink({
 			dragHandleProps={dragHandleProps}
 			handleDeleteButtonClick={handleDeleteButtonClick}
 			hideDeleteIcon={true}
-			// Item={Item}
+			Item={Item}
 			ItemInputLayout={ItemInputLayout}
 			ItemMainInfo={ItemMainInfo}
 		/>

@@ -9,7 +9,7 @@ import {
 	updateItemOrder,
 } from "../../../../redux/reducers/formDataReducer";
 import TitleBlock from "../TitleBlock";
-import Item from "../Item";
+// import Item from "../Item";
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -63,7 +63,7 @@ Block.propTypes = {
 	hideDraggableIcon: PropTypes.bool,
 	ItemInputLayout: PropTypes.func,
 	ItemMainInfo: PropTypes.func,
-	// Item: PropTypes.func,
+	Item: PropTypes.func,
 };
 
 export default function Block({
@@ -75,7 +75,7 @@ export default function Block({
 	hideDeleteIcon,
 	ItemInputLayout,
 	ItemMainInfo,
-	// Item,
+	Item,
 }) {
 	const dispatch = useDispatch();
 	const [blockData] = useSelector((state) =>

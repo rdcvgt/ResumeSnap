@@ -3,8 +3,6 @@ import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
-import { deleteItem } from "../../../../redux/reducers/formDataReducer";
-
 import {
 	RootStyle,
 	DragBlockStyle,
@@ -18,6 +16,7 @@ import {
 
 import { DefaultButtonStyle } from "../../../buttons/button.style";
 import { MEDIA_QUERY_MD } from "../../../../utils/style/breakpotins";
+import { deleteItem } from "../../../../redux/reducers/formDataReducer";
 
 const Root = styled.div`
 	${RootStyle}
@@ -97,7 +96,7 @@ const LeftIcon = styled.img`
 const BlockTitle = styled.div`
 	${(props) => props.theme.font.blockTitle};
 	width: 70%;
-	margin: 0px auto 30px auto;
+	margin: 10px auto 30px auto;
 	text-align: center;
 	word-wrap: break-word;
 `;
@@ -129,7 +128,10 @@ export default function Item({
 	const dispatch = useDispatch();
 
 	const formBlocks = useSelector((state) => state.formData.formBlocks);
-	const blockTitle = formBlocks.map((block) => block.id === blockId);
+	const blockInfo = formBlocks.find((block) => block.id === blockId);
+	const blockTitle = blockInfo.content.blockTitle
+		? blockInfo.content.blockTitle
+		: "Undefined";
 
 	//刪除 item
 	const handleDeleteIconClick = () => {

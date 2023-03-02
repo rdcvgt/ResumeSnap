@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Block from "../utils/Block";
-import Item from "./Item";
+import Item from "../utils/Item";
+import ItemInputLayout from "./ItemInputLayout";
+import ItemMainInfo from "./ItemMainInfo";
 
 CustomSection.propTypes = {
 	dragHandleProps: PropTypes.object,
@@ -27,6 +29,8 @@ export default function CustomSection({
 			dragHandleProps={dragHandleProps}
 			handleDeleteButtonClick={handleDeleteButtonClick}
 			Item={Item}
+			ItemInputLayout={ItemInputLayout}
+			ItemMainInfo={ItemMainInfo}
 		/>
 	);
 }

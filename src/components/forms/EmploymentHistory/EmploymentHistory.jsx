@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Block from "../utils/Block";
-import Item from "./Item";
+import Item from "../utils/Item";
+import ItemInputLayout from "./ItemInputLayout";
+import ItemMainInfo from "./ItemMainInfo";
 
 EmploymentHistory.propTypes = {
 	dragHandleProps: PropTypes.object,
@@ -29,6 +31,8 @@ export default function EmploymentHistory({
 			handleDeleteButtonClick={handleDeleteButtonClick}
 			hideDeleteIcon={true}
 			Item={Item}
+			ItemInputLayout={ItemInputLayout}
+			ItemMainInfo={ItemMainInfo}
 		/>
 	);
 }
