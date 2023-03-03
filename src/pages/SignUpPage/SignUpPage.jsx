@@ -64,16 +64,9 @@ export default function HomePage() {
 	useEffect(() => {
 		if (resumeId) {
 			navigate(`/edit/${resumeId}`);
+			return;
 		}
-	}, [resumeId]);
-
-	useEffect(() => {
-		onAuthStateChanged(auth, (user) => {
-			if (user) {
-				navigate("/dashboard");
-			}
-		});
-	}, [dispatch, navigate]);
+	}, [resumeId, navigate]);
 
 	return (
 		<Root>

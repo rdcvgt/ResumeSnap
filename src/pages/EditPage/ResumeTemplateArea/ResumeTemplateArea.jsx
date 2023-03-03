@@ -41,6 +41,10 @@ const ResumeTempBackground = styled.div`
 	${MEDIA_QUERY_LG} {
 		width: 20%;
 	}
+
+	${MEDIA_QUERY_MD} {
+		display: none;
+	}
 `;
 
 const TempCollectionsArea = styled.div`

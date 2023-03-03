@@ -94,17 +94,20 @@ export default function OutputButtonArea({
 		setIsClickMoreButton(!isClickMoreButton);
 	};
 
+	//若使用者點擊選單以外區域則會關閉選單
 	useEffect(() => {
-		if (MoreButtonRef.current === null) {
-			return;
-		}
-		window.addEventListener("click", (e) => {
+		const handleMoreButtonClick = (e) => {
 			if (e.target === null) return;
 			if (!MoreButtonRef.current) return;
 			if (!MoreButtonRef.current.contains(e.target)) {
 				setIsClickMoreButton(false);
 			}
-		});
+		};
+		window.addEventListener("click", handleMoreButtonClick);
+		//刪除註冊監聽器
+		return () => {
+			window.removeEventListener("click", handleMoreButtonClick);
+		};
 	}, [MoreButtonRef]);
 
 	return (

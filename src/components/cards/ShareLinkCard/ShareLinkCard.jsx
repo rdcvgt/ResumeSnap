@@ -9,6 +9,8 @@ import {
 	darkerWhenHover,
 } from "../../buttons/button.style";
 
+import { MEDIA_QUERY_MD } from "../../../utils/style/breakpotins";
+
 const fadeIn = keyframes`
 	0% { opacity: 0; }
 	100% { opacity: 1; }
@@ -28,6 +30,10 @@ const CardBackground = styled.div`
 	left: 0;
 	background-color: rgb(0, 0, 0, 0.5);
 	animation: ${fadeIn} 0.3s forwards;
+
+	${MEDIA_QUERY_MD} {
+		display: none;
+	}
 `;
 
 const Card = styled.div`
@@ -42,11 +48,23 @@ const Card = styled.div`
 	border-radius: 10px;
 	padding: 30px;
 	animation: ${rollingIn} 0.4s forwards;
+
+	${MEDIA_QUERY_MD} {
+		position: fixed;
+		top: 0;
+		left: 0;
+		transform: translate(0, 0);
+		width: 100%;
+		height: 100%;
+		border-radius: 0px;
+		animation: none;
+	}
 `;
 
 const Title = styled.div`
 	${(props) => props.theme.font.title};
 	margin-bottom: 20px;
+	width: 80%;
 `;
 
 const Description = styled.div`
@@ -74,6 +92,12 @@ const Buttons = styled.div`
 	position: absolute;
 	right: 30px;
 	bottom: 30px;
+
+	${MEDIA_QUERY_MD} {
+		position: relative;
+		right: 0px;
+		bottom: 0px;
+	}
 `;
 
 const LeftButton = styled.div`

@@ -11,7 +11,7 @@ export const formDataSlice = createSlice({
 		isDefaultData: true,
 		resumeName: "First Resume",
 		template: "Sydney",
-		color: "#082A4D",
+		color: "null",
 		formBlocks: [
 			{
 				block: "PersonalDetails",

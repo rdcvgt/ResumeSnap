@@ -7,6 +7,8 @@ import {
 	SecondaryButtonStyle,
 } from "../../buttons/button.style";
 
+import { MEDIA_QUERY_MD } from "../../../utils/style/breakpotins";
+
 const fadeIn = keyframes`
 	0% { opacity: 0; }
 	100% { opacity: 1; }
@@ -40,6 +42,10 @@ const Card = styled.div`
 	border-radius: 10px;
 	padding: 30px;
 	animation: ${rollingIn} 0.4s forwards;
+
+	${MEDIA_QUERY_MD} {
+		width: 90%;
+	}
 `;
 
 const Title = styled.div`
@@ -57,6 +63,11 @@ const Buttons = styled.div`
 	position: absolute;
 	right: 30px;
 	bottom: 30px;
+
+	${MEDIA_QUERY_MD} {
+		right: 50%;
+		transform: translate(50%, 0);
+	}
 `;
 
 const LeftButton = styled.div`

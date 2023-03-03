@@ -7,7 +7,7 @@ function newResumeStructure(userInfo) {
 	const newResume = {
 		isDefaultData: false,
 		updatedAt: timestamp,
-		resumeName: "First Resume",
+		resumeName: "New Resume",
 		template: "Sydney",
 		color: "#082A4D",
 		formBlocks: [

@@ -43,6 +43,10 @@ const ResumePreviewBackground = styled.div`
 	${MEDIA_QUERY_LG} {
 		width: ${(props) => (props.isChoosingTemp === true ? "80%" : "0%")};
 	}
+
+	${MEDIA_QUERY_MD} {
+		width: ${(props) => (props.isChoosingTemp === true ? "100%" : "0%")};
+	}
 `;
 
 const ResumePreviewInfo = styled.div`
