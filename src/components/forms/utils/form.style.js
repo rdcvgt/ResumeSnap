@@ -47,6 +47,10 @@ export const DragBlockStyle = css`
 		opacity: 1;
 		transition: filter 0.3s, opacity 0.3s;
 	}
+
+	${MEDIA_QUERY_LG} {
+		opacity: 1;
+	}
 `;
 
 export const DragIconStyle = css`
@@ -77,6 +81,10 @@ export const DeleteBlockStyle = css`
 		filter: brightness(1);
 		opacity: 1;
 		transition: filter 0.3s, opacity 0.3s;
+	}
+
+	${MEDIA_QUERY_LG} {
+		opacity: 1;
 	}
 `;
 

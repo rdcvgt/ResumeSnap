@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
 import { collection, doc } from "firebase/firestore";
 
 import UserInfoArea from "./UserInfoArea";

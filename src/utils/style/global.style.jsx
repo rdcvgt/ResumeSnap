@@ -8,7 +8,7 @@ export const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-		font-family: "Noto Sans TC", sans-serif;
+		font-family: 'Poppins', "Noto Sans TC", sans-serif;
   }
 `;
 
@@ -151,6 +151,20 @@ export const theme = {
 		signUpPageTitle: css`
 			font-size: 40px;
 			font-weight: 700;
+		`,
+		homePageTitle: css`
+			font-size: 42px;
+			font-weight: 700;
+		`,
+		homePageSubtitle: css`
+			font-family: "Montserrat", sans-serif;
+			font-size: 12px;
+			font-weight: 700;
+		`,
+		homePageDescription: css`
+			font-size: 18px;
+			font-weight: 400;
+			line-height: 1.5em;
 		`,
 	},
 

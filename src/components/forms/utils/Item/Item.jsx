@@ -65,7 +65,6 @@ const FullPage = styled.div`
 	left: 100%;
 	background-color: #fff;
 	z-index: 20;
-	border: 1px solid #000;
 	transition: all 0.3s;
 	animation: ${moveIn} 0.3s forwards;
 
