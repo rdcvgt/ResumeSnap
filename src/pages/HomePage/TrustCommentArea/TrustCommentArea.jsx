@@ -117,11 +117,14 @@ const Header = styled.div`
 
 const Content = styled.div`
 	height: 96px;
-	font-size: 16px;
+	width: 100%;
 	margin-bottom: 15px;
-	line-height: 1.5em;
+	${(props) => props.theme.font.homePageDescription};
 	overflow: hidden;
 	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
 `;
 
 const UserInfo = styled.div`

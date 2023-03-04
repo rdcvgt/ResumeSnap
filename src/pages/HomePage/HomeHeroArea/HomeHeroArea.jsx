@@ -31,6 +31,7 @@ const MainTitle = styled.div`
 
 const Description = styled.div`
 	${(props) => props.theme.font.homePageDescription};
+	font-size: 18px;
 	text-align: center;
 	margin: 0 auto;
 	width: 600px;

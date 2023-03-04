@@ -14,7 +14,7 @@ const Block = styled.div`
 
 const BlockTitle = styled.input`
 	min-width: 5em;
-	width: 5em;
+	width: 20em;
 	max-width: 80%;
 	height: auto;
 	margin: 10px 0;
@@ -30,11 +30,11 @@ const DragBlock = styled.div`
 	height: 20px;
 	width: 30px;
 	position: absolute;
-	left: 25px;
+	left: 22px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	opacity: 0;
+	opacity: 1;
 	transition: filter 0.3s, opacity 0.3s;
 
 	&:hover {

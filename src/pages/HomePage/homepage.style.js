@@ -26,3 +26,11 @@ export const DescriptionStyle = css`
 	margin: 0 auto;
 	margin-bottom: 12px;
 `;
+
+export const CallToActionStyle = css`
+	${DefaultButtonStyle}
+	font-size: 16px;
+	font-weight: 500;
+	width: 180px;
+	height: 50px;
+`;

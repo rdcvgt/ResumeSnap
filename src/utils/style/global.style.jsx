@@ -134,7 +134,7 @@ export const theme = {
 		`,
 		infoBold: css`
 			font-size: 12px;
-			font-weight: 600;
+			font-weight: 500;
 		`,
 		itemBold: css`
 			font-size: 14px;
@@ -162,7 +162,7 @@ export const theme = {
 			font-weight: 700;
 		`,
 		homePageDescription: css`
-			font-size: 18px;
+			font-size: 16px;
 			font-weight: 400;
 			line-height: 1.5em;
 		`,
