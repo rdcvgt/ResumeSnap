@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebaseInit";
 
-export function createNewUserInfo(userInfoRef, userInfo) {
+export function updateUserData(userInfoRef, userInfo) {
 	setDoc(doc(userInfoRef, "info"), userInfo);
 }
 

@@ -43,12 +43,19 @@ export default function HomePage() {
 
 	const HandleEmailSignUp = () => {
 		useEmailSignUp(email, password, setUid, setError, setIsLogin);
-		const newUserInfo = { email, firstName, lastName, photo: null };
+		const newUserInfo = {
+			email,
+			firstName,
+			lastName,
+			photo: null,
+			photoResumeId: null,
+		};
 		setUserInfo(newUserInfo);
 	};
 
 	useEffect(() => {
 		if (uid && userInfo) {
+			console.log(uid, userInfo, "signup");
 			const resumeConfig = newResumeStructure(userInfo);
 			const userRef = doc(db, "users", uid);
 			const resumesRef = collection(userRef, "resumes");

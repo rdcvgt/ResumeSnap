@@ -2,9 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { signOut } from "firebase/auth";
 
+import { deleteUserInfo } from "../../../redux/reducers/userInfoReducer";
 import { auth } from "../../../utils/firebase/firebaseInit";
 
 const UserArea = styled.div`
@@ -111,10 +112,12 @@ UserMenu.propTypes = {
 
 export default function UserMenu({ pageFrom }) {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 	const UserRef = useRef(null);
 	const [isClickUser, setIsClickUser] = useState(false);
 	const [style, setStyle] = useState({});
 	const photoUrl = useSelector((state) => state.userInfo.photo);
+	console.log(photoUrl);
 
 	//當照片載入時，判斷照片的寬高，以最短邊作爲 50px 的比例進行照片尺寸調整
 	useEffect(() => {
@@ -143,6 +146,7 @@ export default function UserMenu({ pageFrom }) {
 		signOut(auth)
 			.then(() => {
 				navigate("/");
+				dispatch(deleteUserInfo());
 			})
 			.catch((error) => {
 				console.log(error);

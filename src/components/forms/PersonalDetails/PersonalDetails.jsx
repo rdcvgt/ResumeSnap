@@ -6,10 +6,6 @@ import { useSelector, useDispatch } from "react-redux";
 import UploadPhotoArea from "./UploadPhotoArea";
 import TitleBlock from "../utils/TitleBlock";
 import { updateInputData } from "../../../redux/reducers/formDataReducer";
-import {
-	MEDIA_QUERY_MD,
-	MEDIA_QUERY_LG,
-} from "../../../utils/style/breakpotins";
 
 import {
 	BlockRowStyle,
@@ -31,13 +27,10 @@ const BlockRow = styled.div`
 `;
 
 const LeftCol = styled.div`
-	/* margin-right: 30px;
-	width: 50%; */
 	${LeftColStyle}
 `;
 
 const RightCol = styled.div`
-	/* width: 50%; */
 	${RightColStyle}
 `;
 

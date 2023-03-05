@@ -2,10 +2,15 @@ import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 
+import { auth } from "../../../../utils/firebase/firebaseInit";
 import { updateInputData } from "../../../../redux/reducers/formDataReducer";
-import { updateUserPhoto } from "../../../../redux/reducers/userInfoReducer";
+import {
+	updateUserPhoto,
+	updateUserInfoToDatabase,
+} from "../../../../redux/reducers/userInfoReducer";
 import {
 	uploadUserPhoto,
 	deleteUserPhoto,
@@ -94,6 +99,16 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 	const uploadInputRef = useRef(null);
 	const photoResumeId = useSelector((state) => state.userInfo.photoResumeId);
 	const [style, setStyle] = useState({});
+	const [uid, setUid] = useState(null);
+
+	useEffect(() => {
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				const userId = user.uid;
+				setUid(userId);
+			}
+		});
+	}, []);
 
 	const handleUploadButtonClick = () => {
 		uploadInputRef.current.click();
@@ -113,12 +128,11 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 				);
 			}
 			if (photoUrl && photoResumeId === resumeId) {
-				dispatch(
-					updateUserPhoto({
-						photoUrl: null,
-						photoResumeId: null,
-					})
-				);
+				const userPhotoData = {
+					photoUrl: null,
+					photoResumeId: null,
+				};
+				dispatch(updateUserInfoToDatabase(uid, userPhotoData));
 			}
 		});
 	};
@@ -140,12 +154,13 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 					inputValue: { name: newFileName, url },
 				})
 			);
-			dispatch(
-				updateUserPhoto({
-					photoUrl: url,
-					photoResumeId: resumeId,
-				})
-			);
+
+			const userPhotoData = {
+				photoUrl: url,
+				photoResumeId: resumeId,
+			};
+			console.log(uid);
+			dispatch(updateUserInfoToDatabase(uid, userPhotoData));
 		});
 	};
 

@@ -110,13 +110,33 @@ export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
 			// The signed-in user info.
 			const user = result.user;
 			const uid = user.uid;
-			const userNameList = user.displayName.split(" ");
-			const email = user.email;
-			const firstName = userNameList[0];
-			const lastName = userNameList[1];
 
-			const newUserInfo = { email, firstName, lastName, photo: null };
-			setUserInfo(newUserInfo);
+			const userRef = doc(db, "users", uid);
+			const userInfoRef = collection(userRef, "userInfo");
+			const userInfoPromise = getCurrentUserInfo(userInfoRef);
+			userInfoPromise.then((userInfo) => {
+				console.log(userInfo, "useGoogle");
+				if (userInfo) {
+					setUserInfo(userInfo);
+					return;
+				}
+
+				const userNameList = user.displayName.split(" ");
+				const email = user.email;
+				const firstName = userNameList[0];
+				const lastName = userNameList[1] ? userNameList[1] : "";
+
+				const newUserInfo = {
+					email,
+					firstName,
+					lastName,
+					photo: null,
+					photoResumeId: null,
+				};
+				console.log(newUserInfo, "useGoogle");
+				setUserInfo(newUserInfo);
+			});
+
 			setUid(uid);
 		})
 		.catch((error) => {
