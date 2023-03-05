@@ -7,10 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { auth } from "../../../../utils/firebase/firebaseInit";
 import { updateInputData } from "../../../../redux/reducers/formDataReducer";
-import {
-	updateUserPhoto,
-	updateUserInfoToDatabase,
-} from "../../../../redux/reducers/userInfoReducer";
+import { updateUserInfoToDatabase } from "../../../../redux/reducers/userInfoReducer";
 import {
 	uploadUserPhoto,
 	deleteUserPhoto,

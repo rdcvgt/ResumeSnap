@@ -115,7 +115,6 @@ export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
 			const userInfoRef = collection(userRef, "userInfo");
 			const userInfoPromise = getCurrentUserInfo(userInfoRef);
 			userInfoPromise.then((userInfo) => {
-				console.log(userInfo, "useGoogle");
 				if (userInfo) {
 					setUserInfo(userInfo);
 					return;

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import html2canvas from "html2canvas";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updatePreviewStatus } from "../../../../redux/reducers/dataStatusReducer";
 
 export default function usePreview(
 	pageRef,
@@ -9,6 +10,7 @@ export default function usePreview(
 	mainBlocks,
 	sideBlocks
 ) {
+	const dispatch = useDispatch();
 	const [timer, setTimer] = useState(null);
 	const currentTemplate = useSelector((state) => state.formData.template);
 	const currentColor = useSelector((state) => state.formData.color);
@@ -24,6 +26,7 @@ export default function usePreview(
 			}).then((canvas) => {
 				const dataUrl = canvas.toDataURL("image/png", 0.4);
 				setImgUrl(dataUrl);
+				dispatch(updatePreviewStatus({ status: false }));
 			});
 		}, 700);
 		setTimer(newTimer);

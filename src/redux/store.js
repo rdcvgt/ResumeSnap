@@ -13,17 +13,19 @@ import {
 
 import formDataReducer from "./reducers/formDataReducer";
 import userInfoReducer from "./reducers/userInfoReducer";
+import dataStatusReducer from "./reducers/dataStatusReducer";
 
 const persistConfig = {
 	key: "root",
 	version: 1,
 	storage,
-	blacklist: ["formData"],
+	blacklist: ["formData", "dataStatus"],
 };
 
 const reducer = combineReducers({
 	userInfo: userInfoReducer,
 	formData: formDataReducer,
+	dataStatus: dataStatusReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

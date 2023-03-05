@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Helmet } from "react-helmet";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
@@ -60,9 +60,37 @@ const PreviewButton = styled.div`
 	}
 `;
 
+const fadeIn = keyframes` 
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+`;
+
 const FileIcon = styled.img`
 	width: 20px;
 	margin-left: 10px;
+	animation: ${fadeIn} 0.3s both;
+`;
+
+const LoadingRingArea = styled.div`
+	display: flex;
+	justify-content: center;
+	margin-left: 10px;
+`;
+
+const spin = keyframes` 
+  0% { 
+		transform: rotate(0deg); 
+	}
+  100% { transform: rotate(360deg); }
+`;
+
+const LoadingRing = styled.div`
+	border: 3px solid ${(props) => props.theme.color.neutral[20]};
+	border-top: 3px solid ${(props) => props.theme.color.neutral[30]}; /* Blue */
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	animation: ${spin} 0.3s linear infinite;
 `;
 
 const templatesColorOrder = {
@@ -79,6 +107,13 @@ export default function EditPage() {
 	const [tempColors, setTempColors] = useState([]);
 	const [isDownloading, setIsDownloading] = useState(false);
 	const [isChoosingTemp, setIsChoosingTemp] = useState(false);
+
+	const isUploadingData = useSelector(
+		(state) => state.dataStatus.isUploadingData
+	);
+	const isMakingPreview = useSelector(
+		(state) => state.dataStatus.isMakingPreview
+	);
 
 	//驗證使用者身份，未登入導回首頁
 	//若 resumeId 不屬於該使用者，則導回 /dashboard
@@ -162,7 +197,14 @@ export default function EditPage() {
 							setIsChoosingTemp(true);
 						}}>
 						Preview & Download
-						<FileIcon src="/images/icon/file.png" />
+						{!isUploadingData && !isMakingPreview && (
+							<FileIcon src="/images/icon/file.png" />
+						)}
+						{(isUploadingData || isMakingPreview) && (
+							<LoadingRingArea>
+								<LoadingRing />
+							</LoadingRingArea>
+						)}
 					</PreviewButton>
 				)}
 			</Body>

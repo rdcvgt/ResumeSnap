@@ -90,9 +90,7 @@ const BottomSpace = styled.div`
 const ResumePreviewTopArea = styled.div`
 	width: 80%;
 	margin-top: 20px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	position: relative;
 	${(props) =>
 		props.isChoosingTemp &&
 		`
@@ -102,9 +100,57 @@ const ResumePreviewTopArea = styled.div`
 	z-index: 1;
 `;
 
-const SavingProgress = styled.div``;
+const SavingProgress = styled.div`
+	position: absolute;
+	top: 50%;
+	transform: translate(0%, -50%);
+`;
+
+const fadeIn = keyframes` 
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+`;
+
+const SaveArea = styled.div`
+	display: flex;
+	align-items: center;
+	color: #fff;
+	animation: ${fadeIn} 0.3s both;
+`;
+
+const SavedIcon = styled.img`
+	width: 20px;
+	margin-right: 5px;
+`;
+
+const LoadingRingArea = styled.div`
+	display: flex;
+	justify-content: center;
+	z-index: 1;
+	margin-right: 5px;
+`;
+
+const spin = keyframes` 
+  0% { 
+		transform: rotate(0deg); 
+	}
+  100% { transform: rotate(360deg); }
+`;
+
+const LoadingRing = styled.div`
+	border: 3px solid ${(props) => props.theme.color.neutral[20]};
+	border-top: 3px solid ${(props) => props.theme.color.neutral[30]}; /* Blue */
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+	animation: ${spin} 0.3s linear infinite;
+`;
 
 const PaginationArea = styled.div`
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 	display: flex;
 	align-items: center;
 	${(props) =>
@@ -223,9 +269,33 @@ function ResumePreviewTopFunc({
 	currentPage,
 }) {
 	const isChoosingTemp = useContext(TempStatusContext);
+	const isUploadingData = useSelector(
+		(state) => state.dataStatus.isUploadingData
+	);
+	const isMakingPreview = useSelector(
+		(state) => state.dataStatus.isMakingPreview
+	);
+
 	return (
 		<ResumePreviewTopArea isChoosingTemp={isChoosingTemp}>
-			<SavingProgress></SavingProgress>
+			{!isChoosingTemp && (
+				<SavingProgress>
+					{!isUploadingData && !isMakingPreview && (
+						<SaveArea>
+							<SavedIcon src="/images/icon/cloud.png" />
+							Saved
+						</SaveArea>
+					)}
+					{(isUploadingData || isMakingPreview) && (
+						<SaveArea>
+							<LoadingRingArea>
+								<LoadingRing />
+							</LoadingRingArea>
+							Saving...
+						</SaveArea>
+					)}
+				</SavingProgress>
+			)}
 			<PaginationArea isChoosingTemp={isChoosingTemp}>
 				<PrePage onClick={handlePrePageClick} currentPage={currentPage}>
 					<PrePageIcon src="/images/icon/left.png" />
@@ -240,6 +310,7 @@ function ResumePreviewTopFunc({
 					<NextPageIcon src="/images/icon/right.png" />
 				</NextPage>
 			</PaginationArea>
+			<div></div>
 		</ResumePreviewTopArea>
 	);
 }
