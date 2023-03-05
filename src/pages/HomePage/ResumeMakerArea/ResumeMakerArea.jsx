@@ -1,14 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
+import React from "react";
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import { DefaultButtonStyle } from "../../../components/buttons/button.style";
+import { MainTitleStyle, CallToActionStyle } from "../homepage.style";
 
 import {
-	SubtitleStyle,
-	MainTitleStyle,
-	CallToActionStyle,
-} from "../homepage.style";
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG_HOME,
+} from "../../../utils/style/breakpotins";
 
 const ResumeMaker = styled.div`
 	width: 100%;
@@ -24,18 +23,34 @@ const Container = styled.div`
 	width: 1200px;
 	display: flex;
 	align-items: center;
-	justify-content: center; ;
+	justify-content: center;
+	flex-wrap: wrap;
+
+	${MEDIA_QUERY_LG_HOME} {
+		width: 90%;
+		text-align: center;
+	}
 `;
 
 const MainInfo = styled.div`
 	width: 500px;
-	/* margin: 0 auto; */
+
+	${MEDIA_QUERY_LG_HOME} {
+		width: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
 `;
 
 const MainTitle = styled.div`
 	${MainTitleStyle}
 	margin-bottom: 20px;
 	text-align: left;
+
+	${MEDIA_QUERY_LG_HOME} {
+		text-align: center;
+	}
 `;
 
 const MainDescription = styled.div`
@@ -51,6 +66,10 @@ const CallToAction = styled.div`
 const SectionImage = styled.img`
 	width: 300px;
 	margin-right: 100px;
+
+	${MEDIA_QUERY_LG_HOME} {
+		margin-right: 0px;
+	}
 `;
 
 export default function ResumeMakerArea() {

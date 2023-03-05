@@ -17,12 +17,6 @@ const Root = styled.div`
 	background-color: ${(props) => props.theme.color.neutral[10]};
 `;
 
-const Stats = styled.div`
-	width: 100%;
-	height: 502px;
-	background-color: #fff;
-`;
-
 const ButtonArea = styled.div`
 	width: 100%;
 	height: auto;
@@ -48,11 +42,11 @@ const Button = styled(Link)`
 export default function HomePage() {
 	return (
 		<Root>
-			<ButtonArea>
+			{/* <ButtonArea>
 				<Button to="/edit">點此開始</Button>
 				<Button to="/signup">點此註冊</Button>
 				<Button to="/signIn">點此登入</Button>
-			</ButtonArea>
+			</ButtonArea> */}
 			<HomeHeroArea />
 			<TrustCommentArea />
 			<HowToDoArea />

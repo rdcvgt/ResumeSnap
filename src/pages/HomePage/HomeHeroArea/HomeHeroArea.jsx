@@ -1,10 +1,13 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
-
+import { SubtitleStyle, MainTitleStyle } from "../homepage.style";
 import { DefaultButtonStyle } from "../../../components/buttons/button.style";
 
-import { SubtitleStyle, MainTitleStyle } from "../homepage.style";
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG_HOME,
+} from "../../../utils/style/breakpotins";
 
 const HomeHero = styled.div`
 	margin-top: 80px;
@@ -13,6 +16,16 @@ const HomeHero = styled.div`
 	padding-top: 64px;
 	overflow: hidden;
 	position: relative;
+
+	${MEDIA_QUERY_LG_HOME} {
+		height: 596px;
+		padding-bottom: 200px;
+	}
+
+	${MEDIA_QUERY_MD} {
+		height: auto;
+		padding-bottom: 35%;
+	}
 `;
 
 const Container = styled.div`
@@ -27,6 +40,15 @@ const Subtitle = styled.div`
 const MainTitle = styled.div`
 	${MainTitleStyle}
 	width: 740px;
+
+	${MEDIA_QUERY_LG_HOME} {
+		font-size: 42px;
+	}
+
+	${MEDIA_QUERY_MD} {
+		font-size: 32px;
+		width: 90%;
+	}
 `;
 
 const Description = styled.div`
@@ -35,6 +57,10 @@ const Description = styled.div`
 	text-align: center;
 	margin: 0 auto;
 	width: 600px;
+
+	${MEDIA_QUERY_MD} {
+		width: 90%;
+	}
 `;
 
 const CallToActionButton = styled.div`
@@ -50,15 +76,29 @@ const moveIn = keyframes`
 	100% { bottom: -145px; }
 `;
 
+const moveIn_LG_HOME = keyframes`
+	0% { bottom: -150px; }
+	100% { bottom: -85px; }
+`;
+
 const ResumeArea = styled.div`
 	width: 770px;
 	border-radius: 10px;
 	position: absolute;
-	bottom: -250px;
 	left: 50%;
 	transform: translate(-50%, 0);
 	animation: ${moveIn} 1.2s forwards;
 	overflow: hidden;
+
+	${MEDIA_QUERY_LG_HOME} {
+		width: 420px;
+		animation: ${moveIn_LG_HOME} 1.2s forwards;
+	}
+
+	${MEDIA_QUERY_MD} {
+		max-width: 420px;
+		width: 90%;
+	}
 `;
 
 const ResumePreview = styled.img`

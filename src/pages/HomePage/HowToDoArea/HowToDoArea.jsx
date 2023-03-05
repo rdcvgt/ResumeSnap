@@ -2,18 +2,24 @@ import React, { useState, useRef, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import { DefaultButtonStyle } from "../../../components/buttons/button.style";
+import { MainTitleStyle, CallToActionStyle } from "../homepage.style";
 
 import {
-	SubtitleStyle,
-	MainTitleStyle,
-	CallToActionStyle,
-} from "../homepage.style";
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG_HOME,
+} from "../../../utils/style/breakpotins";
 
 const HowToDo = styled.div`
 	width: 100%;
-	height: 1049px;
+	height: 1000px;
 	padding: 120px 0;
+	display: flex;
+	align-items: center;
+
+	${MEDIA_QUERY_LG_HOME} {
+		height: auto;
+		padding: 60px 0;
+	}
 `;
 
 const Container = styled.div`
@@ -28,6 +34,10 @@ const MainInfo = styled.div`
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+
+	${MEDIA_QUERY_MD} {
+		width: 90%;
+	}
 `;
 
 const MainTitle = styled.div`
@@ -51,6 +61,15 @@ const CallToAction = styled.div`
 const HowToArea = styled.div`
 	width: 800px;
 	margin: 80px auto;
+
+	${MEDIA_QUERY_LG_HOME} {
+		width: 730px;
+		margin: 40px auto 0 auto;
+	}
+
+	${MEDIA_QUERY_MD} {
+		width: 90%;
+	}
 `;
 
 const Steps = styled.div`
@@ -69,6 +88,15 @@ const Step = styled.div`
 	opacity: ${(props) => (props.isFocused ? "1" : "0.5")};
 	cursor: pointer;
 	transition: all 0.3s;
+
+	${MEDIA_QUERY_LG_HOME} {
+		width: 235px;
+	}
+
+	${MEDIA_QUERY_MD} {
+		width: 100%;
+		display: ${(props) => (props.isFocused ? "block" : "none")};
+	}
 `;
 
 const StepText = styled.div`
@@ -118,6 +146,10 @@ const InfoBackground = styled.div`
 	height: 300px;
 	background-color: #fff;
 	border-radius: 0px 0px 5px 5px;
+
+	${MEDIA_QUERY_MD} {
+		height: auto;
+	}
 `;
 
 const InfoCard = styled.div`
@@ -127,11 +159,19 @@ const InfoCard = styled.div`
 	justify-content: space-between;
 	padding: 50px;
 	animation: ${fadeIn} 0.7s both;
+
+	${MEDIA_QUERY_MD} {
+		padding: 20px;
+		padding-top: 10;
+	}
 `;
 
 const Info = styled.div`
 	width: 432px;
-	opacity: 1;
+
+	${MEDIA_QUERY_MD} {
+		width: 100%;
+	}
 `;
 
 const InfoTitle = styled.div`
@@ -150,11 +190,37 @@ const InfoImageBox = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+
+	${MEDIA_QUERY_MD} {
+		display: none;
+	}
 `;
 
 const InfoImage = styled.img`
 	width: 100%;
 	width: 150px;
+`;
+
+const DotsArea = styled.div`
+	display: none;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+
+	${MEDIA_QUERY_MD} {
+		display: flex;
+	}
+`;
+const Dot = styled.div`
+	width: 10px;
+	height: 10px;
+	border-radius: 10px;
+	background-color: ${(props) => (props.isFocused ? "#1a91f0" : "#bec4d5")};
+	margin-right: 10px;
+
+	&:nth-last-child(1) {
+		margin: 0;
+	}
 `;
 
 export default function HowToDoArea() {
@@ -298,6 +364,11 @@ export default function HowToDoArea() {
 							</InfoCard>
 						)}
 					</InfoBackground>
+					<DotsArea>
+						<Dot isFocused={isFocused === 1 ? true : false} />
+						<Dot isFocused={isFocused === 2 ? true : false} />
+						<Dot isFocused={isFocused === 3 ? true : false} />
+					</DotsArea>
 				</HowToArea>
 			</Container>
 		</HowToDo>

@@ -5,7 +5,10 @@ import {
 	SecondaryButtonStyle,
 } from "../../components/buttons/button.style";
 
-import { MEDIA_QUERY_MD } from "../../utils/style/breakpotins";
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG_HOME,
+} from "../../utils/style/breakpotins";
 
 export const SubtitleStyle = css`
 	${(props) => props.theme.font.homePageSubtitle};
@@ -18,6 +21,14 @@ export const MainTitleStyle = css`
 	text-align: center;
 	margin: 0 auto;
 	margin-bottom: 12px;
+
+	${MEDIA_QUERY_LG_HOME} {
+		font-size: 38px;
+	}
+
+	${MEDIA_QUERY_MD} {
+		font-size: 32px;
+	}
 `;
 
 export const DescriptionStyle = css`

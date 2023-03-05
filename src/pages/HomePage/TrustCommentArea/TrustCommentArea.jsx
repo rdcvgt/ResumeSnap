@@ -1,10 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, useEffect } from "react";
+import styled from "styled-components";
 
-import { DefaultButtonStyle } from "../../../components/buttons/button.style";
+import { MainTitleStyle } from "../homepage.style";
 
-import { SubtitleStyle, MainTitleStyle } from "../homepage.style";
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG_HOME,
+} from "../../../utils/style/breakpotins";
 
 const TrustComment = styled.div`
 	width: 100%;
@@ -12,6 +14,14 @@ const TrustComment = styled.div`
 	background-color: #fff;
 	border-bottom: 1px solid ${(props) => props.theme.color.neutral[20]};
 	padding: 120px 32px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	${MEDIA_QUERY_MD} {
+		padding: 120px 24px;
+	}
 `;
 
 const Container = styled.div`
@@ -24,15 +34,26 @@ const MainTitle = styled.div`
 	${MainTitleStyle}
 	width: 740px;
 	margin-bottom: 64px;
+
+	${MEDIA_QUERY_LG_HOME} {
+		width: 90%;
+		margin-bottom: 30px;
+	}
 `;
 
 const RatingArea = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
 	margin: 0 auto;
 	height: auto;
 	user-select: none;
+
+	${MEDIA_QUERY_LG_HOME} {
+		width: 100%;
+		flex-wrap: wrap;
+	}
 `;
 
 const Overview = styled.div`
@@ -41,6 +62,10 @@ const Overview = styled.div`
 	align-items: center;
 	flex-wrap: wrap;
 	height: 150px;
+
+	${MEDIA_QUERY_LG_HOME} {
+		margin-bottom: 30px;
+	}
 `;
 
 const Stats = styled.div`
@@ -70,6 +95,14 @@ const CommentArea = styled.div`
 	height: 100%;
 	position: relative;
 	overflow: hidden;
+
+	${MEDIA_QUERY_LG_HOME} {
+		margin-left: 50px;
+	}
+
+	${MEDIA_QUERY_MD} {
+		margin-left: 0px;
+	}
 `;
 
 const MoveComment = styled.div`
@@ -152,6 +185,10 @@ const Button = styled.div`
 	align-items: center;
 	margin-left: 20px;
 	cursor: pointer;
+
+	${MEDIA_QUERY_LG_HOME} {
+		margin-left: 90px;
+	}
 
 	&:nth-child(1) {
 		margin-left: 0;

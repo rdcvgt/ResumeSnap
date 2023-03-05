@@ -3,22 +3,39 @@ import styled, { keyframes } from "styled-components";
 
 import { MainTitleStyle, DescriptionStyle } from "../homepage.style";
 
+import {
+	MEDIA_QUERY_MD,
+	MEDIA_QUERY_LG_HOME,
+} from "../../../utils/style/breakpotins";
+
 const Root = styled.div`
 	width: 100%;
 	height: 730px;
 	background-color: #fff;
 	padding: 120px 32px;
+
+	${MEDIA_QUERY_LG_HOME} {
+		height: auto;
+	}
 `;
 
 const Container = styled.div`
 	margin: 0 auto;
 	width: 930px;
+
+	${MEDIA_QUERY_LG_HOME} {
+		width: 90%;
+	}
 `;
 
 const MainTitle = styled.div`
 	${MainTitleStyle}
 	width: 490px;
 	margin-bottom: 64px;
+
+	${MEDIA_QUERY_MD} {
+		width: 100%;
+	}
 `;
 
 const QuestionsContainer = styled.div`
@@ -29,6 +46,7 @@ const QuestionsContainer = styled.div`
 const Question = styled.div`
 	width: 100%;
 	height: ${(props) => (props.isFocused ? "137px" : "77px")};
+	color: ${(props) => (props.isFocused ? "#1a91f0" : "#000")};
 	border-bottom: 1px solid ${(props) => props.theme.color.neutral[20]};
 	padding: 24px 36px 24px 0px;
 	display: flex;
@@ -36,10 +54,19 @@ const Question = styled.div`
 	flex-wrap: wrap;
 	position: relative;
 	transition: all 0.3s;
+
 	cursor: pointer;
 
 	&:nth-last-child(1) {
 		border-bottom: none;
+	}
+
+	&:hover {
+		color: ${(props) => props.theme.color.blue[50]};
+	}
+
+	${MEDIA_QUERY_MD} {
+		height: ${(props) => (props.isFocused ? "220px" : "77px")};
 	}
 `;
 
@@ -60,6 +87,7 @@ const fadeIn = keyframes`
 const Reply = styled.div`
 	${DescriptionStyle}
 	display:  ${(props) => (props.isFocused ? "block" : "none")};
+	color: #000;
 	margin-top: 20px;
 	text-align: left;
 	width: 100%;
@@ -72,6 +100,7 @@ const DisplayIcon = styled.img`
 	top: 24px;
 	width: 15px;
 	filter: rotate(${(props) => (props.isFocused ? "180deg" : "0deg")});
+	transition: all 0.3s;
 `;
 
 export default function QuestionArea() {
