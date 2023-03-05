@@ -96,13 +96,11 @@ export default function SignInPage() {
 	}, [uid, userInfo, dispatch, navigate]);
 
 	useEffect(() => {
-		if (!isLogin) {
-			onAuthStateChanged(auth, (user) => {
-				if (user) {
-					navigate("/dashboard");
-				}
-			});
-		}
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				navigate("/dashboard");
+			}
+		});
 	}, [dispatch, navigate]);
 
 	return (
