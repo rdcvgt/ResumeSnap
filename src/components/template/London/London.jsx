@@ -8,15 +8,20 @@ import FirstRender from "./FirstRender";
 import SecondRender from "./SecondRender";
 
 import "../utils/htmlElement.css";
-import { ImgStyle } from "../utils/template.style";
+import PreloadArea from "../utils/PreloadArea";
+import { ImgStyle, PreviewContainerStyle } from "../utils/template.style";
+
 import usePreview from "../utils/hooks/usePreview";
 import useDownloadPdf from "../utils/hooks/useDownloadPdf";
 import useSaveResumePreview from "../utils/hooks/useSaveResumePreview";
-
 import { auth } from "../../../utils/firebase/firebaseInit";
 
 const TemplateRoot = styled.div`
 	font-family: serif;
+`;
+
+const PreviewContainer = styled.div`
+	${PreviewContainerStyle}
 `;
 
 const Img = styled.img`
@@ -73,7 +78,12 @@ export default function RenderTemplate({
 
 	return (
 		<>
-			{imgUrl && pageFrom && <Img src={imgUrl} alt="圖片" />}
+			<PreviewContainer>
+				{!imgUrl && <PreloadArea />}
+				{imgUrl && pageFrom === "edit" && (
+					<Img src={imgUrl} alt="圖片" />
+				)}
+			</PreviewContainer>
 			<TemplateRoot>
 				<FirstRender setBlocks={setBlocks} />
 				<SecondRender

@@ -1,6 +1,6 @@
 import React, { useState, useContext, createContext, useMemo } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useSelector } from "react-redux";
 
 import London from "../../../components/template/London";

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import PropTypes from "prop-types";
 import { onAuthStateChanged } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
@@ -88,6 +88,28 @@ const ButtonIcon = styled.img`
 	margin-right: 10px;
 `;
 
+const LoadingRingArea = styled.div`
+	display: flex;
+	justify-content: center;
+	z-index: 1;
+`;
+
+const spin = keyframes` 
+  0% { 
+		transform: rotate(0deg); 
+	}
+  100% { transform: rotate(360deg); }
+`;
+
+const LoadingRing = styled.div`
+	border: 4px solid ${(props) => props.theme.color.neutral[10]};
+	border-top: 4px solid ${(props) => props.theme.color.neutral[30]}; /* Blue */
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	animation: ${spin} 0.3s linear infinite;
+`;
+
 UploadPhotoArea.propTypes = {
 	photoUrl: PropTypes.string,
 	photoName: PropTypes.string,
@@ -100,6 +122,7 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 	const photoResumeId = useSelector((state) => state.userInfo.photoResumeId);
 	const [style, setStyle] = useState({});
 	const [uid, setUid] = useState(null);
+	const [isUploading, setIsUploading] = useState(false);
 
 	useEffect(() => {
 		onAuthStateChanged(auth, (user) => {
@@ -138,6 +161,7 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 	};
 
 	const handleUploadPhoto = (e) => {
+		setIsUploading(true);
 		//重新命名檔案爲 resumeId
 		const file = e.target.files[0];
 		const fileType = file.name.split(".")[1];
@@ -176,6 +200,7 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 				const newWidth = 50 * imgRatio;
 				setStyle({ width: `${newWidth}px`, height: "50px" });
 			}
+			setIsUploading(false);
 		};
 		img.src = photoUrl;
 	}, [photoUrl]);
@@ -184,8 +209,17 @@ export default function UploadPhotoArea({ photoUrl, photoName }) {
 		<>
 			<UploadPhoto>
 				<PhotoPreviewArea>
-					{!photoUrl && <PhotoDefault src="/images/icon/user.png" />}
-					{photoUrl && <PhotoPreview src={photoUrl} style={style} />}
+					{isUploading && (
+						<LoadingRingArea>
+							<LoadingRing />
+						</LoadingRingArea>
+					)}
+					{!photoUrl && !isUploading && (
+						<PhotoDefault src="/images/icon/user.png" />
+					)}
+					{photoUrl && !isUploading && (
+						<PhotoPreview src={photoUrl} style={style} />
+					)}
 				</PhotoPreviewArea>
 				<PhotoButtonArea>
 					<PhotoButton onClick={handleUploadButtonClick}>

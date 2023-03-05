@@ -1,11 +1,24 @@
-import { css } from "styled-components";
+import { css, keyframes } from "styled-components";
+
+const fadeIn = keyframes` 
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+`;
 
 /* template */
+
+export const PreviewContainerStyle = css`
+	width: 101%;
+	height: 101%;
+	position: absolute;
+`;
+
 export const ImgStyle = css`
 	width: 101%;
 	height: 101%;
 	position: absolute;
 	opacity: 1;
+	animation: ${fadeIn} 0.3s both;
 `;
 
 /* First Render */

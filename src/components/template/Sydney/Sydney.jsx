@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
@@ -9,7 +9,8 @@ import FirstRender from "./FirstRender";
 import SecondRender from "./SecondRender";
 
 import "../utils/htmlElement.css";
-import { ImgStyle } from "../utils/template.style";
+import { ImgStyle, PreviewContainerStyle } from "../utils/template.style";
+import PreloadArea from "../utils/PreloadArea";
 
 import usePreview from "../utils/hooks/usePreview";
 import useDownloadPdf from "../utils/hooks/useDownloadPdf";
@@ -20,6 +21,10 @@ import { auth } from "../../../utils/firebase/firebaseInit";
 
 const TemplateRoot = styled.div`
 	font-family: serif;
+`;
+
+const PreviewContainer = styled.div`
+	${PreviewContainerStyle}
 `;
 
 const Img = styled.img`
@@ -113,7 +118,13 @@ export default function RenderTemplate({
 
 	return (
 		<>
-			{imgUrl && pageFrom === "edit" && <Img src={imgUrl} alt="圖片" />}
+			<PreviewContainer>
+				{!imgUrl && <PreloadArea />}
+				{imgUrl && pageFrom === "edit" && (
+					<Img src={imgUrl} alt="圖片" />
+				)}
+			</PreviewContainer>
+
 			<TemplateRoot>
 				<SecondRender
 					pageFrom={pageFrom}
