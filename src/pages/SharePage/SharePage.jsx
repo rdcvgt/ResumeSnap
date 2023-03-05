@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from "react";
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
@@ -38,7 +39,11 @@ export default function SharePage() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
+	const userInfo = useSelector((state) => state.userInfo);
+	console.log(userInfo);
+
 	const currentTemplate = useSelector((state) => state.formData.template);
+
 	const Template = useMemo(() => {
 		return templates[currentTemplate];
 	}, [currentTemplate]);
@@ -59,6 +64,12 @@ export default function SharePage() {
 
 	return (
 		<Root>
+			<Helmet>
+				<title>
+					{`${userInfo.firstName}`} {`${userInfo.lastName}`} ∙
+					ResumeSnap
+				</title>
+			</Helmet>
 			<Body>
 				<Logo src="/images/logo/logo.png" />
 				<Template pageFrom="share" />

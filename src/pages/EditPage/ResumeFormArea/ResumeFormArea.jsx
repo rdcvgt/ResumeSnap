@@ -10,18 +10,18 @@ import {
 	updateBlockOrder,
 } from "../../../redux/reducers/formDataReducer";
 
-import ResumeTitleBlock from "../../../components/forms/utils/ResumeTitleBlock";
-import PersonalDetails from "../../../components/forms/PersonalDetails";
-import ProfessionalSummary from "../../../components/forms/ProfessionalSummary";
+import Skills from "../../../components/forms/Skills";
+import Courses from "../../../components/forms/Courses";
+import Languages from "../../../components/forms/Languages";
 import Education from "../../../components/forms/Education";
-import EmploymentHistory from "../../../components/forms/EmploymentHistory";
+import Internships from "../../../components/forms/Internships";
 import WebsiteLink from "../../../components/forms/WebsiteLink";
 import ECActivities from "../../../components/forms/ECActivities";
-import Internships from "../../../components/forms/Internships";
 import CustomSection from "../../../components/forms/CustomSection";
-import Courses from "../../../components/forms/Courses";
-import Skills from "../../../components/forms/Skills";
-import Languages from "../../../components/forms/Languages";
+import PersonalDetails from "../../../components/forms/PersonalDetails";
+import EmploymentHistory from "../../../components/forms/EmploymentHistory";
+import ProfessionalSummary from "../../../components/forms/ProfessionalSummary";
+import ResumeTitleBlock from "../../../components/forms/utils/ResumeTitleBlock";
 
 import {
 	MEDIA_QUERY_MD,
@@ -112,17 +112,17 @@ const SectionName = styled.div`
 `;
 
 const components = {
-	PersonalDetails: PersonalDetails,
-	ProfessionalSummary: ProfessionalSummary,
+	Skills: Skills,
+	Courses: Courses,
+	Languages: Languages,
 	Education: Education,
-	EmploymentHistory: EmploymentHistory,
+	Internships: Internships,
 	WebsiteLink: WebsiteLink,
 	ECActivities: ECActivities,
-	Internships: Internships,
 	CustomSection: CustomSection,
-	Courses: Courses,
-	Skills: Skills,
-	Languages: Languages,
+	PersonalDetails: PersonalDetails,
+	EmploymentHistory: EmploymentHistory,
+	ProfessionalSummary: ProfessionalSummary,
 };
 
 const blockData = {

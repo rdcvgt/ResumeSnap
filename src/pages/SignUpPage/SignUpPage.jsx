@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { collection, doc } from "firebase/firestore";
 
@@ -69,6 +70,9 @@ export default function HomePage() {
 
 	return (
 		<Root>
+			<Helmet>
+				<title>Create New Resume ∙ ResumeSnap</title>
+			</Helmet>
 			<NavForEntry />
 			{!isLogin && (
 				<>

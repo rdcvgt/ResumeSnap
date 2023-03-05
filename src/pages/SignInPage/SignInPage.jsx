@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
@@ -84,23 +85,31 @@ export default function SignInPage() {
 		useGoogle(setUid, setUserInfo, setError, setIsLogin);
 	};
 
+	console.log(userInfo);
+
 	useEffect(() => {
 		if (uid && userInfo) {
 			dispatch(addUserInfo(uid, userInfo));
 			navigate("/dashboard");
+			return;
 		}
 	}, [uid, userInfo, dispatch, navigate]);
 
 	useEffect(() => {
-		onAuthStateChanged(auth, (user) => {
-			if (user) {
-				navigate("/dashboard");
-			}
-		});
+		if (!isLogin) {
+			onAuthStateChanged(auth, (user) => {
+				if (user) {
+					navigate("/dashboard");
+				}
+			});
+		}
 	}, [dispatch, navigate]);
 
 	return (
 		<Root>
+			<Helmet>
+				<title>Log In ∙ ResumeSnap</title>
+			</Helmet>
 			<NavForEntry />
 			{!isLogin && (
 				<LoginArea>

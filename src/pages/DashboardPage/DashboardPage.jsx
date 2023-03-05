@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, doc } from "firebase/firestore";
@@ -157,6 +158,9 @@ export default function DashboardPage() {
 
 	return (
 		<Root>
+			<Helmet>
+				<title>Resume Builder ∙ ResumeSnap</title>
+			</Helmet>
 			<NavForDashboard />
 			<ResumesArea>
 				<TitleBlock>

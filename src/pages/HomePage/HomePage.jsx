@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 import NavForHome from "../../components/navbar/NavForHome";
 import HomeHeroArea from "./HomeHeroArea";
@@ -21,6 +21,9 @@ const Root = styled.div`
 export default function HomePage() {
 	return (
 		<Root>
+			<Helmet>
+				<title>ResumeSnap</title>
+			</Helmet>
 			<NavForHome />
 			<HomeHeroArea />
 			<TrustCommentArea />

@@ -7,7 +7,6 @@ export const NavbarStyle = css`
 	z-index: 10;
 	width: 100%;
 	height: 76px;
-	/* background-color: #fff; */
 	-webkit-backdrop-filter: saturate(180%) blur(8px);
 	backdrop-filter: saturate(180%) blur(8px);
 	background-color: rgba(256, 256, 256, 0.8);

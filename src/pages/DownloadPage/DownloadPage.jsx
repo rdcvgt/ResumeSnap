@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
+import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import { useParams, useNavigate } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, doc } from "firebase/firestore";
@@ -84,6 +85,9 @@ export default function DownloadPage() {
 
 	return (
 		<Root>
+			<Helmet>
+				<title>Downloading PDF ∙ ResumeSnap</title>
+			</Helmet>
 			<LoadingCard
 				text={"Hang tight, we are downloading your resume PDF"}
 			/>

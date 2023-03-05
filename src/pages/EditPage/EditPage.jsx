@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { Helmet } from "react-helmet";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
@@ -128,6 +129,9 @@ export default function EditPage() {
 
 	return (
 		<Root>
+			<Helmet>
+				<title>Resume Builder ∙ ResumeSnap</title>
+			</Helmet>
 			{isChoosingTemp && (
 				<NavbarArea
 					handleDownloadPdf={handleDownloadPdf}

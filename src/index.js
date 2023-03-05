@@ -20,6 +20,7 @@ root.render(
 					rel="stylesheet"
 					crossOrigin="anonymous"
 				/>
+				<meta name="author" content="Finley Peng" />
 			</Helmet>
 			<GlobalStyle />
 			<App />
