@@ -117,7 +117,6 @@ export default function UserMenu({ pageFrom }) {
 	const [isClickUser, setIsClickUser] = useState(false);
 	const [style, setStyle] = useState({});
 	const photoUrl = useSelector((state) => state.userInfo.photo);
-	console.log(photoUrl);
 
 	//當照片載入時，判斷照片的寬高，以最短邊作爲 50px 的比例進行照片尺寸調整
 	useEffect(() => {

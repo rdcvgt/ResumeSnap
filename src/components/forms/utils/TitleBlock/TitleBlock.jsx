@@ -3,38 +3,52 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { useDispatch } from "react-redux";
-import { updateBlockTitle } from "../../../../redux/reducers/formDataReducer";
 import ConfirmCard from "../../../cards/ConfirmCard";
+import { updateBlockTitle } from "../../../../redux/reducers/formDataReducer";
+
+import { MEDIA_QUERY_LG } from "../../../../utils/style/breakpotins";
 
 const Block = styled.div`
+	position: relative;
+	height: auto;
+`;
+
+const Container = styled.div`
 	display: flex;
 	align-items: center;
-	height: auto;
+	width: auto;
 `;
 
 const BlockTitle = styled.input`
 	min-width: 5em;
 	width: 20em;
 	max-width: 80%;
-	height: auto;
+	height: 40px;
 	margin: 10px 0;
-	padding: 0;
+	padding-left: 3px;
 	outline: none;
 	border: none;
+	border-radius: 5px;
 	${(props) => props.theme.font.blockTitle};
 	color: ${(props) => props.theme.color.neutral[90]};
 	caret-color: ${(props) => props.theme.color.blue[50]};
+	transition: all 0.3s;
+
+	&:hover {
+		border: 1px solid ${(props) => props.theme.color.neutral[10]};
+		transition: all 0.3s;
+	}
 `;
 
 const DragBlock = styled.div`
 	height: 20px;
 	width: 30px;
 	position: absolute;
-	left: 22px;
+	left: -35px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	opacity: 1;
+	opacity: 0;
 	transition: filter 0.3s, opacity 0.3s;
 
 	&:hover {
@@ -50,6 +64,10 @@ const DragBlock = styled.div`
 		opacity: 1;
 		transition: filter 0.3s, opacity 0.3s;
 		`}
+
+	${MEDIA_QUERY_LG} {
+		opacity: 1;
+	}
 `;
 
 const DragIcon = styled.img`
@@ -57,10 +75,10 @@ const DragIcon = styled.img`
 `;
 
 const ToolIcon = styled.img`
-	max-height: 15px;
+	max-height: 17px;
 	opacity: 0;
 	transition: opacity 0.3s, filter 0.3s;
-	margin-right: 10px;
+	margin-left: 15px;
 	cursor: pointer;
 	&:hover {
 		filter: brightness(1);
@@ -73,6 +91,10 @@ const ToolIcon = styled.img`
 		filter: brightness(1.4);
 		transition: all 0.3s;
 		`}
+
+	${MEDIA_QUERY_LG} {
+		opacity: 1;
+	}
 `;
 
 TitleBlock.propTypes = {
@@ -122,44 +144,46 @@ function TitleBlock({
 				onMouseLeave={() => {
 					setIsHover(false);
 				}}>
-				{!hideDraggableIcon && (
-					<DragBlock isHover={isHover} {...dragHandleProps}>
-						<DragIcon src="/images/icon/drag.png" />
-					</DragBlock>
-				)}
-				<BlockTitle
-					type="text"
-					value={blockTitle}
-					onChange={handleBlockTitleChange}
-					ref={blockTitleRef}
-				/>
-				<ToolIcon
-					src="/images/icon/edit.png"
-					onClick={handleResumeTitleIconClick}
-					isHover={isHover}
-				/>
-				{!hideDeleteIcon && (
+				<Container>
+					{!hideDraggableIcon && (
+						<DragBlock isHover={isHover} {...dragHandleProps}>
+							<DragIcon src="/images/icon/drag.png" />
+						</DragBlock>
+					)}
+					<BlockTitle
+						type="text"
+						value={blockTitle}
+						onChange={handleBlockTitleChange}
+						ref={blockTitleRef}
+					/>
 					<ToolIcon
-						src="/images/icon/delete.png"
-						onClick={() => {
-							setIsClickDelete(true);
-						}}
+						src="/images/icon/edit.png"
+						onClick={handleResumeTitleIconClick}
 						isHover={isHover}
 					/>
-				)}
-				{!hideDeleteIcon && isClickDelete && (
-					<ConfirmCard
-						text={{
-							title: "Delete Session",
-							description:
-								"Are you sure you want to delete this section?",
-							leftButton: "Delete",
-							rightButton: "Cancel",
-						}}
-						setIsClickDelete={setIsClickDelete}
-						handleDeleteButtonClick={handleDeleteButtonClick}
-					/>
-				)}
+					{!hideDeleteIcon && (
+						<ToolIcon
+							src="/images/icon/delete.png"
+							onClick={() => {
+								setIsClickDelete(true);
+							}}
+							isHover={isHover}
+						/>
+					)}
+					{!hideDeleteIcon && isClickDelete && (
+						<ConfirmCard
+							text={{
+								title: "Delete Session",
+								description:
+									"Are you sure you want to delete this section?",
+								leftButton: "Delete",
+								rightButton: "Cancel",
+							}}
+							setIsClickDelete={setIsClickDelete}
+							handleDeleteButtonClick={handleDeleteButtonClick}
+						/>
+					)}
+				</Container>
 			</Block>
 		</>
 	);

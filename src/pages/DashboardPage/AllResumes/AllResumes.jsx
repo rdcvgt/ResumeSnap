@@ -13,6 +13,7 @@ const Resume = styled.div`
 	display: flex;
 	align-items: center;
 	margin-bottom: 50px;
+	position: relative;
 
 	${MEDIA_QUERY_LG} {
 		width: 100%;
@@ -46,18 +47,30 @@ const PreviewImg = styled.img`
 
 const ResumeFunctionArea = styled.div`
 	height: 100%;
-	position: relative;
+	position: absolute;
+	left: 210px;
+	width: 300px;
+
+	${MEDIA_QUERY_MD} {
+		left: 160px;
+		width: 50%;
+		height: 200px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
 `;
 
 const MainInfoArea = styled.div`
 	height: 20%;
-	position: relative;
-	top: 0;
-	left: 0;
+	width: 100%;
 `;
 
 const ResumeName = styled.div`
 	${(props) => props.theme.font.title};
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 `;
 
 const UpdatedAt = styled.div`
@@ -81,6 +94,7 @@ const FunctionButton = styled.div`
 	cursor: pointer;
 	${(props) => props.theme.font.lightButton};
 	transition: all 0.3s;
+
 	&:hover {
 		color: ${(props) => props.theme.color.blue[50]};
 		transition: all 0.3s;

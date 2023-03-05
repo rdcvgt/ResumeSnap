@@ -85,6 +85,7 @@ const BackButton = styled.div`
 	position: absolute;
 	top: 20px;
 	left: 20px;
+	cursor: pointer;
 `;
 
 const LeftIcon = styled.img`
