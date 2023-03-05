@@ -29,6 +29,7 @@ export const SecondaryButtonStyle = css`
 	color: #000;
 
 	&:hover {
+		transition: all 0.3s;
 		border: 1px solid ${(props) => props.theme.color.blue[50]};
 		color: ${(props) => props.theme.color.blue[50]};
 		background-color: #fff;

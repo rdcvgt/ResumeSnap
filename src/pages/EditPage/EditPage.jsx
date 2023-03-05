@@ -15,8 +15,7 @@ import { getResume } from "../../utils/firebase/database";
 import { auth, db } from "../../utils/firebase/firebaseInit";
 import { addResumeData } from "../../redux/reducers/formDataReducer";
 import UserMenu from "../../components/navbar/UserMenu";
-
-import { MEDIA_QUERY_MD, MEDIA_QUERY_LG } from "../../utils/style/breakpotins";
+import { MEDIA_QUERY_LG } from "../../utils/style/breakpotins";
 
 const Root = styled.div`
 	width: 100%;
