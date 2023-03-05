@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
 
 import EmailInputArea from "./EmailInputArea";
@@ -85,7 +85,7 @@ export default function SignInPage() {
 		useGoogle(setUid, setUserInfo, setError, setIsLogin);
 	};
 
-	console.log(userInfo);
+	const userEmail = useSelector((state) => state.userInfo.email);
 
 	useEffect(() => {
 		if (uid && userInfo) {
@@ -95,13 +95,14 @@ export default function SignInPage() {
 		}
 	}, [uid, userInfo, dispatch, navigate]);
 
+	//若使用者已登入則返回 dashboard
 	useEffect(() => {
 		onAuthStateChanged(auth, (user) => {
-			if (user) {
+			if (user && userEmail) {
 				navigate("/dashboard");
 			}
 		});
-	}, [dispatch, navigate]);
+	}, [dispatch, navigate, userEmail]);
 
 	return (
 		<Root>
