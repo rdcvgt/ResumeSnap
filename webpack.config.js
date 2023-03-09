@@ -1,5 +1,6 @@
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
 	mode: "development",
@@ -7,12 +8,19 @@ module.exports = {
 	output: {
 		filename: "main.js",
 		path: path.resolve(__dirname, "dist"),
+		// publicPath: "/",
 	},
-	plugins: [new Dotenv()],
+	// plugins: [
+	// 	new HtmlWebpackPlugin({
+	// 		template: "dist/index.html",
+	// 		favicon: "dist/favicon.ico",
+	// 	}),
+	// ],
 	//DevServer 設定
 	devServer: {
 		static: "./dist",
 		historyApiFallback: true,
+		hot: true,
 	},
 	module: {
 		rules: [

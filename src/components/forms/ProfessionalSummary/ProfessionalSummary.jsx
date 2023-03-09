@@ -1,5 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import { useSelector, useDispatch } from "react-redux";
+import "@wangeditor/editor/dist/css/style.css";
+import { i18nChangeLanguage } from "@wangeditor/editor";
+import { Editor, Toolbar } from "@wangeditor/editor-for-react";
+
+import TitleBlock from "../utils/TitleBlock";
+import { updateInputData } from "../../../redux/reducers/formDataReducer";
+
+//編輯器配置
+i18nChangeLanguage("en");
+const toolbarConfig = {};
+toolbarConfig.toolbarKeys = [
+	"bold",
+	"italic",
+	"underline",
+	"through",
+	"|",
+	"bulletedList",
+	"numberedList",
+	"|",
+	"insertLink",
+];
+
+//編輯器參數
+const editorConfig = {
+	placeholder: "",
+	scroll: true,
+	autoFocus: true,
+	customPaste: (editor, event) => {
+		event.preventDefault();
+		const text = event.clipboardData.getData("text/plain");
+		editor.insertText(text);
+	},
+};
 
 const BlockContainer = styled.div`
 	width: 90%;
@@ -7,47 +42,96 @@ const BlockContainer = styled.div`
 	margin: 50px auto;
 `;
 
-const BlockTitle = styled.div`
-	margin-bottom: 20px;
-	${(props) => props.theme.font.blockTitle};
-	color: ${(props) => props.theme.color.neutral[90]};
-`;
-
 const BlockDescription = styled.div`
 	${(props) => props.theme.input.title};
 	line-height: 1.5em;
 	height: auto;
-	margin: 20px 0 20px 0;
+	margin: 0 0 20px 0;
+`;
+
+const EditorBlock = styled.div`
+	z-index: 100;
+	padding-top: 5px;
+	border-radius: 5px;
+	background-color: ${(props) => props.theme.color.neutral[10]};
+	cursor: text;
 `;
 
 const LongInputBox = styled.div``;
 
-const InputEditorBox = styled.div``;
+ProfessionalSummary.propTypes = {
+	blockId: PropTypes.string,
+};
 
-const LongInput = styled.textarea`
-	${(props) => props.theme.font.content};
-	border: 0;
-	width: 100%;
-	height: 200px;
-	outline: none;
-	border-radius: 5px;
-	background-color: ${(props) => props.theme.color.indigo[10]};
-	padding: 20px;
-	resize: none;
-`;
+export default function ProfessionalSummary({ blockId }) {
+	const dispatch = useDispatch();
+	const [editor, setEditor] = useState(null); // 存储 editor
 
-export default function ProfessionalSummary() {
+	//取得 redux data
+	const [blockData] = useSelector((state) =>
+		state.formData.formBlocks.filter((block) => block.id === blockId)
+	);
+	const blockTitle = blockData.content.blockTitle || "";
+	const inputData = blockData.content.inputData;
+	const inputHtmlText = inputData.inputHtml;
+	const [html, setHtml] = useState(inputHtmlText);
+
+	// 即時銷毀 editor
+	useEffect(() => {
+		return () => {
+			if (editor == null) return;
+			editor.destroy();
+			setEditor(null);
+		};
+	}, [editor]);
+
+	//儲存以輸入內容
+	useEffect(() => {
+		handleEditorInput(html);
+	}, [html]);
+
+	const handleEditorInput = (inputHtml) => {
+		dispatch(
+			updateInputData({
+				blockName: "ProfessionalSummary",
+				inputTitle: "inputHtml",
+				inputValue: inputHtml,
+			})
+		);
+	};
+
 	return (
 		<BlockContainer>
-			<BlockTitle>個人簡介</BlockTitle>
+			<TitleBlock
+				blockTitle={blockTitle}
+				blockId={blockId}
+				hideDraggableIcon={true}
+				hideDeleteIcon={true}
+			/>
 			<BlockDescription>
-				可以寫上 2 到 4 句話讓查看履歷的人對你產生興趣，
-				像是闡述你的個人特質或過去經驗，
-				最重要的是記得提及你的亮眼成就與專業技能！
+				Write 2-4 short & energetic sentences to interest the reader!
+				Mention your role, experience & most importantly - your biggest
+				achievements, best qualities and skills.
 			</BlockDescription>
 			<LongInputBox>
-				<InputEditorBox></InputEditorBox>
-				<LongInput></LongInput>
+				<EditorBlock>
+					<Toolbar
+						editor={editor}
+						defaultConfig={toolbarConfig}
+						mode="simple"
+					/>
+					<Editor
+						defaultConfig={editorConfig}
+						value={inputHtmlText}
+						onCreated={setEditor}
+						onChange={(editor) => setHtml(editor.getHtml())}
+						mode="simple"
+						style={{
+							minHeight: "150px",
+							fontSize: "14px",
+						}}
+					/>
+				</EditorBlock>
 			</LongInputBox>
 		</BlockContainer>
 	);
