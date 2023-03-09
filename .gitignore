@@ -69,4 +69,4 @@ node_modules/
 .DS_store
 
 #dist
-/dist
+dist/
