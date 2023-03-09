@@ -67,3 +67,6 @@ node_modules/
 
 #editor files
 .DS_store
+
+#dist
+/dist
