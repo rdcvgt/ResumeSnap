@@ -119,7 +119,7 @@ export default function RenderTemplate({
 	return (
 		<>
 			<PreviewContainer>
-				{!imgUrl && <PreloadArea />}
+				{!imgUrl && pageFrom === "edit" && <PreloadArea />}
 				{imgUrl && pageFrom === "edit" && (
 					<Img src={imgUrl} alt="圖片" />
 				)}

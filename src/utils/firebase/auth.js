@@ -2,8 +2,6 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	signInWithPopup,
-	signInWithRedirect,
-	getRedirectResult,
 } from "firebase/auth";
 import { auth, provider } from "./firebaseInit";
 import { db } from "../../utils/firebase/firebaseInit";

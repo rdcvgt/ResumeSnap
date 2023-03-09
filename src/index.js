@@ -25,6 +25,11 @@ root.render(
 					crossOrigin="anonymous"
 				/>
 				<meta name="author" content="Finley Peng" />
+				<link
+					rel="shortcut icon"
+					href="/dist/favicon.ico"
+					type="image/x-icon"
+				/>
 			</Helmet>
 			<GlobalStyle />
 			<PersistGate persistor={persistor}>
