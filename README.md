@@ -12,15 +12,15 @@ Test password: test123
 
 
 # Demo
-## Easily edit online
+### Easily edit online
 
 ![showCaseArea_move](https://user-images.githubusercontent.com/75289113/224472768-d11205cc-09aa-488f-93b8-4564c5be25f7.gif)
 
-## Custom resume style
+### Custom resume style
 
 ![showCaseArea_pick](https://user-images.githubusercontent.com/75289113/224472817-025fc7bc-5358-4680-9767-68a77902bd61.gif)
 
-## Export to anything
+### Export to anything
 
 ![showCaseArea_export](https://user-images.githubusercontent.com/75289113/224472835-120ab660-d9ea-402a-9b62-62b55fac7994.gif)
 
@@ -37,3 +37,31 @@ Test password: test123
 - Customize resume templates and colors to make your resume unique and eye-catching
 - Support exporting your resumes as PDF files
 - Support sharing a URL link to your public resume page
+
+# Core Tools and Technologies
+### Front-End
+- **Framework**: React(Hook), JSX
+- **Styling**: styled-component, CSS
+- **Props Management**: proptypes
+- **Router Manegemant**: react-router-dom
+- **State Management**: Redux Toolkit, React-Redux, Redux-persist
+- **Code Formatter**: ESLint(config-react-app), Prettier
+- **Loader**: Babel-loader, Style-loader, CSS-loader
+- **Module Bundler**: webpack
+
+### Third-Party Library
+- react-beautiful-dnd
+- html2canvas
+- jspdf
+- wangeditor
+
+### Back-End
+**Firebase (backend-as-a-service)**
+- Authentication
+- FireStore Database
+- Storage
+- Hosting
+
+
+# Front-End Techniques
+### React Components
