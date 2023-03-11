@@ -63,5 +63,13 @@ Test password: test123
 - Hosting
 
 
-# Front-End Techniques
-### React Components
+# Techniques
+### React Components Design
+<img width="1199" alt="截圖 2023-03-12 上午12 57 29" src="https://user-images.githubusercontent.com/75289113/224498342-4c04bcd7-9d23-44f9-87d9-ba5f7983ad57.png">
+
+### Resume Data Flow
+<img width="1605" alt="截圖 2023-03-12 上午2 01 29" src="https://user-images.githubusercontent.com/75289113/224504432-eeeaf24a-91d1-471f-9c69-f6be6c3578a4.png">
+
+### User Info Data Flow
+<img width="1031" alt="截圖 2023-03-12 上午2 35 01" src="https://user-images.githubusercontent.com/75289113/224505753-47a4ec34-5c67-41a7-9602-7d9aeea8afb1.png">
+
