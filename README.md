@@ -47,7 +47,7 @@ Test password: test123
 - Automatic pagination when content exceeds the length of the page for optimal readability
 - Customize resume templates and colors to make your resume unique and eye-catching
 - Support exporting your resumes as PDF files
-- Support sharing a URL link to your public resume page
+- Support sharing a URL link to your public resume page ([example](https://resumesnap.web.app/share/WeQw0Vo9WTbMrLXMZILU))
 
 # Core Tools and Technologies
 [(back to top)](#table-of-contents)
