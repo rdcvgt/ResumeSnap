@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { collection, doc, Timestamp } from "firebase/firestore";
 import { db } from "../../../utils/firebase/firebaseInit";
-import { updateResumeData } from "../../../utils/firebase/database";
+import { updateWholeResumeData } from "../../../redux/reducers/formDataReducer";
 import {
 	updateDataStatus,
 	updatePreviewStatus,
@@ -19,15 +19,7 @@ export default function useUpdateResumeData(uid, resumeId) {
 		if (uid && resumeId) {
 			clearTimeout(timer);
 			const newTimer = setTimeout(() => {
-				const timestamp = Timestamp.now().toMillis();
-				const entireResumeData = {
-					...resumeData,
-					updatedAt: timestamp,
-				};
-				const userRef = doc(db, "users", uid);
-				const resumesRef = collection(userRef, "resumes");
-				updateResumeData(resumesRef, resumeId, entireResumeData);
-				dispatch(updateDataStatus({ status: false }));
+				dispatch(updateWholeResumeData(uid, resumeId));
 			}, 700);
 			setTimer(newTimer);
 		}

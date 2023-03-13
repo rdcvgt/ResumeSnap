@@ -10,8 +10,16 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebaseInit";
 
-export function updateUserData(userInfoRef, userInfo) {
-	setDoc(doc(userInfoRef, "info"), userInfo);
+export async function updateUserData(userInfoRef, userInfo) {
+	return new Promise((resolve, reject) => {
+		setDoc(doc(userInfoRef, "info"), userInfo)
+			.then(() => {
+				resolve();
+			})
+			.catch((err) => {
+				reject(err);
+			});
+	});
 }
 
 export async function getCurrentUserInfo(userInfoRef) {

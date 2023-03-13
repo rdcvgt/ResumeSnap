@@ -4,7 +4,6 @@ import { Helmet } from "react-helmet";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
-import { collection, doc } from "firebase/firestore";
 
 import NavbarArea from "./NavbarArea";
 import ResumeFormArea from "./ResumeFormArea";
@@ -12,9 +11,8 @@ import ResumePreviewArea from "./ResumePreviewArea";
 import ResumeTemplateArea from "./ResumeTemplateArea";
 import useUpdateResumeData from "./hooks/useUpdateResumeData";
 
-import { getResume } from "../../utils/firebase/database";
-import { auth, db } from "../../utils/firebase/firebaseInit";
-import { addResumeData } from "../../redux/reducers/formDataReducer";
+import { auth } from "../../utils/firebase/firebaseInit";
+import { getResumeData } from "../../redux/reducers/formDataReducer";
 import UserMenu from "../../components/navbar/UserMenu";
 import { MEDIA_QUERY_LG } from "../../utils/style/breakpotins";
 
@@ -125,16 +123,7 @@ export default function EditPage() {
 			}
 			const userId = user.uid;
 			setUid(userId);
-			const userRef = doc(db, "users", userId);
-			const resumesRef = collection(userRef, "resumes");
-			const resumeData = getResume(resumesRef, resumeId);
-			resumeData.then((data) => {
-				if (!data) {
-					navigate("/dashboard");
-					return;
-				}
-				dispatch(addResumeData({ resumeData: data }));
-			});
+			dispatch(getResumeData(userId, resumeId));
 		});
 	}, [dispatch, navigate, resumeId]);
 

@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import uuid from "react-uuid";
-import { collection, doc } from "firebase/firestore";
-
+import { collection, doc, Timestamp } from "firebase/firestore";
 import { db } from "../../utils/firebase/firebaseInit";
-import { getResume } from "../../utils/firebase/database";
+import { getResume, updateResumeData } from "../../utils/firebase/database";
+import { updateDataStatus } from "../reducers/dataStatusReducer";
 
 export const formDataSlice = createSlice({
 	name: "formData",
 	initialState: {
 		isDefaultData: true,
+		dataSetTimeOutId: null,
 		resumeName: "First Resume",
 		template: "Sydney",
 		color: "null",
@@ -102,9 +103,7 @@ export const formDataSlice = createSlice({
 
 		updateBlockTitle: (state, action) => {
 			const { blockId, blockTitle } = action.payload;
-			const index = state.formBlocks.findIndex(
-				(block) => block.id === blockId
-			);
+			const index = state.formBlocks.findIndex((block) => block.id === blockId);
 			state.formBlocks[index].content.blockTitle = blockTitle;
 		},
 		updateInputData: (state, action) => {
@@ -121,9 +120,7 @@ export const formDataSlice = createSlice({
 
 		addItem: (state, action) => {
 			const { blockId } = action.payload;
-			const index = state.formBlocks.findIndex(
-				(block) => block.id === blockId
-			);
+			const index = state.formBlocks.findIndex((block) => block.id === blockId);
 			const prevInputData = state.formBlocks[index].content.itemData;
 			state.formBlocks[index].content.itemData = [
 				...prevInputData,
@@ -135,9 +132,7 @@ export const formDataSlice = createSlice({
 		},
 		deleteItem: (state, action) => {
 			const { blockId, itemId } = action.payload;
-			const index = state.formBlocks.findIndex(
-				(block) => block.id === blockId
-			);
+			const index = state.formBlocks.findIndex((block) => block.id === blockId);
 			const newItems = state.formBlocks[index].content.itemData.filter(
 				(item) => item.id !== itemId
 			);
@@ -147,12 +142,10 @@ export const formDataSlice = createSlice({
 		updateItemData: (state, action) => {
 			const { blockId, itemId, itemInputTitle, itemInputValue } =
 				action.payload;
-			const index = state.formBlocks.findIndex(
-				(block) => block.id === blockId
+			const index = state.formBlocks.findIndex((block) => block.id === blockId);
+			const itemIndex = state.formBlocks[index].content.itemData.findIndex(
+				(item) => item.id === itemId
 			);
-			const itemIndex = state.formBlocks[
-				index
-			].content.itemData.findIndex((item) => item.id === itemId);
 
 			const prevItemData =
 				state.formBlocks[index].content.itemData[itemIndex].content;
@@ -169,10 +162,12 @@ export const formDataSlice = createSlice({
 		},
 		updateItemOrder: (state, action) => {
 			const { blockId, newItemOrder } = action.payload;
-			const index = state.formBlocks.findIndex(
-				(block) => block.id === blockId
-			);
+			const index = state.formBlocks.findIndex((block) => block.id === blockId);
 			state.formBlocks[index].content.itemData = newItemOrder;
+		},
+		updateDataSetTimeOutId: (state, action) => {
+			const { timer } = action.payload;
+			state.formBlocks.dataSetTimeOutId = timer;
 		},
 	},
 });
@@ -191,6 +186,7 @@ export const {
 	updateItemData,
 	updateBlockOrder,
 	updateItemOrder,
+	updateDataSetTimeOutId,
 } = formDataSlice.actions;
 
 export default formDataSlice.reducer;
@@ -204,3 +200,18 @@ export const getResumeData = (uid, resumeId) => (dispatch) => {
 		dispatch(addResumeData({ resumeData: data }));
 	});
 };
+
+//更新 resume data 到 firebase
+export const updateWholeResumeData =
+	(uid, resumeId) => async (dispatch, getState) => {
+		const timestamp = Timestamp.now().toMillis();
+		const { formData } = getState();
+		const entireResumeData = {
+			...formData,
+			updatedAt: timestamp,
+		};
+		const userRef = doc(db, "users", uid);
+		const resumesRef = collection(userRef, "resumes");
+		await updateResumeData(resumesRef, resumeId, entireResumeData);
+		dispatch(updateDataStatus({ status: false }));
+	};
