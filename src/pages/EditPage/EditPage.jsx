@@ -123,9 +123,14 @@ export default function EditPage() {
 			}
 			const userId = user.uid;
 			setUid(userId);
-			dispatch(getResumeData(userId, resumeId));
 		});
-	}, [dispatch, navigate, resumeId]);
+	}, [dispatch, navigate]);
+
+	useEffect(() => {
+		if (uid && resumeId) {
+			dispatch(getResumeData(uid, resumeId));
+		}
+	}, [dispatch, uid, resumeId]);
 
 	//若履歷資料更動，更新到 database
 	useUpdateResumeData(uid, resumeId);
@@ -134,7 +139,6 @@ export default function EditPage() {
 	const template = useSelector((state) => state.formData.template);
 	useEffect(() => {
 		if (template) {
-			console.log(template, "template");
 			setTempColors(templatesColorOrder[template]);
 		}
 	}, [template]);

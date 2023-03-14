@@ -76,7 +76,6 @@ export default function SignInPage() {
 	const navigate = useNavigate();
 
 	const [uid, setUid] = useState(null);
-	// const [userInfo, setUserInfo] = useState(null);
 	const [isLogin, setIsLogin] = useState(false);
 	const [error, setError] = useState(null);
 	const [loginWithEmail, setLoginWithEmail] = useState(false);

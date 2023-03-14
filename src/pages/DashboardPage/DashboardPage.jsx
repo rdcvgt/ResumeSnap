@@ -127,7 +127,6 @@ export default function DashboardPage() {
 	//使用者點擊新增履歷按鈕，導向新履歷的 /edit 頁面
 	const handleNewResumeClick = () => {
 		const resumeConfig = newResumeStructure(userInfo);
-		console.log(resumeConfig, "resumeConfig");
 		const userRef = doc(db, "users", uid);
 		const resumesRef = collection(userRef, "resumes");
 		const newResumeId = createFirstResume(resumesRef, resumeConfig);

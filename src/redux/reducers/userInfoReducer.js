@@ -48,7 +48,6 @@ export default userInfoSlice.reducer;
 export const addNewUserInfo = (uid, userInfo) => async (dispatch) => {
 	const userRef = doc(db, "users", uid);
 	const userInfoRef = collection(userRef, "userInfo");
-	console.log(userInfo, "addNewUserInfo");
 	await updateUserData(userInfoRef, userInfo);
 	dispatch(updateUserInfo({ userInfo }));
 };

@@ -39,9 +39,6 @@ export default function SharePage() {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const userInfo = useSelector((state) => state.userInfo);
-	console.log(userInfo);
-
 	const currentTemplate = useSelector((state) => state.formData.template);
 
 	const Template = useMemo(() => {
@@ -65,10 +62,7 @@ export default function SharePage() {
 	return (
 		<Root>
 			<Helmet>
-				<title>
-					{`${userInfo.firstName}`} {`${userInfo.lastName}`} ∙
-					ResumeSnap
-				</title>
+				<title>ResumeSnap</title>
 			</Helmet>
 			<Body>
 				<Logo src="/images/logo/logo.png" />

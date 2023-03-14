@@ -3,19 +3,15 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { collection, doc } from "firebase/firestore";
 
 import UserInfoArea from "./UserInfoArea";
 import ThirdPartyArea from "./ThirdPartyArea";
 import RegistrationArea from "./RegistrationArea";
 
-import { db, auth } from "../../utils/firebase/firebaseInit";
-import { createFirstResume } from "../../utils/firebase/database";
 import { useEmailSignUp, useGoogle } from "../../utils/firebase/auth";
 
 import LoadingCard from "../../components/cards/LoadingCard";
 import { addNewUserInfo } from "../../redux/reducers/userInfoReducer";
-import newResumeStructure from "../../utils/misc/newResumeStructure";
 import NavForEntry from "../../components/navbar/NavForEntry";
 
 const Root = styled.div``;
@@ -55,7 +51,6 @@ export default function HomePage() {
 
 	useEffect(() => {
 		if (uid && userInfo) {
-			console.log(userInfo);
 			dispatch(addNewUserInfo(uid, userInfo));
 			navigate("/dashboard");
 		}

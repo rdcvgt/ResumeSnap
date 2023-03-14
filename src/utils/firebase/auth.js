@@ -90,6 +90,7 @@ export function useEmailSignIn(email, password, setUid, setError, setIsLogin) {
 }
 
 export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
+	console.log(setUserInfo, "useGoogle");
 	setIsLogin(true);
 	signInWithPopup(auth, provider)
 		.then((result) => {
@@ -114,20 +115,25 @@ export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
 					return;
 				}
 
-				//新使用者
-				const userNameList = user.displayName.split(" ");
-				const email = user.email;
-				const firstName = userNameList[0];
-				const lastName = userNameList[1] ? userNameList[1] : "";
+				console.log(userInfo, "useGoogle");
+				if (!userInfo) {
+					//新使用者
+					const userNameList = user.displayName.split(" ");
+					const email = user.email;
+					const firstName = userNameList[0];
+					const lastName = userNameList[1] ? userNameList[1] : "";
 
-				const newUserInfo = {
-					email,
-					firstName,
-					lastName,
-					photo: null,
-					photoResumeId: null,
-				};
-				setUserInfo(newUserInfo);
+					const newUserInfo = {
+						email,
+						firstName,
+						lastName,
+						photo: null,
+						photoResumeId: null,
+					};
+
+					console.log(newUserInfo, "useGoogle");
+					setUserInfo(newUserInfo);
+				}
 			});
 		})
 		.catch((error) => {
