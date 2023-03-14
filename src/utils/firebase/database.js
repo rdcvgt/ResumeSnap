@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebaseInit";
 
-export async function updateUserData(userInfoRef, userInfo) {
+export function updateUserData(userInfoRef, userInfo) {
 	return new Promise((resolve, reject) => {
 		setDoc(doc(userInfoRef, "info"), userInfo)
 			.then(() => {
@@ -23,11 +23,8 @@ export async function updateUserData(userInfoRef, userInfo) {
 }
 
 export async function getCurrentUserInfo(userInfoRef) {
-	let userInfo = null;
 	const infoRef = await getDocs(userInfoRef);
-	infoRef.forEach((data) => {
-		userInfo = data.data();
-	});
+	const userInfo = infoRef.docs.map((data) => data.data());
 	return userInfo;
 }
 
@@ -70,7 +67,15 @@ export async function deleteResume(resumesRef, deleteResumeId) {
 }
 
 export function updateResumeData(resumesRef, resumeId, entireResumeData) {
-	setDoc(doc(resumesRef, resumeId), entireResumeData);
+	return new Promise((resolve, reject) => {
+		setDoc(doc(resumesRef, resumeId), entireResumeData)
+			.then(() => {
+				resolve();
+			})
+			.catch((err) => {
+				reject(err);
+			});
+	});
 }
 
 export async function checkSharePageResumeId(resumeId) {

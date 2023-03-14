@@ -3,10 +3,13 @@ import {
 	signInWithEmailAndPassword,
 	signInWithPopup,
 } from "firebase/auth";
+import { useDispatch } from "react-redux";
 import { auth, provider } from "./firebaseInit";
 import { db } from "../../utils/firebase/firebaseInit";
 import { collection, doc } from "firebase/firestore";
 import { getCurrentUserInfo } from "../firebase/database";
+
+import { updateUserInfo } from "../../redux/reducers/userInfoReducer";
 
 export function useFirstNameValidation(firstName, firstNameError) {
 	const empty = "This field is required";
@@ -72,27 +75,12 @@ export function useEmailSignUp(email, password, setUid, setError, setIsLogin) {
 		});
 }
 
-export function useEmailSignIn(
-	email,
-	password,
-	setUid,
-	setUserInfo,
-	setError,
-	setIsLogin
-) {
+export function useEmailSignIn(email, password, setUid, setError, setIsLogin) {
 	setIsLogin(true);
 	signInWithEmailAndPassword(auth, email, password)
 		.then((userCredential) => {
 			const userId = userCredential.user.uid;
 			setUid(userId);
-
-			//從資料庫獲取使用者資訊
-			const userRef = doc(db, "users", userId);
-			const userInfoRef = collection(userRef, "userInfo");
-			const userInfoPromise = getCurrentUserInfo(userInfoRef);
-			userInfoPromise.then((userInfo) => {
-				setUserInfo(userInfo);
-			});
 		})
 		.catch((error) => {
 			const errorMessage = error.message.split(":")[1];
@@ -108,16 +96,25 @@ export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
 			// The signed-in user info.
 			const user = result.user;
 			const uid = user.uid;
+			setUid(uid);
 
 			const userRef = doc(db, "users", uid);
 			const userInfoRef = collection(userRef, "userInfo");
 			const userInfoPromise = getCurrentUserInfo(userInfoRef);
-			userInfoPromise.then((userInfo) => {
-				if (userInfo) {
+			userInfoPromise.then((data) => {
+				const [userInfo] = data;
+				//已有帳號之使用者在登入頁登入
+				if (userInfo && !setUserInfo) {
+					return;
+				}
+
+				//已有帳號之使用者在註冊頁登入
+				if (userInfo && setUserInfo) {
 					setUserInfo(userInfo);
 					return;
 				}
 
+				//新使用者
 				const userNameList = user.displayName.split(" ");
 				const email = user.email;
 				const firstName = userNameList[0];
@@ -130,11 +127,8 @@ export function useGoogle(setUid, setUserInfo, setError, setIsLogin) {
 					photo: null,
 					photoResumeId: null,
 				};
-				console.log(newUserInfo, "useGoogle");
 				setUserInfo(newUserInfo);
 			});
-
-			setUid(uid);
 		})
 		.catch((error) => {
 			const errorMessage = error.message.split(":")[1];

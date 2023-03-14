@@ -14,7 +14,7 @@ import { createFirstResume } from "../../utils/firebase/database";
 import { useEmailSignUp, useGoogle } from "../../utils/firebase/auth";
 
 import LoadingCard from "../../components/cards/LoadingCard";
-import { addUserInfo } from "../../redux/reducers/userInfoReducer";
+import { addNewUserInfo } from "../../redux/reducers/userInfoReducer";
 import newResumeStructure from "../../utils/misc/newResumeStructure";
 import NavForEntry from "../../components/navbar/NavForEntry";
 
@@ -30,7 +30,7 @@ export default function HomePage() {
 	const [lastName, setLastName] = useState("");
 
 	const [uid, setUid] = useState(null);
-	const [resumeId, setResumeId] = useState(null);
+	// const [resumeId, setResumeId] = useState(null);
 	const [userInfo, setUserInfo] = useState(null);
 	const [isLogin, setIsLogin] = useState(false);
 	const [error, setError] = useState(null);
@@ -55,25 +55,11 @@ export default function HomePage() {
 
 	useEffect(() => {
 		if (uid && userInfo) {
-			console.log(uid, userInfo, "signup");
-			const resumeConfig = newResumeStructure(userInfo);
-			const userRef = doc(db, "users", uid);
-			const resumesRef = collection(userRef, "resumes");
-
-			dispatch(addUserInfo(uid, userInfo));
-			const newResumeId = createFirstResume(resumesRef, resumeConfig);
-			newResumeId.then((id) => {
-				setResumeId(id);
-			});
+			console.log(userInfo);
+			dispatch(addNewUserInfo(uid, userInfo));
+			navigate("/dashboard");
 		}
 	}, [uid, userInfo]);
-
-	useEffect(() => {
-		if (resumeId) {
-			navigate(`/edit/${resumeId}`);
-			return;
-		}
-	}, [resumeId, navigate]);
 
 	return (
 		<Root>

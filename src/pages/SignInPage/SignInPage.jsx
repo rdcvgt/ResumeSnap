@@ -9,7 +9,7 @@ import EmailInputArea from "./EmailInputArea";
 import { auth } from "../../utils/firebase/firebaseInit";
 
 import { useGoogle } from "../../utils/firebase/auth";
-import { addUserInfo } from "../../redux/reducers/userInfoReducer";
+import { addCurrentUserInfo } from "../../redux/reducers/userInfoReducer";
 
 import {
 	DefaultButtonStyle,
@@ -76,24 +76,24 @@ export default function SignInPage() {
 	const navigate = useNavigate();
 
 	const [uid, setUid] = useState(null);
-	const [userInfo, setUserInfo] = useState(null);
+	// const [userInfo, setUserInfo] = useState(null);
 	const [isLogin, setIsLogin] = useState(false);
 	const [error, setError] = useState(null);
 	const [loginWithEmail, setLoginWithEmail] = useState(false);
 
 	const HandleGoogleButtonClick = () => {
-		useGoogle(setUid, setUserInfo, setError, setIsLogin);
+		useGoogle(setUid, null, setError, setIsLogin);
 	};
 
 	const userEmail = useSelector((state) => state.userInfo.email);
 
 	useEffect(() => {
-		if (uid && userInfo) {
-			dispatch(addUserInfo(uid, userInfo));
+		if (uid) {
+			dispatch(addCurrentUserInfo(uid));
 			navigate("/dashboard");
 			return;
 		}
-	}, [uid, userInfo, dispatch, navigate]);
+	}, [uid, dispatch, navigate]);
 
 	//若使用者已登入則返回 dashboard
 	useEffect(() => {
@@ -135,7 +135,6 @@ export default function SignInPage() {
 					{loginWithEmail && (
 						<EmailInputArea
 							setUid={setUid}
-							setUserInfo={setUserInfo}
 							setIsLogin={setIsLogin}
 							setLoginWithEmail={setLoginWithEmail}
 						/>

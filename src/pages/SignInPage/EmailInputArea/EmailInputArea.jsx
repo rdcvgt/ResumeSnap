@@ -79,14 +79,12 @@ const SignUpButton = styled.a`
 
 EmailInputArea.propTypes = {
 	setUid: PropTypes.func,
-	setUserInfo: PropTypes.func,
 	setIsLogin: PropTypes.func,
 	setLoginWithEmail: PropTypes.func,
 };
 
 export default function EmailInputArea({
 	setUid,
-	setUserInfo,
 	setIsLogin,
 	setLoginWithEmail,
 }) {
@@ -102,24 +100,14 @@ export default function EmailInputArea({
 		const email = emailRef.current.value;
 		const password = passwordRef.current.value;
 		const emailResult = useEmailValidation(email, setEmailError);
-		const passwordResult = usePasswordValidation(
-			password,
-			setPasswordError
-		);
+		const passwordResult = usePasswordValidation(password, setPasswordError);
 
 		if (!emailResult || !passwordResult) return;
 		HandleLogin(email, password);
 	};
 
 	const HandleLogin = (email, password) => {
-		useEmailSignIn(
-			email,
-			password,
-			setUid,
-			setUserInfo,
-			setError,
-			setIsLogin
-		);
+		useEmailSignIn(email, password, setUid, setError, setIsLogin);
 	};
 
 	const handleSignUpButtonClick = () => {
@@ -167,17 +155,12 @@ export default function EmailInputArea({
 					}}>
 					back
 				</BackButton>
-				<LoginButton onClick={HandleLoginButtonClick}>
-					Log In
-				</LoginButton>
+				<LoginButton onClick={HandleLoginButtonClick}>Log In</LoginButton>
 			</EmailButtonArea>
 
 			<SignUpTextArea>
 				I am not registered —
-				<SignUpButton onClick={handleSignUpButtonClick}>
-					{" "}
-					Sign Up
-				</SignUpButton>
+				<SignUpButton onClick={handleSignUpButtonClick}> Sign Up</SignUpButton>
 			</SignUpTextArea>
 		</Root>
 	);

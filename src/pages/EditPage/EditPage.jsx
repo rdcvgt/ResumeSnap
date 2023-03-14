@@ -133,7 +133,10 @@ export default function EditPage() {
 	//根據履歷所選擇模板更換可選顏色
 	const template = useSelector((state) => state.formData.template);
 	useEffect(() => {
-		setTempColors(templatesColorOrder[template]);
+		if (template) {
+			console.log(template, "template");
+			setTempColors(templatesColorOrder[template]);
+		}
 	}, [template]);
 
 	//取得 downloadPdfFunc

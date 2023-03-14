@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { collection, doc, Timestamp } from "firebase/firestore";
-import { db } from "../../../utils/firebase/firebaseInit";
 import { updateWholeResumeData } from "../../../redux/reducers/formDataReducer";
 import {
 	updateDataStatus,
