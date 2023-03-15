@@ -184,8 +184,7 @@ const NextPage = styled.div`
 	border-radius: 30px;
 	cursor: ${(props) =>
 		props.currentPage === props.totalPage ? "default" : "pointer"};
-	opacity: ${(props) =>
-		props.currentPage === props.totalPage ? "0.3" : "1"};
+	opacity: ${(props) => (props.currentPage === props.totalPage ? "0.3" : "1")};
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -402,9 +401,7 @@ export default function ResumePreviewArea({
 						<ResumePreview isChoosingTemp={isChoosingTemp}>
 							<Template
 								pageFrom="edit"
-								handleGetDownLoadPdfFunc={
-									handleGetDownLoadPdfFunc
-								}
+								handleGetDownLoadPdfFunc={handleGetDownLoadPdfFunc}
 								getTotalPage={getTotalPage}
 								currentPage={currentPage}
 								setIsDownloading={setIsDownloading}

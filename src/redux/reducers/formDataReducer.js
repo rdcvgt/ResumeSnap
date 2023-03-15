@@ -12,7 +12,7 @@ export const formDataSlice = createSlice({
 		dataSetTimeOutId: null,
 		resumeName: "First Resume",
 		template: "Sydney",
-		color: "null",
+		color: null,
 		formBlocks: [
 			{
 				block: "PersonalDetails",

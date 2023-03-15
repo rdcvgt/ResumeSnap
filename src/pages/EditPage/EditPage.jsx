@@ -123,9 +123,14 @@ export default function EditPage() {
 			}
 			const userId = user.uid;
 			setUid(userId);
-			dispatch(getResumeData(userId, resumeId));
 		});
-	}, [dispatch, navigate, resumeId]);
+	}, [dispatch, navigate]);
+
+	useEffect(() => {
+		if (uid && resumeId) {
+			dispatch(getResumeData(uid, resumeId));
+		}
+	}, [dispatch, uid, resumeId]);
 
 	//若履歷資料更動，更新到 database
 	useUpdateResumeData(uid, resumeId);
@@ -133,7 +138,9 @@ export default function EditPage() {
 	//根據履歷所選擇模板更換可選顏色
 	const template = useSelector((state) => state.formData.template);
 	useEffect(() => {
-		setTempColors(templatesColorOrder[template]);
+		if (template) {
+			setTempColors(templatesColorOrder[template]);
+		}
 	}, [template]);
 
 	//取得 downloadPdfFunc

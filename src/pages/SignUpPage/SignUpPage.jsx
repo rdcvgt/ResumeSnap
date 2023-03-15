@@ -3,19 +3,15 @@ import { Helmet } from "react-helmet";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { collection, doc } from "firebase/firestore";
 
 import UserInfoArea from "./UserInfoArea";
 import ThirdPartyArea from "./ThirdPartyArea";
 import RegistrationArea from "./RegistrationArea";
 
-import { db, auth } from "../../utils/firebase/firebaseInit";
-import { createFirstResume } from "../../utils/firebase/database";
 import { useEmailSignUp, useGoogle } from "../../utils/firebase/auth";
 
 import LoadingCard from "../../components/cards/LoadingCard";
-import { addUserInfo } from "../../redux/reducers/userInfoReducer";
-import newResumeStructure from "../../utils/misc/newResumeStructure";
+import { addNewUserInfo } from "../../redux/reducers/userInfoReducer";
 import NavForEntry from "../../components/navbar/NavForEntry";
 
 const Root = styled.div``;
@@ -30,7 +26,7 @@ export default function HomePage() {
 	const [lastName, setLastName] = useState("");
 
 	const [uid, setUid] = useState(null);
-	const [resumeId, setResumeId] = useState(null);
+	// const [resumeId, setResumeId] = useState(null);
 	const [userInfo, setUserInfo] = useState(null);
 	const [isLogin, setIsLogin] = useState(false);
 	const [error, setError] = useState(null);
@@ -55,25 +51,10 @@ export default function HomePage() {
 
 	useEffect(() => {
 		if (uid && userInfo) {
-			console.log(uid, userInfo, "signup");
-			const resumeConfig = newResumeStructure(userInfo);
-			const userRef = doc(db, "users", uid);
-			const resumesRef = collection(userRef, "resumes");
-
-			dispatch(addUserInfo(uid, userInfo));
-			const newResumeId = createFirstResume(resumesRef, resumeConfig);
-			newResumeId.then((id) => {
-				setResumeId(id);
-			});
+			dispatch(addNewUserInfo(uid, userInfo));
+			navigate("/dashboard");
 		}
 	}, [uid, userInfo]);
-
-	useEffect(() => {
-		if (resumeId) {
-			navigate(`/edit/${resumeId}`);
-			return;
-		}
-	}, [resumeId, navigate]);
 
 	return (
 		<Root>

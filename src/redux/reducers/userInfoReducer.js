@@ -2,7 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { collection, doc } from "firebase/firestore";
 import { db } from "../../utils/firebase/firebaseInit";
-import { updateUserData } from "../../utils/firebase/database";
+import {
+	updateUserData,
+	getCurrentUserInfo,
+} from "../../utils/firebase/database";
 
 export const userInfoSlice = createSlice({
 	name: "userInfo",
@@ -16,8 +19,7 @@ export const userInfoSlice = createSlice({
 	reducers: {
 		updateUserInfo: (state, action) => {
 			const { userInfo } = action.payload;
-			const { email, firstName, lastName, photo, photoResumeId } =
-				userInfo;
+			const { email, firstName, lastName, photo, photoResumeId } = userInfo;
 			state.email = email;
 			state.firstName = firstName;
 			state.lastName = lastName;
@@ -43,11 +45,21 @@ export const { updateUserInfo, updateUserPhoto, deleteUserInfo } =
 	userInfoSlice.actions;
 export default userInfoSlice.reducer;
 
-export const addUserInfo = (uid, userInfo) => (dispatch) => {
-	dispatch(updateUserInfo({ userInfo }));
+export const addNewUserInfo = (uid, userInfo) => async (dispatch) => {
 	const userRef = doc(db, "users", uid);
 	const userInfoRef = collection(userRef, "userInfo");
-	updateUserData(userInfoRef, userInfo);
+	await updateUserData(userInfoRef, userInfo);
+	dispatch(updateUserInfo({ userInfo }));
+};
+
+export const addCurrentUserInfo = (uid) => (dispatch) => {
+	const userRef = doc(db, "users", uid);
+	const userInfoRef = collection(userRef, "userInfo");
+	const userInfoPromise = getCurrentUserInfo(userInfoRef);
+	userInfoPromise.then((data) => {
+		const [userInfo] = data;
+		dispatch(updateUserInfo({ userInfo }));
+	});
 };
 
 export const updateUserInfoToDatabase =

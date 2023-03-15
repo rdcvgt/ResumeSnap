@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,9 @@ import {
 } from "../../../components/buttons/button.style";
 
 const Root = styled.div`
-	margin-top: 20px;
+	margin-top: 30px;
+	border-top: 1px solid #ccc;
+	padding-top: 30px;
 `;
 
 const InputContainer = styled.div`
@@ -79,17 +81,10 @@ const SignUpButton = styled.a`
 
 EmailInputArea.propTypes = {
 	setUid: PropTypes.func,
-	setUserInfo: PropTypes.func,
 	setIsLogin: PropTypes.func,
-	setLoginWithEmail: PropTypes.func,
 };
 
-export default function EmailInputArea({
-	setUid,
-	setUserInfo,
-	setIsLogin,
-	setLoginWithEmail,
-}) {
+export default function EmailInputArea({ setUid, setIsLogin }) {
 	const emailRef = useRef();
 	const passwordRef = useRef();
 	const navigate = useNavigate();
@@ -102,24 +97,25 @@ export default function EmailInputArea({
 		const email = emailRef.current.value;
 		const password = passwordRef.current.value;
 		const emailResult = useEmailValidation(email, setEmailError);
-		const passwordResult = usePasswordValidation(
-			password,
-			setPasswordError
-		);
+		const passwordResult = usePasswordValidation(password, setPasswordError);
 
 		if (!emailResult || !passwordResult) return;
 		HandleLogin(email, password);
 	};
 
+	const handleEnterPress = (e) => {
+		console.log(e.key);
+		if (e.key === "Enter") {
+			HandleLoginButtonClick();
+		}
+	};
+
+	useEffect(() => {
+		window.addEventListener("keydown", handleEnterPress);
+	}, []);
+
 	const HandleLogin = (email, password) => {
-		useEmailSignIn(
-			email,
-			password,
-			setUid,
-			setUserInfo,
-			setError,
-			setIsLogin
-		);
+		useEmailSignIn(email, password, setUid, setError, setIsLogin);
 	};
 
 	const handleSignUpButtonClick = () => {
@@ -139,6 +135,7 @@ export default function EmailInputArea({
 					type="email"
 					name="email"
 					ref={emailRef}
+					defaultValue="test123@gmail.com"
 				/>
 				<ErrorMessage>{emailError}</ErrorMessage>
 			</InputContainer>
@@ -153,6 +150,7 @@ export default function EmailInputArea({
 					type="password"
 					name="password"
 					ref={passwordRef}
+					defaultValue="test123"
 				/>
 				<ErrorMessage>{passwordError}</ErrorMessage>
 			</InputContainer>
@@ -160,24 +158,19 @@ export default function EmailInputArea({
 			<EmailButtonArea>
 				<BackButton
 					onClick={() => {
-						setLoginWithEmail(false);
 						setEmailError(null);
 						setPasswordError(null);
 						setError(null);
+						navigate("/");
 					}}>
 					back
 				</BackButton>
-				<LoginButton onClick={HandleLoginButtonClick}>
-					Log In
-				</LoginButton>
+				<LoginButton onClick={HandleLoginButtonClick}>Log In</LoginButton>
 			</EmailButtonArea>
 
 			<SignUpTextArea>
 				I am not registered —
-				<SignUpButton onClick={handleSignUpButtonClick}>
-					{" "}
-					Sign Up
-				</SignUpButton>
+				<SignUpButton onClick={handleSignUpButtonClick}> Sign Up</SignUpButton>
 			</SignUpTextArea>
 		</Root>
 	);

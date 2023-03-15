@@ -155,10 +155,7 @@ const blockData = {
 const RenderBlocks = ({ formBlocks, handleDeleteButtonClick }) => {
 	return formBlocks.map((block, index) => {
 		const blockName = block.block;
-		if (
-			blockName === "PersonalDetails" ||
-			blockName === "ProfessionalSummary"
-		)
+		if (blockName === "PersonalDetails" || blockName === "ProfessionalSummary")
 			return null;
 		const id = block.id;
 		const Component = components[blockName];
@@ -284,14 +281,10 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 					<DragDropContext onDragEnd={handleOnDragEndBlock}>
 						<Droppable droppableId="blocks">
 							{(provided) => (
-								<div
-									{...provided.droppableProps}
-									ref={provided.innerRef}>
+								<div {...provided.droppableProps} ref={provided.innerRef}>
 									<RenderBlocks
 										formBlocks={formBlocks}
-										handleDeleteButtonClick={
-											handleDeleteButtonClick
-										}
+										handleDeleteButtonClick={handleDeleteButtonClick}
 									/>
 									{provided.placeholder}
 								</div>
@@ -333,15 +326,12 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 									!isUsingECActivities &&
 										dispatch(
 											addBlock({
-												blockData:
-													blockData.ECActivities,
+												blockData: blockData.ECActivities,
 											})
 										);
 								}}>
 								<Icon src="/images/icon/activity.png" />
-								<SectionName>
-									Extra-curricular Activities
-								</SectionName>
+								<SectionName>Extra-curricular Activities</SectionName>
 							</Section>
 							<Section
 								isUsingInternships={isUsingInternships}
@@ -349,8 +339,7 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 									!isUsingInternships &&
 										dispatch(
 											addBlock({
-												blockData:
-													blockData.Internships,
+												blockData: blockData.Internships,
 											})
 										);
 								}}>
