@@ -54,21 +54,16 @@ const ErrorMessage = styled.div`
 `;
 
 const GoogleButton = styled.div`
-	${DefaultButtonStyle}
-	width: 100%;
-	height: 50px;
-	background-color: rgb(219, 68, 55);
-
-	&:hover {
-		background-color: rgb(197, 61, 50);
-	}
-`;
-
-const EmailButton = styled.div`
 	${SecondaryButtonStyle}
 	width: 100%;
 	height: 50px;
-	margin-top: 15px;
+	color: rgb(219, 68, 55);
+
+	&:hover {
+		border: 1px solid rgb(219, 68, 55);
+		background-color: rgb(219, 68, 55);
+		color: #fff;
+	}
 `;
 
 export default function SignInPage() {
@@ -78,7 +73,6 @@ export default function SignInPage() {
 	const [uid, setUid] = useState(null);
 	const [isLogin, setIsLogin] = useState(false);
 	const [error, setError] = useState(null);
-	const [loginWithEmail, setLoginWithEmail] = useState(false);
 
 	const HandleGoogleButtonClick = () => {
 		useGoogle(setUid, null, setError, setIsLogin);
@@ -112,32 +106,14 @@ export default function SignInPage() {
 			{!isLogin && (
 				<LoginArea>
 					<LoginTitle>Log In</LoginTitle>
-					<LoginDescription>
-						{loginWithEmail
-							? "Enter your email and password"
-							: "We are happy to see you back!"}
-					</LoginDescription>
-					{!loginWithEmail && (
-						<ButtonArea>
-							<GoogleButton onClick={HandleGoogleButtonClick}>
-								Google
-							</GoogleButton>
-							{error && <ErrorMessage>{error}</ErrorMessage>}
-							<EmailButton
-								onClick={() => {
-									setLoginWithEmail(true);
-								}}>
-								Email
-							</EmailButton>
-						</ButtonArea>
-					)}
-					{loginWithEmail && (
-						<EmailInputArea
-							setUid={setUid}
-							setIsLogin={setIsLogin}
-							setLoginWithEmail={setLoginWithEmail}
-						/>
-					)}
+					<LoginDescription>We are happy to see you back!</LoginDescription>
+					<ButtonArea>
+						<GoogleButton onClick={HandleGoogleButtonClick}>
+							Google
+						</GoogleButton>
+						{error && <ErrorMessage>{error}</ErrorMessage>}
+					</ButtonArea>
+					<EmailInputArea setUid={setUid} setIsLogin={setIsLogin} />
 				</LoginArea>
 			)}
 
