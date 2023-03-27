@@ -3,13 +3,10 @@ import {
 	signInWithEmailAndPassword,
 	signInWithPopup,
 } from "firebase/auth";
-import { useDispatch } from "react-redux";
 import { auth, provider } from "./firebaseInit";
 import { db } from "../../utils/firebase/firebaseInit";
 import { collection, doc } from "firebase/firestore";
 import { getCurrentUserInfo } from "../firebase/database";
-
-import { updateUserInfo } from "../../redux/reducers/userInfoReducer";
 
 export function useFirstNameValidation(firstName, firstNameError) {
 	const empty = "This field is required";
