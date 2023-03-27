@@ -59,6 +59,7 @@ Test password: test123
 - **Router Manegemant**: react-router-dom
 - **State Management**: Redux Toolkit, React-Redux, Redux-persist
 - **Code Formatter**: ESLint(config-react-app), Prettier
+- **Unit Test**: Jest
 - **Loader**: Babel-loader, Style-loader, CSS-loader
 - **Module Bundler**: webpack
 
