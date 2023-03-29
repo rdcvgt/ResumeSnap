@@ -104,7 +104,6 @@ export default function EmailInputArea({ setUid, setIsLogin }) {
 	};
 
 	const handleEnterPress = (e) => {
-		console.log(e.key);
 		if (e.key === "Enter") {
 			HandleLoginButtonClick();
 		}

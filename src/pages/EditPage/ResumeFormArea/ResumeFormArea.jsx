@@ -262,6 +262,11 @@ export default function ResumeFormArea({ isChoosingTemp }) {
 					break;
 				}
 				default: {
+					setIsUsingECActivities(false);
+					setIsUsingInternships(false);
+					setIsUsingCourses(false);
+					setIsUsingSkills(false);
+					setIsUsingLanguages(false);
 					return;
 				}
 			}

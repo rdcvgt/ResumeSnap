@@ -5,57 +5,59 @@ import { db } from "../../utils/firebase/firebaseInit";
 import { getResume, updateResumeData } from "../../utils/firebase/database";
 import { updateDataStatus } from "../reducers/dataStatusReducer";
 
+export const initState = {
+	isDefaultData: true,
+	dataSetTimeOutId: null,
+	resumeName: "First Resume",
+	template: "Sydney",
+	color: null,
+	formBlocks: [
+		{
+			block: "PersonalDetails",
+			content: {
+				blockTitle: "Personal Details",
+				inputData: {},
+			},
+			id: uuid(),
+		},
+		{
+			block: "ProfessionalSummary",
+			content: {
+				blockTitle: "Profile",
+				inputData: {},
+			},
+			id: uuid(),
+		},
+		{
+			block: "Education",
+			content: {
+				blockTitle: "Education",
+				itemData: [],
+			},
+			id: uuid(),
+		},
+		{
+			block: "EmploymentHistory",
+			content: {
+				blockTitle: "Employment History",
+				itemData: [],
+			},
+			id: uuid(),
+		},
+		{
+			block: "WebsiteLink",
+			content: {
+				blockTitle: "Websites & Social Links",
+				itemData: [],
+			},
+			id: uuid(),
+		},
+	],
+};
+
 export const formDataSlice = createSlice({
 	name: "formData",
-	initialState: {
-		isDefaultData: true,
-		dataSetTimeOutId: null,
-		resumeName: "First Resume",
-		template: "Sydney",
-		color: null,
-		formBlocks: [
-			{
-				block: "PersonalDetails",
-				content: {
-					blockTitle: "Personal Details",
-					inputData: {},
-				},
-				id: uuid(),
-			},
-			{
-				block: "ProfessionalSummary",
-				content: {
-					blockTitle: "Profile",
-					inputData: {},
-				},
-				id: uuid(),
-			},
-			{
-				block: "Education",
-				content: {
-					blockTitle: "Education",
-					itemData: [],
-				},
-				id: uuid(),
-			},
-			{
-				block: "EmploymentHistory",
-				content: {
-					blockTitle: "Employment History",
-					itemData: [],
-				},
-				id: uuid(),
-			},
-			{
-				block: "WebsiteLink",
-				content: {
-					blockTitle: "Websites & Social Links",
-					itemData: [],
-				},
-				id: uuid(),
-			},
-		],
-	},
+	initialState: initState,
 	reducers: {
 		addResumeData: (state, action) => {
 			const { resumeData } = action.payload;

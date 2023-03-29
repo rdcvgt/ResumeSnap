@@ -12,7 +12,11 @@ import ResumeTemplateArea from "./ResumeTemplateArea";
 import useUpdateResumeData from "./hooks/useUpdateResumeData";
 
 import { auth } from "../../utils/firebase/firebaseInit";
-import { getResumeData } from "../../redux/reducers/formDataReducer";
+import {
+	getResumeData,
+	addResumeData,
+	initState,
+} from "../../redux/reducers/formDataReducer";
 import UserMenu from "../../components/navbar/UserMenu";
 import { MEDIA_QUERY_LG } from "../../utils/style/breakpotins";
 
@@ -121,6 +125,7 @@ export default function EditPage() {
 				navigate("/");
 				return;
 			}
+			dispatch(addResumeData({ resumeData: initState }));
 			const userId = user.uid;
 			setUid(userId);
 		});
