@@ -125,7 +125,7 @@ export default function EditPage() {
 				navigate("/");
 				return;
 			}
-			dispatch(addResumeData({ resumeData: initState }));
+			// dispatch(addResumeData({ resumeData: initState }));
 			const userId = user.uid;
 			setUid(userId);
 		});

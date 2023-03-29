@@ -73,7 +73,9 @@ export default function ProfessionalSummary({ blockId }) {
 	);
 	const blockTitle = blockData.content.blockTitle || "";
 	const inputData = blockData.content.inputData;
-	const inputHtmlText = inputData.inputHtml;
+	const inputHtmlText = inputData.inputHtml
+		? inputData.inputHtml
+		: "<p><br></p>";
 	const [html, setHtml] = useState(inputHtmlText);
 
 	// 即時銷毀 editor
@@ -109,9 +111,9 @@ export default function ProfessionalSummary({ blockId }) {
 				hideDeleteIcon={true}
 			/>
 			<BlockDescription>
-				Write 2-4 short & energetic sentences to interest the reader!
-				Mention your role, experience & most importantly - your biggest
-				achievements, best qualities and skills.
+				Write 2-4 short & energetic sentences to interest the reader! Mention
+				your role, experience & most importantly - your biggest achievements,
+				best qualities and skills.
 			</BlockDescription>
 			<LongInputBox>
 				<EditorBlock>
