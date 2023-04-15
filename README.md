@@ -10,6 +10,8 @@ Test account: test123@gmail.com
 
 Test password: test123 
 
+Demo Resume URL: [Finley's Resume](https://resumesnap.web.app/share/WeQw0Vo9WTbMrLXMZILU)
+
 # Table of Contents
 - [Demo](#demo)
 - [Main Features](#main-features)
